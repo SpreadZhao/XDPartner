@@ -1,0 +1,9 @@
+{
+  "code": 1000,
+  "data": {
+    "msg": "登录成功",
+    "userId": 32,
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4OTBhY2ViNTRjMWE0NDEzOGVjZWQwODVhZTkzZWExMCIsInN1YiI6IjMyIiwiaXNzIjoicXp4IiwiaWF0IjoxNjk4NzY5MzEzLCJleHAiOjE2OTk5Nzg5MTN9.ce9KH-eTb2khGwocSS_EIJaxW8pela47aDmzLDFGBBw"
+  },
+  "msg": "请求成功"
+}
