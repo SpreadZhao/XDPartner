@@ -1,5 +1,6 @@
 package com.spread.xdpartner
 
+import com.spread.xdpartner.network.Jsouper
 import org.jsoup.Jsoup
 import org.junit.Test
 
@@ -14,15 +15,14 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         println("Spread Zhao")
-        val doc = Jsoup.connect("https://xdu-partner.be.wizzstudio.com/wz/user/login?stuId=20009200303&password=Spreadzhao123&vcode=")
-            .header("User-Agent", "Apifox/1.0.0 (https://apifox.com)")
-            .data("stuId", "20009200303")
-            .data("password", "Spreadzhao123")
-            .data("vcode", "")
-            .ignoreContentType(true)
-//            .header("Content-Type", "text/plain")
-            .post()
-        val res = doc.body().toString()
-        println("result: $res")
+        println(Jsouper.login(
+            stuId = "20009200612",
+            password = "chr13579shy6"
+        ))
+    }
+
+    @Test
+    fun testGetLatestThread() {
+        println(Jsouper.getLatestThread(1))
     }
 }

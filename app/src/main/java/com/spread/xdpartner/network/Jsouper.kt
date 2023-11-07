@@ -1,16 +1,37 @@
 package com.spread.xdpartner.network
 
+import org.jsoup.Connection
 import org.jsoup.Jsoup
 
 object Jsouper {
-  fun login(stuId: String, password: String) {
-    val doc = Jsoup.connect("https://xdu-partner.be.wizzstudio.com/wz/user/login?stuId=20009200303&password=Spreadzhao123&vcode=")
-      .header("User-Agent", "Apifox/1.0.0 (https://apifox.com)")
-      .data("stuId", stuId)
-      .data("password", password)
-      .data("vcode", "")
-      .ignoreContentType(true)
-      .post()
-    val res = doc.body().toString()
+  fun login(stuId: String, password: String): String {
+    val doc = Jsoup.connect("${Constant.BASE_URL}wz/user/login?stuId=${stuId}&password=${password}&vcode=")
+      .defaultPost()
+    return doc.body().toString()
   }
+
+  fun getLatestThread(current: Int): String {
+    val doc = Jsoup.connect("${Constant.BASE_URL}wz/blog/queryNewestBlog")
+      .data("current", current.toString())
+      .defaultGet()
+    return doc.body().toString()
+  }
+
+  private fun Connection.addDefaultHeader() = apply {
+    this.header("User-Agent", "Apifox/1.0.0 (https://apifox.com)")
+  }
+
+  private fun Connection.defaultSettings() = apply {
+    this.ignoreContentType(true)
+    this.ignoreHttpErrors(true)
+  }
+
+  private fun Connection.defaultPost() = let {
+    it.addDefaultHeader().defaultSettings().post()
+  }
+
+  private fun Connection.defaultGet() = let {
+    it.addDefaultHeader().defaultSettings().get()
+  }
+
 }
