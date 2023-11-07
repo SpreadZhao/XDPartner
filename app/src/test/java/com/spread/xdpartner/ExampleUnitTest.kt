@@ -1,10 +1,7 @@
 package com.spread.xdpartner
 
-import com.spread.xdpartner.network.Jsouper
-import org.jsoup.Jsoup
+import com.spread.xdpartner.network.legacy.Jsouper
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -15,7 +12,8 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         println("Spread Zhao")
-        println(Jsouper.login(
+        println(
+            Jsouper.login(
             stuId = "20009200612",
             password = "chr13579shy6"
         ))

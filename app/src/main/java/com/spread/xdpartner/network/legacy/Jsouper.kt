@@ -1,17 +1,18 @@
-package com.spread.xdpartner.network
+package com.spread.xdpartner.network.legacy
 
+import com.spread.xdpartner.network.NetworkConstant
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
 object Jsouper {
   fun login(stuId: String, password: String): String {
-    val doc = Jsoup.connect("${Constant.BASE_URL}wz/user/login?stuId=${stuId}&password=${password}&vcode=")
+    val doc = Jsoup.connect("${NetworkConstant.BASE_URL}wz/user/login?stuId=${stuId}&password=${password}&vcode=")
       .defaultPost()
     return doc.body().toString()
   }
 
   fun getLatestThread(current: Int): String {
-    val doc = Jsoup.connect("${Constant.BASE_URL}wz/blog/queryNewestBlog")
+    val doc = Jsoup.connect("${NetworkConstant.BASE_URL}wz/blog/queryNewestBlog")
       .data("current", current.toString())
       .defaultGet()
     return doc.body().toString()
