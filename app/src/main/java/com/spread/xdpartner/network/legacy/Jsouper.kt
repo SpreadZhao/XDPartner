@@ -1,10 +1,12 @@
 package com.spread.xdpartner.network.legacy
 
 import com.spread.xdpartner.network.NetworkConstant
+import com.spread.xdpartner.network.NetworkConstant.PERMANENT_TOKEN
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
 object Jsouper {
+
   fun login(stuId: String, password: String): String {
     val doc = Jsoup.connect("${NetworkConstant.BASE_URL}wz/user/login?stuId=${stuId}&password=${password}&vcode=")
       .defaultPost()
@@ -14,6 +16,15 @@ object Jsouper {
   fun getLatestThread(current: Int): String {
     val doc = Jsoup.connect("${NetworkConstant.BASE_URL}wz/blog/queryNewestBlog")
       .data("current", current.toString())
+      .header("token", PERMANENT_TOKEN)
+      .defaultGet()
+    return doc.body().toString()
+  }
+
+  fun getHotestThread(current: Int): String {
+    val doc = Jsoup.connect("${NetworkConstant.BASE_URL}wz/blog/queryHottestBlog")
+      .data("current", current.toString())
+      .header("token", PERMANENT_TOKEN)
       .defaultGet()
     return doc.body().toString()
   }
