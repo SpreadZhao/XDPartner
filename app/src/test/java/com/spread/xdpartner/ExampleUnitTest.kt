@@ -2,7 +2,7 @@ package com.spread.xdpartner
 
 import com.spread.xdpartner.network.NetworkConstant.PERMANENT_TOKEN
 import com.spread.xdpartner.network.legacy.Jsouper
-import com.spread.xdpartner.network.model.ThreadsResponse
+import com.spread.xdpartner.network.model.response.ThreadsResponse
 import com.spread.xdpartner.network.service.BlogService
 import com.spread.xdpartner.network.service.ServiceCreator
 import org.junit.Test
@@ -51,6 +51,11 @@ class ExampleUnitTest {
     @Test
     fun testGetHottestThread() {
         println(Jsouper.getHotestThread(1))
+    }
+
+    @Test
+    fun testQueryById() {
+        println(Jsouper.queryThreadById(14))
     }
 
 }

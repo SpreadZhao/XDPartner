@@ -1,9 +1,11 @@
 package com.spread.xdpartner.network.service
 
-import com.spread.xdpartner.network.model.ThreadsResponse
+import com.spread.xdpartner.network.model.response.ThreadResponse
+import com.spread.xdpartner.network.model.response.ThreadsResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BlogService {
@@ -18,4 +20,10 @@ interface BlogService {
     @Query("current") current: Int?,
     @Header("token") token: String?
   ): Call<ThreadsResponse>
+
+  @GET("wz/blog/query/{id}")
+  fun queryThreadById(
+    @Path("id") id: Int,
+    @Header("token") token: String?
+  ): Call<ThreadResponse>
 }

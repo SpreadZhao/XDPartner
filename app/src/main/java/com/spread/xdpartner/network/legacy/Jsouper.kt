@@ -4,6 +4,8 @@ import com.spread.xdpartner.network.NetworkConstant
 import com.spread.xdpartner.network.NetworkConstant.PERMANENT_TOKEN
 import org.jsoup.Connection
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import java.lang.StringBuilder
 
 object Jsouper {
 
@@ -27,6 +29,18 @@ object Jsouper {
       .header("token", PERMANENT_TOKEN)
       .defaultGet()
     return doc.body().toString()
+  }
+
+  fun queryThreadById(id: Int): String {
+    val doc = Jsoup.connect("${NetworkConstant.BASE_URL}wz/blog/query/${id}")
+      .header("token", PERMANENT_TOKEN)
+      .defaultGet()
+    return doc.body().toString()
+  }
+
+  private fun Document.parse() = StringBuilder().run {
+
+    toString()
   }
 
   private fun Connection.addDefaultHeader() = apply {
