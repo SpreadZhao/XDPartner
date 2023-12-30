@@ -1,9 +1,14 @@
 package com.spread.xdpartner
 
-import org.jsoup.Jsoup
+import com.spread.xdpartner.network.NetworkConstant.PERMANENT_TOKEN
+import com.spread.xdpartner.network.legacy.Jsouper
+import com.spread.xdpartner.network.model.response.ThreadsResponse
+import com.spread.xdpartner.network.service.BlogService
+import com.spread.xdpartner.network.service.ServiceCreator
 import org.junit.Test
-
-import org.junit.Assert.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -14,15 +19,43 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         println("Spread Zhao")
-        val doc = Jsoup.connect("https://xdu-partner.be.wizzstudio.com/wz/user/login?stuId=20009200303&password=Spreadzhao123&vcode=")
-            .header("User-Agent", "Apifox/1.0.0 (https://apifox.com)")
-            .data("stuId", "20009200303")
-            .data("password", "Spreadzhao123")
-            .data("vcode", "")
-            .ignoreContentType(true)
-//            .header("Content-Type", "text/plain")
-            .post()
-        val res = doc.body().toString()
-        println("result: $res")
+        println(
+            Jsouper.login(
+            stuId = "20009200612",
+            password = "chr13579shy6"
+        ))
     }
+
+    @Test
+    fun testGetLatestThread() {
+//        println(Jsouper.getLatestThread(1))
+        val service = ServiceCreator.create(BlogService::class.java)
+        println("start retrofit request")
+        service.queryHottestThreads(1, PERMANENT_TOKEN)
+            .enqueue(object : Callback<ThreadsResponse> {
+                override fun onResponse(
+                    call: Call<ThreadsResponse>,
+                    response: Response<ThreadsResponse>
+                ) {
+                    println("Response code: ${response.code()}")
+                    println("Response body: ${response.body()}")
+                }
+
+                override fun onFailure(call: Call<ThreadsResponse>, t: Throwable) {
+                    t.printStackTrace()
+                }
+            })
+        println("retrofit request end")
+    }
+
+    @Test
+    fun testGetHottestThread() {
+        println(Jsouper.getHotestThread(1))
+    }
+
+    @Test
+    fun testQueryById() {
+        println(Jsouper.queryThreadById(14))
+    }
+
 }
