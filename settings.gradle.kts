@@ -14,5 +14,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "XDPartner"
-include(":app")
+include(":XDPapp")
 include(":XDPLib")
