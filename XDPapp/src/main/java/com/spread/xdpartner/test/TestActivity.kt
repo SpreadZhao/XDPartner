@@ -1,13 +1,15 @@
 package com.spread.xdpartner.test
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.xdpartner.R
+import com.spread.xdpartner.main.MainActivity
 import com.spread.xdpartner.network.NetworkConstant
 import com.spread.xdpartner.network.service.BlogService
 import com.spread.xdpartner.network.service.ServiceCreator
@@ -35,7 +37,11 @@ class TestActivity : AppCompatActivity() {
     }),
     MultiTypeData(22, TestEditButtonAdapter.EditButtonData("查询") {
       Log.d("MultiTypeAdapter", "查寻id")
-    })
+    }),
+    MultiTypeData(11, TestButtonAdapter.ButtonData("跳转主页") {
+      startActivity(Intent(this,MainActivity::class.java))
+      Log.d("MultiTypeAdapter", "跳转主页")
+    }),
   )
 
   override fun onCreate(savedInstanceState: Bundle?) {

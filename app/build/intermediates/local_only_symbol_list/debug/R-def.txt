@@ -1,0 +1,21 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color statuscolor
+color white
+drawable button_background
+drawable edit_background
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable login_back_arrow
+drawable login_pic
+id login
+layout activity_login
+layout activity_persondetail
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.XDPartner
+style Theme.XDPartner
+xml backup_rules
+xml data_extraction_rules
