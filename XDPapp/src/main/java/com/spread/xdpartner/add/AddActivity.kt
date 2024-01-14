@@ -32,6 +32,7 @@ class AddActivity : BaseViewBindingActivity<ActivityAddBinding>(), View.OnClickL
     //相机拍照保存的位置
     private lateinit var photoUri: Uri
 
+
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1000 //权限
         private const val REQUEST_CODE_ALBUM = 1001 //相册
