@@ -6,7 +6,10 @@ plugins {
 android {
     namespace = "com.example.xdpartner"
     compileSdk = 33
-
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
     defaultConfig {
         applicationId = "com.example.xdpartner"
         minSdk = 29
