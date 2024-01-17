@@ -14,6 +14,7 @@ import com.spread.xdpartner.network.NetworkConstant
 import com.spread.xdpartner.network.service.BlogService
 import com.spread.xdpartner.network.service.ServiceCreator
 import com.spread.xdpartner.test.TestLogger.log
+import com.spread.xdpartner.test.adapter.TestAdapterType
 import com.spread.xdpartner.test.adapter.TestButtonAdapter
 import com.spread.xdpartner.test.adapter.TestEditButtonAdapter
 import com.spread.xdplib.adapter.MultiTypeAdapter
@@ -29,16 +30,16 @@ class TestActivity : AppCompatActivity() {
   private lateinit var service: BlogService
 
   private val dataSet = listOf(
-    MultiTypeData(11, TestButtonAdapter.ButtonData("查询最热帖子") {
+    MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("查询最热帖子") {
       Log.d("MultiTypeAdapter", "查询最热帖子点击")
     }),
-    MultiTypeData(11, TestButtonAdapter.ButtonData("查询最新帖子") {
+    MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("查询最新帖子") {
       Log.d("MultiTypeAdapter", "查询最新帖子点击")
     }),
-    MultiTypeData(22, TestEditButtonAdapter.EditButtonData("查询") {
+    MultiTypeData(TestAdapterType.ADAPTER_TYPE_EDIT_BUTTON, TestEditButtonAdapter.EditButtonData("查询") {
       Log.d("MultiTypeAdapter", "查寻id")
     }),
-    MultiTypeData(11, TestButtonAdapter.ButtonData("跳转主页") {
+    MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("跳转主页") {
       startActivity(Intent(this,MainActivity::class.java))
       Log.d("MultiTypeAdapter", "跳转主页")
     }),
@@ -56,8 +57,8 @@ class TestActivity : AppCompatActivity() {
     }
     val adapter = MultiTypeAdapter().apply {
       configDataSet(dataSet)
-      addSubAdapter(11, TestButtonAdapter())
-      addSubAdapter(22, TestEditButtonAdapter())
+      addSubAdapter(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter())
+      addSubAdapter(TestAdapterType.ADAPTER_TYPE_EDIT_BUTTON, TestEditButtonAdapter())
     }
     val recyclerView = findViewById<RecyclerView>(R.id.test_recycler_view).apply {
       setHasFixedSize(true)
