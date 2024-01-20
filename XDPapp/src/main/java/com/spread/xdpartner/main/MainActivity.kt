@@ -13,18 +13,20 @@ import com.spread.xdpartner.main.fragment.MeFragment
 import com.spread.xdpartner.main.fragment.MessageFragment
 import com.spread.xdpartner.main.fragment.SearchFragment
 import com.spread.xdpartner.test.TestLogger.log
-const val index_home = 0
-const val index_message = 1
-const val index_friend = 2
-const val index_me = 3
-const val index_add = 4
-const val fragment_size = 4
+
 class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initView()
     }
-
+    companion object{
+        const val index_home = 0
+        const val index_message = 1
+        const val index_friend = 2
+        const val index_me = 3
+        const val index_add = 4
+        const val fragment_size = 4
+    }
     private fun initView() {
         binding.indexVpFragmentListTop.adapter = object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
@@ -40,6 +42,8 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
             override fun getItemCount() = fragment_size
         }
         binding.indexVpFragmentListTop.currentItem = index_home
+        // No sliding
+        binding.indexVpFragmentListTop.isUserInputEnabled = false
         binding.indexBottomBarHome.isSelected = true
         binding.indexBottomBarHome.setOnClickListener(TabOnClickListener(index_home))
         binding.indexBottomBarMessage.setOnClickListener(TabOnClickListener(index_message))
@@ -63,7 +67,7 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
                 startAddActivity()
             }else{
                 p0.isSelected = true
-                binding.indexVpFragmentListTop.setCurrentItem(index)
+                binding.indexVpFragmentListTop.setCurrentItem(index,false)
             }
 
         }
