@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.xdpartner.R
+import com.spread.xdpartner.LoginActivity
 import com.spread.xdpartner.main.MainActivity
 import com.spread.xdpartner.network.NetworkConstant
 import com.spread.xdpartner.network.service.BlogService
@@ -42,6 +43,10 @@ class TestActivity : AppCompatActivity() {
     MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("跳转主页") {
       startActivity(Intent(this,MainActivity::class.java))
       Log.d("MultiTypeAdapter", "跳转主页")
+    }),
+    MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("跳转登录页面") {
+      startActivity(Intent(this,LoginActivity::class.java))
+      Log.d("MultiTypeAdapter", "跳转登录页面")
     }),
   )
 

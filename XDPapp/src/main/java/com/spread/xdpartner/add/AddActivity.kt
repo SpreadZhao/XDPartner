@@ -9,6 +9,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +19,18 @@ import android.widget.PopupWindow
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.xdpartner.R
 import com.example.xdpartner.databinding.ActivityAddBinding
+import com.spread.xdpartner.add.adapter.EditTextAdapter
 import com.spread.xdpartner.base.BaseViewBindingActivity
+import com.spread.xdpartner.test.TestLogger
 import com.spread.xdpartner.test.TestLogger.log
+import com.spread.xdpartner.test.adapter.TestAdapterType
+import com.spread.xdplib.adapter.MultiTypeAdapter
+import com.spread.xdplib.adapter.MultiTypeData
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -29,9 +39,67 @@ import java.io.IOException
 class AddActivity : BaseViewBindingActivity<ActivityAddBinding>(), View.OnClickListener {
     lateinit var popupWindow: PopupWindow
     var popupView: View? = null
+
     //相机拍照保存的位置
     private lateinit var photoUri: Uri
-
+    private var typeText: String = ""
+    private var sizeText: String = ""
+    private var timeText: String = ""
+    private var placeText: String = ""
+    private val dataSet = listOf(
+        MultiTypeData(
+            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
+            EditTextAdapter.EditData(typeText,true,"#剧本杀#来电", object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    p0?.let {
+                        typeText = p0.toString()
+                        TestLogger.log("typeText $typeText")
+                    }
+                }
+                override fun afterTextChanged(p0: Editable?) {}
+            })
+        ),
+        MultiTypeData(
+            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
+            EditTextAdapter.EditData(sizeText,true,"请输入几缺几", object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    p0?.let {
+                        sizeText = p0.toString()
+                        TestLogger.log("几缺几 $sizeText")
+                    }
+                }
+                override fun afterTextChanged(p0: Editable?) {}
+            })
+        ),
+        MultiTypeData(
+            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
+            EditTextAdapter.EditData(timeText,false,"请输入时间", object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    p0?.let {
+                        timeText = p0.toString()
+                        TestLogger.log("时间 $timeText")
+                    }
+                }
+                override fun afterTextChanged(p0: Editable?) {}
+            })
+        ),
+        MultiTypeData(
+            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
+            EditTextAdapter.EditData(placeText,false,"请输入地点", object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    p0?.let {
+                        placeText = p0.toString()
+                        TestLogger.log("地点 $placeText")
+                    }
+                }
+                override fun afterTextChanged(p0: Editable?) {}
+            })
+        ),
+    )
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1000 //权限
@@ -48,27 +116,20 @@ class AddActivity : BaseViewBindingActivity<ActivityAddBinding>(), View.OnClickL
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
             true
-        )
-        popupWindow.showAtLocation(
-            binding.layoutParent,
-            Gravity.BOTTOM,
-            0,
-            0
-        ) //底部显示弹窗
-        popupWindow.setBackgroundDrawable(resources.getDrawable(android.R.color.white))
+        ).apply {
+                showAtLocation(binding.layoutParent, Gravity.BOTTOM, 0, 0)
+                setBackgroundDrawable(resources.getDrawable(R.color.white))
+                setOnDismissListener { setAlpha(1.0f) }
+            }
         setAlpha(0.3f)
         //把背景还原
-        popupWindow.setOnDismissListener { setAlpha(1.0f) }
         initPopupView()
     }
 
     private fun initPopupView() {
-        val camera_btn = popupView!!.findViewById<Button>(R.id.button_camera)
-        val pic_btn = popupView!!.findViewById<Button>(R.id.button_photo)
-        val cancel_btn = popupView!!.findViewById<Button>(R.id.button_cancel)
-        camera_btn.setOnClickListener(this)
-        pic_btn.setOnClickListener(this)
-        cancel_btn.setOnClickListener(this)
+        popupView!!.findViewById<Button>(R.id.button_camera).setOnClickListener(this)
+        popupView!!.findViewById<Button>(R.id.button_photo).setOnClickListener(this)
+        popupView!!.findViewById<Button>(R.id.button_cancel).setOnClickListener(this)
     }
 
     private fun setAlpha(f: Float) {
@@ -84,6 +145,29 @@ class AddActivity : BaseViewBindingActivity<ActivityAddBinding>(), View.OnClickL
 
     private fun initView() {
         binding.imageAdd.setOnClickListener(this)
+        binding.back.setOnClickListener{
+            finish()
+        }
+        initRecyclerView()
+    }
+
+
+    private fun initRecyclerView() {
+        val layoutManager = LinearLayoutManager(this).apply {
+            isItemPrefetchEnabled = false // 禁止预获取
+            orientation = RecyclerView.VERTICAL
+        }
+        val adapter = MultiTypeAdapter().apply {
+            configDataSet(dataSet)
+            addSubAdapter(TestAdapterType.ADAPTER_TYPE_EDIT_TEXT, EditTextAdapter())
+        }
+        val recyclerView = binding.listEdit.apply {
+            setHasFixedSize(true)
+            setItemViewCacheSize(0)
+            this.layoutManager = layoutManager
+            this.adapter = adapter
+            addItemDecoration( DividerItemDecoration(this@AddActivity, DividerItemDecoration.VERTICAL))
+        }
     }
 
     override fun getViewBinding(): ActivityAddBinding {
@@ -98,6 +182,7 @@ class AddActivity : BaseViewBindingActivity<ActivityAddBinding>(), View.OnClickL
             R.id.button_camera -> checkPermission()
         }
     }
+
     private fun getDestinationUri(): Uri {
         val fileName = String.format("fr_crop_%s.jpg", System.currentTimeMillis())
         val cropFile = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName)
@@ -115,12 +200,21 @@ class AddActivity : BaseViewBindingActivity<ActivityAddBinding>(), View.OnClickL
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
         startActivityForResult(intent, REQUEST_CODE_CAMERA)
     }
+
     private fun checkPermission() {
         popupWindow.dismiss()
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             openCamera()
         } else {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CODE_PERMISSIONS)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                REQUEST_CODE_PERMISSIONS
+            )
         }
     }
 
