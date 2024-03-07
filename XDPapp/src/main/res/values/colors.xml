@@ -7,4 +7,14 @@
     <color name="white_9e">#9e9c9d</color>
     <color name="bold">#101010</color>
     <color name="blue">#61C8FB</color>
+    <color name="grey">#BBBBBB</color>
+    <color name="purple_less">#ECF1FE</color>
+    <color name="yellow">#F7EED5</color>
+    <color name="text_yellow">#FCA824</color>
+    <color name="red">#FFC6BC</color>
+    <color name="text_red">#DF6A4A</color>
+    <color name="purple_card">#C4C8F5</color>
+    <color name="text_purple">#712BCE</color>
+    <color name="blown">#F5E5C9</color>
+    <color name="text_blown">#FF9046</color>
 </resources>

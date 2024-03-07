@@ -59,6 +59,7 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
     private fun startAddActivity(){
         startActivity(Intent(this,AddActivity::class.java))
     }
+
     inner class TabOnClickListener(var index : Int) : View.OnClickListener {
         override fun onClick(p0: View) {
             log("onclick $index")

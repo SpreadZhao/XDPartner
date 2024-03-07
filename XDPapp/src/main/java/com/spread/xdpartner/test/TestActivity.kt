@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.xdpartner.R
@@ -30,33 +31,39 @@ class TestActivity : AppCompatActivity() {
 
   private lateinit var service: BlogService
 
-  private val dataSet = listOf(
-    MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("查询最热帖子") {
-      Log.d("MultiTypeAdapter", "查询最热帖子点击")
-    }),
-    MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("查询最新帖子") {
-      Log.d("MultiTypeAdapter", "查询最新帖子点击")
-    }),
-    MultiTypeData(TestAdapterType.ADAPTER_TYPE_EDIT_BUTTON, TestEditButtonAdapter.EditButtonData("查询") {
-      Log.d("MultiTypeAdapter", "查寻id")
-    }),
-    MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("跳转主页") {
-      startActivity(Intent(this,MainActivity::class.java))
-      Log.d("MultiTypeAdapter", "跳转主页")
-    }),
-    MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("跳转登录页面") {
-      startActivity(Intent(this,LoginActivity::class.java))
-      Log.d("MultiTypeAdapter", "跳转登录页面")
-    }),
-  )
+  private lateinit var  dataSet:List<MultiTypeData>
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_test)
     init()
   }
-
+  private fun initDataSet(){
+    dataSet = listOf(
+      MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("查询最热帖子") {
+        Log.d("MultiTypeAdapter", "查询最热帖子点击")
+        service.queryHottestThreads(1, NetworkConstant.PERMANENT_TOKEN)
+          .enqueue(TestCallBackManager.threadsCallback)
+      }),
+      MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("查询最新帖子") {
+        Log.d("MultiTypeAdapter", "查询最新帖子点击")
+      }),
+      MultiTypeData(TestAdapterType.ADAPTER_TYPE_EDIT_BUTTON, TestEditButtonAdapter.EditButtonData("查询") {
+        Log.d("MultiTypeAdapter", "查寻id")
+      }),
+      MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("跳转主页") {
+        startActivity(Intent(this, MainActivity::class.java))
+        Log.d("MultiTypeAdapter", "跳转主页")
+      }),
+      MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("跳转登录页面") {
+        startActivity(Intent(this, LoginActivity::class.java))
+        Log.d("MultiTypeAdapter", "跳转登录页面")
+      }),
+    )
+  }
   private fun init() {
+    service = ServiceCreator.create(BlogService::class.java)
+    initDataSet()
     val layoutManager = LinearLayoutManager(this).apply {
       isItemPrefetchEnabled = false
     }
