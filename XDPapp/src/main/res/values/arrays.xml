@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_type">
+        <item>恋爱</item>
+        <item>娱乐</item>
+        <item>学习</item>
+        <item>生活</item>
+    </string-array>
+</resources>

@@ -57,6 +57,7 @@
         android:orientation="vertical">
 
         <EditText
+            android:id="@+id/editAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
@@ -66,6 +67,7 @@
             android:textSize="18sp" />
 
         <EditText
+            android:id="@+id/editPW"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="17dp"
@@ -96,6 +98,7 @@
 https://stackoverflow.com/questions/32471009/what-is-the-difference-between-background-backgroundtint-backgroundtintmode-at
 -->
         <Button
+            android:id="@+id/login"
             android:layout_width="143dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TitleBar">
+        <attr name="title" format="string" />
+        <attr name="add_visible" format="boolean"/>
+        <attr name="back_color" format="color"/>
+    </declare-styleable>
+</resources>

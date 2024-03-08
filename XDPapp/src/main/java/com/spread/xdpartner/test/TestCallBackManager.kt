@@ -15,7 +15,9 @@ object TestCallBackManager {
   val threadsCallback = object : BasicThreadingCallback<ThreadsResponse>({
     log("response body size: ${it.body()?.data?.size}")
     log("Response body: ${it.body()}")
-  }) {}
+  }) {
+
+  }
 
   val threadCallback = object : BasicThreadingCallback<ThreadResponse>({
     log("response body: ${it.body()}")
@@ -33,7 +35,7 @@ open class BasicThreadingCallback<T : XDPartnerResponse>(
   }
 
   override fun onFailure(call: Call<T>, t: Throwable) {
-    log("failure")
+    log("failure ${t.message} + , + ${t.javaClass}" )
     t.printStackTrace()
   }
 }
