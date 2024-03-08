@@ -1,4 +1,4 @@
-package com.spread.xdpartner.base
+package com.spread.xdplib.adapter.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ abstract class BaseViewBindingFragment<T:ViewBinding> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = getViewBinding()
+        initView()
     }
 
     override fun onCreateView(
@@ -22,5 +23,6 @@ abstract class BaseViewBindingFragment<T:ViewBinding> : Fragment() {
         return binding.root
     }
 
+    abstract fun initView()
     abstract fun getViewBinding(): T
 }

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
@@ -25,12 +24,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.xdpartner.R
 import com.example.xdpartner.databinding.ActivityAddBinding
 import com.spread.xdpartner.add.adapter.EditTextAdapter
-import com.spread.xdpartner.base.BaseViewBindingActivity
 import com.spread.xdpartner.test.TestLogger
 import com.spread.xdpartner.test.TestLogger.log
 import com.spread.xdpartner.test.adapter.TestAdapterType
 import com.spread.xdplib.adapter.MultiTypeAdapter
 import com.spread.xdplib.adapter.MultiTypeData
+import com.spread.xdplib.adapter.base.BaseViewBindingActivity
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -118,7 +117,7 @@ class AddActivity : BaseViewBindingActivity<ActivityAddBinding>(), View.OnClickL
             true
         ).apply {
                 showAtLocation(binding.layoutParent, Gravity.BOTTOM, 0, 0)
-                setBackgroundDrawable(resources.getDrawable(R.color.white))
+                setBackgroundDrawable(resources.getDrawable(com.spread.xdplib.R.color.white))
                 setOnDismissListener { setAlpha(1.0f) }
             }
         setAlpha(0.3f)
@@ -138,12 +137,7 @@ class AddActivity : BaseViewBindingActivity<ActivityAddBinding>(), View.OnClickL
         window.attributes = lp
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initView()
-    }
-
-    private fun initView() {
+    override fun initView() {
         binding.imageAdd.setOnClickListener(this)
         binding.back.setOnClickListener{
             finish()
