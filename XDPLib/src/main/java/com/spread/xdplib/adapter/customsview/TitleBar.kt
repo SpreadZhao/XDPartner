@@ -12,8 +12,8 @@ import com.spread.xdplib.databinding.LayoutTitlebarBinding
 
 class TitleBar : LinearLayout {
     private lateinit var binding: LayoutTitlebarBinding
-    private var listener: (() -> Unit)? = null
-
+    private var rightListener: (() -> Unit)? = null
+    private var leftListener: (() -> Unit)? = null
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attar: AttributeSet?) : this(context, attar, 0)
@@ -35,7 +35,7 @@ class TitleBar : LinearLayout {
         if (types.getBoolean(R.styleable.TitleBar_add_visible, false)) {
             binding.icAdd.apply {
                 this.visibility = View.VISIBLE
-                this.setOnClickListener { listener?.invoke() }
+                this.setOnClickListener { rightListener?.invoke() }
             }
         } else
             binding.icAdd.visibility = View.INVISIBLE
@@ -43,13 +43,22 @@ class TitleBar : LinearLayout {
             R.styleable.TitleBar_back_color,
             ContextCompat.getColor(context, R.color.purple)
         )
-        binding.icBack.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        binding.icBack.apply {
+            setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+            setOnClickListener {
+                leftListener?.invoke()
+            }
+        }
 
         types.recycle()
 
     }
 
-    fun setListener(listener: (() -> Unit)) {
-        this.listener = listener
+    fun setRightListener(listener: (() -> Unit)) {
+        this.rightListener = listener
+    }
+
+    fun setLeftListener(listener: (() -> Unit)) {
+        this.leftListener = listener
     }
 }

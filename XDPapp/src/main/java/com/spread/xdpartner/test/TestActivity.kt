@@ -6,21 +6,20 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.xdpartner.R
-import com.spread.xdpartner.LoginActivity
 import com.spread.xdpartner.main.MainActivity
-import com.spread.xdpartner.network.NetworkConstant
-import com.spread.xdpartner.network.service.BlogService
-import com.spread.xdpartner.network.service.ServiceCreator
-import com.spread.xdpartner.test.TestLogger.log
 import com.spread.xdpartner.test.adapter.TestAdapterType
 import com.spread.xdpartner.test.adapter.TestButtonAdapter
 import com.spread.xdpartner.test.adapter.TestEditButtonAdapter
+import com.spread.xdpbusiness.xdplogin.LoginActivity
 import com.spread.xdplib.adapter.MultiTypeAdapter
 import com.spread.xdplib.adapter.MultiTypeData
+import com.spread.xdplib.adapter.utils.TestLogger.log
+import com.spread.xdpnetwork.network.NetworkConstant
+import com.spread.xdpnetwork.network.service.BlogService
+import com.spread.xdpnetwork.network.service.ServiceCreator
 
 class TestActivity : AppCompatActivity() {
 

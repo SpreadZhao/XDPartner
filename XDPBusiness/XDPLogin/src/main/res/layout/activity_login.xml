@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:paddingTop="24dp"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="39dp"
+        android:background="@drawable/login_back_arrow" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="14dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="PingFangSC-regular"
+            android:gravity="start"
+            android:text="Hello!"
+            android:textColor="#FF7565C6"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="SourceHanSansSC-regular"
+            android:gravity="start"
+            android:text="欢迎您加入西电搭子~"
+            android:textColor="#FF7565C6"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="PingFangSC-regular"
+            android:gravity="start"
+            android:text="创建账号代表您同意服务条款和隐私条款"
+            android:textColor="#FF767575"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/edit_background"
+
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:hint="输入一站式学号"
+            android:textColorHint="#767575"
+            android:textColor="#767575"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/editPW"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="17dp"
+            android:layout_marginHorizontal="15dp"
+            android:hint="输入一站式密码"
+            android:textColor="#767575"
+            android:textColorHint="#767575"
+            android:inputType="textPassword"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="41dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="127dp"
+            android:src="@drawable/login_pic"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            />
+
+<!--        这个backgroundTint到底是什么东西
+https://stackoverflow.com/questions/32471009/what-is-the-difference-between-background-backgroundtint-backgroundtintmode-at
+-->
+        <Button
+            android:id="@+id/login"
+            android:layout_width="143dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="#7565C6"
+            android:textColor="#FFFFFF"
+            android:layout_marginRight="15dp"
+            android:text="进入"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

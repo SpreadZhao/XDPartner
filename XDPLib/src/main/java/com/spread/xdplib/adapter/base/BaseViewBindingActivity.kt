@@ -12,6 +12,7 @@ abstract class BaseViewBindingActivity<T : ViewBinding> :AppCompatActivity(){
         super.onCreate(savedInstanceState)
         binding = getViewBinding()
         setContentView(binding.root)
+//        StatusBarUtil.setImmersionStatusBa(this)
         initView()
     }
 
