@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="status_bar_padding_top">24dp</dimen>
+    <dimen name="blog_margin_start">44dp</dimen>
+    <dimen name="blog_icon_margin_start">6dp</dimen>
 </resources>

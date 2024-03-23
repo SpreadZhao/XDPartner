@@ -1,11 +1,42 @@
 package com.spread.xdpbusiness.xdpsearch
 
 import com.spread.xdpbusiness.xdpsearch.databinding.FragmentSearchBinding
+import com.spread.xdplib.adapter.MultiTypeAdapter
+import com.spread.xdplib.adapter.MultiTypeData
 import com.spread.xdplib.adapter.base.BaseViewBindingFragment
 
 class SearchFragment : BaseViewBindingFragment<FragmentSearchBinding>() {
-    override fun initView() {
 
+    companion object{
+        const val newestBlog = 1
+        const val likeBlog = 2
+        const val hottestBlog = 3
+    }
+
+    private val dataSet by lazy(LazyThreadSafetyMode.NONE) {
+        listOf(
+            MultiTypeData(newestBlog, null),
+            MultiTypeData(likeBlog, null),
+            MultiTypeData(hottestBlog, null),
+        )
+    }
+
+    override fun initView() {
+        binding.list.adapter = MultiTypeAdapter().apply {
+            configDataSet(dataSet)
+            addSubAdapter(newestBlog,NewestRecyclerAdapter(requireContext()))
+            addSubAdapter(likeBlog,NewestRecyclerAdapter(requireContext()))
+            addSubAdapter(hottestBlog,NewestRecyclerAdapter(requireContext()))
+        }
+        binding.tvNew.setOnClickListener{
+            binding.list.currentItem = 0
+        }
+        binding.tvLike.setOnClickListener{
+            binding.list.currentItem = 1
+        }
+        binding.tvHot.setOnClickListener{
+            binding.list.currentItem = 2
+        }
     }
 
     override fun getViewBinding(): FragmentSearchBinding {

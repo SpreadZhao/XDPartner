@@ -51,7 +51,10 @@ dependencies {
   api("androidx.constraintlayout:constraintlayout:2.1.4")
   api("com.squareup.retrofit2:retrofit:2.9.0")
   api("com.squareup.retrofit2:converter-gson:2.9.0")
+  api(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+  api("com.squareup.okhttp3:okhttp")
+  api("com.squareup.okhttp3:logging-interceptor")
   api("com.alibaba:arouter-api:1.5.2")
   kapt("com.alibaba:arouter-compiler:1.5.2")
-
+  api("com.tencent:mmkv:1.3.4")
 }

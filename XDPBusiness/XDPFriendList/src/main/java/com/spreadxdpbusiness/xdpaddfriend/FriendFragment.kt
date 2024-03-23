@@ -1,12 +1,12 @@
 package com.spreadxdpbusiness.xdpaddfriend
 
-import android.util.Log
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.spread.xdplib.adapter.base.BaseViewBindingFragment
+import com.spread.xdplib.adapter.constant.ArouterPath
 import com.spread.xdplib.adapter.entry.Friend
+import com.spread.xdplib.adapter.utils.PageUtil
 import com.spreadxdpbusiness.friendlist.databinding.FragmentFriendBinding
-
 
 class FriendFragment : BaseViewBindingFragment<FragmentFriendBinding>() {
     private val mFriendListAdapter :FriendListAdapter = FriendListAdapter()
@@ -27,8 +27,7 @@ class FriendFragment : BaseViewBindingFragment<FragmentFriendBinding>() {
 
         }
         binding.titleBar.setRightListener {
-            //添加好友
-            Log.d("FriendFragment","添加好友")
+            PageUtil.gotoActivity(ArouterPath.PATH_ACTIVITY_ADD_FRIEND)
         }
     }
 

@@ -7,9 +7,8 @@ import com.spread.xdpbusiness.xdplogin.databinding.ActivityLoginBinding
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
 import com.spread.xdplib.adapter.constant.ArouterPath
 import com.spread.xdplib.adapter.utils.PageUtil
-import com.spread.xdpnetwork.network.TestCallBackManager
-import com.spread.xdpnetwork.network.model.LoginBean
 import com.spread.xdpnetwork.network.service.LoginService
+import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import com.spread.xdpnetwork.network.service.ServiceCreator
 
 @Route(path = ArouterPath.PATH_ACTIVITY_LOGIN)
@@ -43,8 +42,11 @@ class LoginActivity : BaseViewBindingActivity<ActivityLoginBinding>() {
         binding.editAccount.addTextChangedListener(accountWatcher)
         binding.editPW.addTextChangedListener(pwWatcher)
         binding.login.setOnClickListener{
-            val loginBean  = LoginBean("12345678","12345678","0")
-            service.login(loginBean).enqueue(TestCallBackManager.threadsCallback)
+//            val loginBean  = LoginBean("12345678","12345678","0")
+//            service.login(loginBean).enqueue(TestCallBackManager.threadsCallback)
+            LoginServiceSingle.instance.testLogin("12345678","12345678") {
+                PageUtil.gotoActivityIfExist(this@LoginActivity,ArouterPath.PATH_ACTIVITY_MAIN)
+            }
         }
     }
 
