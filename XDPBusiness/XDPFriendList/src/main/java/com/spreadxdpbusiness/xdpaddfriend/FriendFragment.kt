@@ -13,7 +13,7 @@ class FriendFragment : BaseViewBindingFragment<FragmentFriendBinding>() {
     override fun initView() {
         binding.listFriend.apply {
             layoutManager = LinearLayoutManager(this@FriendFragment.context,LinearLayoutManager.VERTICAL,false)
-            adapter = mFriendListAdapter
+            adapter = mFriendListAdapter 
             addItemDecoration(
                 DividerItemDecoration(
                     this@FriendFragment.context,

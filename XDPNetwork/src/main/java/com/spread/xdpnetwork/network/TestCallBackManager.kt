@@ -1,9 +1,9 @@
-package com.spread.xdpartner.test
+package com.spread.xdpnetwork.network
 
+import com.spread.xdplib.adapter.utils.TestLogger.log
 import com.spread.xdpnetwork.network.model.response.ThreadResponse
 import com.spread.xdpnetwork.network.model.response.ThreadsResponse
 import com.spread.xdpnetwork.network.model.response.XDPartnerResponse
-import com.spread.xdplib.adapter.utils.TestLogger.log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

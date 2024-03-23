@@ -17,9 +17,9 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments(mapOf("AROUTER_MODULE_NAME" to project.name))
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.name)
             }
         }
     }

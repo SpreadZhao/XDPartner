@@ -5,15 +5,18 @@ import android.content.Intent
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.xdpartner.databinding.ActivityMainBinding
 import com.spread.XDPBusiness.XDPAdd.AddNoteActivity
 import com.spread.xdpbusiness.xdpme.MeFragment
 import com.spread.xdpbusiness.xdpmessgae.MessageFragment
 import com.spread.xdpbusiness.xdpsearch.SearchFragment
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
+import com.spread.xdplib.adapter.constant.ArouterPath.PATH_ACTIVITY_MAIN
 import com.spread.xdplib.adapter.utils.TestLogger.log
 import com.spreadxdpbusiness.xdpaddfriend.FriendFragment
 
+@Route(path = PATH_ACTIVITY_MAIN)
 class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
     companion object{
         const val index_home = 0
