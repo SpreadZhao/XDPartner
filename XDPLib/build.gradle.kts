@@ -2,6 +2,7 @@ plugins {
   id("com.android.library")
   id("org.jetbrains.kotlin.android")
   id("kotlin-kapt")
+
 }
 
 android {
@@ -57,4 +58,6 @@ dependencies {
   api("com.alibaba:arouter-api:1.5.2")
   kapt("com.alibaba:arouter-compiler:1.5.2")
   api("com.tencent:mmkv:1.3.4")
+  api("com.github.bumptech.glide:glide:4.16.0") // 替换成你使用的Glide版本
+  kapt("com.github.bumptech.glide:compiler:4.16.0") // 注解处理器
 }

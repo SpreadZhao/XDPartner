@@ -4,6 +4,7 @@ import com.spread.xdpbusiness.xdpsearch.databinding.FragmentSearchBinding
 import com.spread.xdplib.adapter.MultiTypeAdapter
 import com.spread.xdplib.adapter.MultiTypeData
 import com.spread.xdplib.adapter.base.BaseViewBindingFragment
+import com.spread.xdplib.adapter.utils.TestLogger.log
 
 class SearchFragment : BaseViewBindingFragment<FragmentSearchBinding>() {
 
@@ -28,14 +29,20 @@ class SearchFragment : BaseViewBindingFragment<FragmentSearchBinding>() {
             addSubAdapter(likeBlog,NewestRecyclerAdapter(requireContext()))
             addSubAdapter(hottestBlog,NewestRecyclerAdapter(requireContext()))
         }
+        // No sliding
+        binding.list.isUserInputEnabled = false
+        binding.list.currentItem = 1
         binding.tvNew.setOnClickListener{
             binding.list.currentItem = 0
+            log("currentItem ${binding.list.currentItem}")
         }
         binding.tvLike.setOnClickListener{
             binding.list.currentItem = 1
+            log("currentItem ${binding.list.currentItem}")
         }
         binding.tvHot.setOnClickListener{
             binding.list.currentItem = 2
+            log("currentItem ${binding.list.currentItem}")
         }
     }
 

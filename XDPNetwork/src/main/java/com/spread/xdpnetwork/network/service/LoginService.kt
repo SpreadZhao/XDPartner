@@ -28,4 +28,9 @@ interface LoginService {
     fun queryHottestBlog(@Query("current") current: Int) : Call<BlogsResponse>
 
 
+    @GET("/wz/blog/queryLikeBlog")
+    fun queryLikeBlog(@Query("current") current: Int) : Call<BlogsResponse>
+
+    @GET("/wz/blog/queryNewestBlog")
+    fun queryNewestBlog(@Query("current") current: Int) : Call<BlogsResponse>
 }

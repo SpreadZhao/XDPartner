@@ -9,13 +9,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/circle"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginStart="10dp"
             android:src="@drawable/baseline_accessibility_select"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,6 +43,7 @@
 
         <TextView
             android:id="@+id/tv_title"
+            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="10dp"
@@ -57,8 +58,11 @@
             android:id="@+id/cv_study"
             android:layout_width="78dp"
             android:layout_height="100dp"
+            android:layout_marginStart="10dp"
             android:background="@drawable/background_yellow"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cv_happy"
             app:layout_constraintTop_toBottomOf="@id/tv_title">
 
             <ImageView
@@ -86,6 +90,7 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/background_red"
             app:layout_constraintStart_toEndOf="@id/cv_study"
+            app:layout_constraintEnd_toStartOf="@id/cv_love"
             app:layout_constraintTop_toBottomOf="@id/tv_title">
 
             <ImageView
@@ -113,6 +118,7 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/background_purple"
             app:layout_constraintStart_toEndOf="@id/cv_happy"
+            app:layout_constraintEnd_toStartOf="@id/cv_life"
             app:layout_constraintTop_toBottomOf="@id/tv_title">
 
             <ImageView
@@ -140,6 +146,7 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/background_blown"
             app:layout_constraintStart_toEndOf="@id/cv_love"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title">
 
             <ImageView
@@ -211,7 +218,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
+            android:background="@color/white">
 
         </androidx.viewpager2.widget.ViewPager2>
     </androidx.constraintlayout.widget.ConstraintLayout>
