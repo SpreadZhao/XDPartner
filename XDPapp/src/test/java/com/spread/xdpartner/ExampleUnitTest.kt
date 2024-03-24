@@ -1,10 +1,10 @@
 package com.spread.xdpartner
 
-import com.spread.xdpartner.network.NetworkConstant.PERMANENT_TOKEN
-import com.spread.xdpartner.network.legacy.Jsouper
-import com.spread.xdpartner.network.model.response.ThreadsResponse
-import com.spread.xdpartner.network.service.BlogService
-import com.spread.xdpartner.network.service.ServiceCreator
+import com.spread.xdpnetwork.network.NetworkConstant.PERMANENT_TOKEN
+import com.spread.xdpnetwork.network.legacy.Jsouper
+import com.spread.xdpnetwork.network.model.response.ThreadsResponse
+import com.spread.xdpnetwork.network.service.BlogService
+import com.spread.xdpnetwork.network.service.ServiceCreator
 import org.junit.Test
 import retrofit2.Call
 import retrofit2.Callback
