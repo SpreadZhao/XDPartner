@@ -2,6 +2,7 @@ package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.entry.LoginBean
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
+import com.spread.xdpnetwork.network.model.response.FriendsResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 import com.spread.xdpnetwork.network.model.response.ThreadsResponse
 import retrofit2.Call
@@ -33,4 +34,6 @@ interface LoginService {
 
     @GET("/wz/blog/queryNewestBlog")
     fun queryNewestBlog(@Query("current") current: Int) : Call<BlogsResponse>
+    @GET("/wz/friend/allFriends")
+    fun getAllFriends() : Call<FriendsResponse>
 }

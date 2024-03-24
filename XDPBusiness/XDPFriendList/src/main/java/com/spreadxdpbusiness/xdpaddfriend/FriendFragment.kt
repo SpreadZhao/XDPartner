@@ -4,16 +4,18 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.spread.xdplib.adapter.base.BaseViewBindingFragment
 import com.spread.xdplib.adapter.constant.ArouterPath
-import com.spread.xdplib.adapter.entry.Friend
 import com.spread.xdplib.adapter.utils.PageUtil
+import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import com.spreadxdpbusiness.friendlist.databinding.FragmentFriendBinding
 
 class FriendFragment : BaseViewBindingFragment<FragmentFriendBinding>() {
-    private val mFriendListAdapter :FriendListAdapter = FriendListAdapter()
+    private lateinit var mFriendListAdapter :FriendListAdapter
     override fun initView() {
+        mFriendListAdapter = FriendListAdapter(requireContext())
         binding.listFriend.apply {
-            layoutManager = LinearLayoutManager(this@FriendFragment.context,LinearLayoutManager.VERTICAL,false)
-            adapter = mFriendListAdapter 
+            layoutManager = LinearLayoutManager(this@FriendFragment.context,
+                LinearLayoutManager.VERTICAL,false)
+            adapter = mFriendListAdapter
             addItemDecoration(
                 DividerItemDecoration(
                     this@FriendFragment.context,
@@ -21,8 +23,10 @@ class FriendFragment : BaseViewBindingFragment<FragmentFriendBinding>() {
                 )
             )
         }
-        val friends = listOf<Friend>(Friend(1,"1","123"),Friend(1,"1","123"),Friend(1,"1","123"))
-        mFriendListAdapter.setItems(friends)
+        LoginServiceSingle.instance.getAllFriends {
+            mFriendListAdapter.setItems(it)
+        }
+
         mFriendListAdapter.setClickListener {
 
         }

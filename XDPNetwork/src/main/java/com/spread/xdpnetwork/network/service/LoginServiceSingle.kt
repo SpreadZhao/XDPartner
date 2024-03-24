@@ -2,10 +2,12 @@ package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.constant.MmkvConstant
 import com.spread.xdplib.adapter.entry.Blog
+import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.MmkvUtil
 import com.spread.xdplib.adapter.utils.TestLogger.log
 import com.spread.xdpnetwork.network.BasicThreadingCallback
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
+import com.spread.xdpnetwork.network.model.response.FriendsResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 
 class LoginServiceSingle private constructor() {
@@ -61,5 +63,16 @@ class LoginServiceSingle private constructor() {
                 ) {})
         }
 
+    }
+
+    fun getAllFriends( callback: ((data:List<UserVo>)-> Unit)) {
+        service.getAllFriends().enqueue(object :
+            BasicThreadingCallback<FriendsResponse>(
+                {
+                    if (it.code() == 200) {
+                        callback.invoke(it.body()!!.data)
+                    }
+                }
+            ) {})
     }
 }

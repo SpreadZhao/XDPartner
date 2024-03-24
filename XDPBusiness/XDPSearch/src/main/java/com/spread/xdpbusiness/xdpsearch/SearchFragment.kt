@@ -25,9 +25,9 @@ class SearchFragment : BaseViewBindingFragment<FragmentSearchBinding>() {
     override fun initView() {
         binding.list.adapter = MultiTypeAdapter().apply {
             configDataSet(dataSet)
-            addSubAdapter(newestBlog,NewestRecyclerAdapter(requireContext()))
-            addSubAdapter(likeBlog,NewestRecyclerAdapter(requireContext()))
-            addSubAdapter(hottestBlog,NewestRecyclerAdapter(requireContext()))
+            addSubAdapter(newestBlog,NewestRecyclerAdapter(requireContext(),this@SearchFragment))
+            addSubAdapter(likeBlog,NewestRecyclerAdapter(requireContext(),this@SearchFragment))
+            addSubAdapter(hottestBlog,NewestRecyclerAdapter(requireContext(),this@SearchFragment))
         }
         // No sliding
         binding.list.isUserInputEnabled = false
