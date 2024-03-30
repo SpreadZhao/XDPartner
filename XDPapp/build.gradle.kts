@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -15,8 +16,12 @@ android {
         minSdk = 29
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.name)
+            }
+        }
     }
 
     buildTypes {
@@ -40,5 +45,14 @@ android {
 
 
 dependencies {
-    api(project(":XDPLib"))
+    api(project(":XDPBusiness:XDPMe"))
+    api(project(":XDPBusiness:XDPLogin"))
+    api(project(":XDPBusiness:XDPSearch"))
+    api(project(":XDPBusiness:XDPFriendList"))
+    api(project(":XDPBusiness:XDPAddNote"))
+    api(project(":XDPBusiness:XDPMessage"))
+    api(project(":XDPBusiness:XDPAddFriend"))
+    api(project(":XDPNetwork"))
+    api("com.alibaba:arouter-api:1.5.2")
+    kapt("com.alibaba:arouter-compiler:1.5.2")
 }
