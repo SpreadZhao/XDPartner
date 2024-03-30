@@ -4,7 +4,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.spread.xdpbusiness.xdpaddfriend.databinding.ActivityAddFriendBinding
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
 import com.spread.xdplib.adapter.constant.ArouterPath
-import com.spread.xdplib.adapter.utils.TestLogger.log
+import com.spread.xdplib.adapter.utils.TestLogger.logd
 
 @Route(path = ArouterPath.PATH_ACTIVITY_ADD_FRIEND)
 class AddFriendActivity : BaseViewBindingActivity<ActivityAddFriendBinding>() {
@@ -18,7 +18,7 @@ class AddFriendActivity : BaseViewBindingActivity<ActivityAddFriendBinding>() {
         }
         binding.searchBar.setSearchListener {
             if (it != null) {
-                log(it)
+                logd(it)
             }
         }
     }

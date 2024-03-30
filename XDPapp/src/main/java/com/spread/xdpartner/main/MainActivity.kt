@@ -13,7 +13,7 @@ import com.spread.xdpbusiness.xdpmessgae.MessageFragment
 import com.spread.xdpbusiness.xdpsearch.SearchFragment
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
 import com.spread.xdplib.adapter.constant.ArouterPath.PATH_ACTIVITY_MAIN
-import com.spread.xdplib.adapter.utils.TestLogger.log
+import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spreadxdpbusiness.xdpaddfriend.FriendFragment
 
 @Route(path = PATH_ACTIVITY_MAIN)
@@ -61,7 +61,7 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 
     inner class TabOnClickListener(var index : Int) : View.OnClickListener {
         override fun onClick(p0: View) {
-            log("onclick $index")
+            logd("onclick $index")
             refresh()
             if(index == index_add){
                 startAddActivity()
