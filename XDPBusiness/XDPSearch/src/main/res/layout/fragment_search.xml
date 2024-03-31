@@ -1,181 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/purple_less"
     android:paddingTop="@dimen/status_bar_padding_top">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:theme="@style/Theme.Design.NoActionBar"
+        >
 
-        <ImageView
-            android:id="@+id/circle"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/baseline_accessibility_select"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
-            android:text="你好"
-            android:textColor="@color/purple"
-            android:textSize="22sp"
-            app:layout_constraintStart_toEndOf="@id/circle"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:text="为之，则难者亦易矣。"
-            android:textColor="@color/grey"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@id/circle"
-            app:layout_constraintTop_toBottomOf="@id/tv_name" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_marginStart="10dp"
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
-            android:text="搭子专区"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/circle" />
+            app:layout_scrollFlags="scroll">
 
-        <FrameLayout
-            android:id="@+id/cv_study"
-            android:layout_width="78dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/background_yellow"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cv_happy"
-            app:layout_constraintTop_toBottomOf="@id/tv_title">
-
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/study" />
-
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="65dp"
-                android:gravity="center"
-                android:text="学习"
-                android:textColor="@color/text_yellow"
-                android:textSize="22sp" />
-        </FrameLayout>
+                android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:id="@+id/cv_happy"
-            android:layout_width="78dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/background_red"
-            app:layout_constraintStart_toEndOf="@id/cv_study"
-            app:layout_constraintEnd_toStartOf="@id/cv_love"
-            app:layout_constraintTop_toBottomOf="@id/tv_title">
+                <com.spread.xdplib.adapter.customsview.CircleImageView
+                    android:id="@+id/circle"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/love" />
+                    android:src="@drawable/baseline_accessibility_select"
+                    app:border_width="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="65dp"
-                android:gravity="center"
-                android:text="娱乐"
-                android:textColor="@color/text_red"
-                android:textSize="22sp" />
-        </FrameLayout>
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
+                    android:text="你好"
+                    android:textColor="@color/purple"
+                    android:textSize="22sp"
+                    app:layout_constraintStart_toEndOf="@id/circle"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <FrameLayout
-            android:id="@+id/cv_love"
-            android:layout_width="78dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/background_purple"
-            app:layout_constraintStart_toEndOf="@id/cv_happy"
-            app:layout_constraintEnd_toStartOf="@id/cv_life"
-            app:layout_constraintTop_toBottomOf="@id/tv_title">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:text="为之，则难者亦易矣。"
+                    android:textColor="@color/grey"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@id/circle"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/happy" />
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:paddingVertical="10dp"
+                    android:text="搭子专区"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/circle" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="65dp"
-                android:gravity="center"
-                android:text="恋爱"
-                android:textColor="@color/text_purple"
-                android:textSize="22sp" />
-        </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/cv_study"
+                    android:layout_width="78dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/background_yellow"
+                    app:layout_constraintEnd_toStartOf="@+id/cv_happy"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title">
 
-        <FrameLayout
-            android:id="@+id/cv_life"
-            android:layout_width="78dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/background_blown"
-            app:layout_constraintStart_toEndOf="@id/cv_love"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_title">
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/study" />
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/life" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="65dp"
+                        android:gravity="center"
+                        android:text="学习"
+                        android:textColor="@color/text_yellow"
+                        android:textSize="22sp" />
+                </FrameLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="65dp"
-                android:gravity="center"
-                android:text="生活"
-                android:textColor="@color/text_blown"
-                android:textSize="22sp" />
-        </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/cv_happy"
+                    android:layout_width="78dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/background_red"
+                    app:layout_constraintEnd_toStartOf="@id/cv_love"
+                    app:layout_constraintStart_toEndOf="@id/cv_study"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title">
 
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/love" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="65dp"
+                        android:gravity="center"
+                        android:text="娱乐"
+                        android:textColor="@color/text_red"
+                        android:textSize="22sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/cv_love"
+                    android:layout_width="78dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/background_purple"
+                    app:layout_constraintEnd_toStartOf="@id/cv_life"
+                    app:layout_constraintStart_toEndOf="@id/cv_happy"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/happy" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="65dp"
+                        android:gravity="center"
+                        android:text="恋爱"
+                        android:textColor="@color/text_purple"
+                        android:textSize="22sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/cv_life"
+                    android:layout_width="78dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/background_blown"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/cv_love"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/life" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="65dp"
+                        android:gravity="center"
+                        android:text="生活"
+                        android:textColor="@color/text_blown"
+                        android:textSize="22sp" />
+                </FrameLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/edit_background_search"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_life">
-
+            android:background="@drawable/edit_background_search">
             <TextView
                 android:id="@+id/tv_new"
                 android:layout_width="wrap_content"
@@ -196,7 +212,7 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/tv_hot"
-                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@id/tv_new"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -211,17 +227,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/list"
-            app:layout_constraintTop_toBottomOf="@+id/layout_tab"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:background="@color/white">
-
         </androidx.viewpager2.widget.ViewPager2>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</ScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

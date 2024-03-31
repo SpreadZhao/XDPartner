@@ -17,7 +17,7 @@ import com.spread.xdplib.adapter.MultiTypeAdapter
 import com.spread.xdplib.adapter.MultiTypeData
 import com.spread.xdplib.adapter.constant.ArouterPath
 import com.spread.xdplib.adapter.utils.PageUtil
-import com.spread.xdplib.adapter.utils.TestLogger.log
+import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdpnetwork.network.NetworkConstant
 import com.spread.xdpnetwork.network.TestCallBackManager
 import com.spread.xdpnetwork.network.service.BlogService
@@ -88,12 +88,12 @@ class TestActivity : AppCompatActivity() {
     queryByIdBtn = findViewById(R.id.query_by_id_btn)
     service = ServiceCreator.create(BlogService::class.java)
     queryHottestThreadsBtn.setOnClickListener {
-      log("Start query Hottest threads.")
+      logd("Start query Hottest threads.")
       service.queryHottestThreads(1, NetworkConstant.PERMANENT_TOKEN)
         .enqueue(TestCallBackManager.threadsCallback)
     }
     queryNewestThreadsBtn.setOnClickListener {
-      log("Start query newest threads")
+      logd("Start query newest threads")
       service.queryNewestThreads(1, NetworkConstant.PERMANENT_TOKEN)
         .enqueue(TestCallBackManager.threadsCallback)
     }
@@ -104,7 +104,7 @@ class TestActivity : AppCompatActivity() {
       } catch (e: NumberFormatException) {
         e.printStackTrace()
       }
-      log("Start query thread by id: $id")
+      logd("Start query thread by id: $id")
       service.queryThreadById(id, NetworkConstant.PERMANENT_TOKEN)
         .enqueue(TestCallBackManager.threadCallback)
     }

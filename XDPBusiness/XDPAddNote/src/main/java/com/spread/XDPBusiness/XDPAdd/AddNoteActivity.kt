@@ -30,7 +30,7 @@ import com.spread.xdpartner.test.adapter.TestAdapterType
 import com.spread.xdplib.adapter.MultiTypeAdapter
 import com.spread.xdplib.adapter.MultiTypeData
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
-import com.spread.xdplib.adapter.utils.TestLogger.log
+import com.spread.xdplib.adapter.utils.TestLogger.logd
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -54,7 +54,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     p0?.let {
                         typeText = p0.toString()
-                        log("typeText $typeText")
+                        logd("typeText $typeText")
                     }
                 }
                 override fun afterTextChanged(p0: Editable?) {}
@@ -67,7 +67,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     p0?.let {
                         sizeText = p0.toString()
-                        log("几缺几 $sizeText")
+                        logd("几缺几 $sizeText")
                     }
                 }
                 override fun afterTextChanged(p0: Editable?) {}
@@ -80,7 +80,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     p0?.let {
                         timeText = p0.toString()
-                        log("时间 $timeText")
+                        logd("时间 $timeText")
                     }
                 }
                 override fun afterTextChanged(p0: Editable?) {}
@@ -93,7 +93,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     p0?.let {
                         placeText = p0.toString()
-                        log("地点 $placeText")
+                        logd("地点 $placeText")
                     }
                 }
                 override fun afterTextChanged(p0: Editable?) {}
@@ -187,7 +187,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         photoUri = getDestinationUri()
-        log("openCamera $photoUri")
+        logd("openCamera $photoUri")
         photoUri =
                 //适配Android 7.0文件权限，通过FileProvider创建一个content类型的Uri
             FileProvider.getUriForFile(this, "$packageName.fileProvider", File(photoUri.path!!))
@@ -225,16 +225,16 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        log("onActivityResult->requestCode:$requestCode + resultCode: $resultCode")
+        logd("onActivityResult->requestCode:$requestCode + resultCode: $resultCode")
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_ALBUM -> {
-                    log("REQUEST_CODE_ALBUM: " + data?.data.toString())
+                    logd("REQUEST_CODE_ALBUM: " + data?.data.toString())
                     try {
                         val contentResolver: ContentResolver = contentResolver
                         val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
                         val bitmap = BitmapFactory.decodeStream(inputStream)
-                        log("REQUEST_CODE_ALBUM->bitmap:$bitmap ")
+                        logd("REQUEST_CODE_ALBUM->bitmap:$bitmap ")
                         binding.imageAdd.setImageBitmap(bitmap)
                         inputStream?.close()
                         // 在这里你已经有了Bitmap对象，可以进行后续操作
@@ -249,12 +249,12 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
 
                 REQUEST_CODE_CAMERA -> {
                     //从保存的位置取值
-                    log("REQUEST_CODE_CAMERA: $photoUri")
+                    logd("REQUEST_CODE_CAMERA: $photoUri")
                     try {
                         val contentResolver: ContentResolver = contentResolver
                         val inputStream = contentResolver.openInputStream(photoUri)
                         val bitmap = BitmapFactory.decodeStream(inputStream)
-                        log("REQUEST_CODE_ALBUM->bitmap:$bitmap ")
+                        logd("REQUEST_CODE_ALBUM->bitmap:$bitmap ")
                         binding.imageAdd.setImageBitmap(bitmap)
                         inputStream?.close()
                         // 在这里你已经有了Bitmap对象，可以进行后续操作

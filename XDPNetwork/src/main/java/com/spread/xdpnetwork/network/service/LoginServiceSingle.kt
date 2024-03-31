@@ -4,7 +4,6 @@ import com.spread.xdplib.adapter.constant.MmkvConstant
 import com.spread.xdplib.adapter.entry.Blog
 import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.MmkvUtil
-import com.spread.xdplib.adapter.utils.TestLogger.log
 import com.spread.xdpnetwork.network.BasicThreadingCallback
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
@@ -33,7 +32,6 @@ class LoginServiceSingle private constructor() {
     }
 
     fun queryBlogByPosition(position:Int, current:Int, callback: ((data:List<Blog>) -> Unit)) {
-        log("position ${position.toString()}")
         if(position == 2){
             service.queryHottestBlog(current).enqueue(object :
                 BasicThreadingCallback<BlogsResponse>(
