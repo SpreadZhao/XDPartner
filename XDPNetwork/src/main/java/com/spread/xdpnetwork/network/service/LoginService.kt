@@ -1,6 +1,7 @@
 package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.entry.LoginBean
+import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
@@ -11,6 +12,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface LoginService {
@@ -36,4 +38,7 @@ interface LoginService {
     fun queryNewestBlog(@Query("current") current: Int) : Call<BlogsResponse>
     @GET("/wz/friend/allFriends")
     fun getAllFriends() : Call<FriendsResponse>
+
+    @GET("/wz/blog/like/{id}")
+    fun likeBlog(@Path("id") id:Long):Call<BaseResponse>
 }
