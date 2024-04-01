@@ -34,3 +34,11 @@ data class FriendsResponse(
 
     override fun msg() = msg
 }
+
+data class BaseResponse(@SerializedName("code") val code: Int,
+                        @SerializedName("data") val data: String,
+                        @SerializedName("msg") val msg: String): XDPartnerResponse {
+    override fun code() = code
+
+    override fun msg() = msg
+}

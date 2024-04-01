@@ -17,4 +17,6 @@
     <color name="text_purple">#712BCE</color>
     <color name="blown">#F5E5C9</color>
     <color name="text_blown">#FF9046</color>
+    <color name="eye_yellow">#D26452</color>
+    <color name="share_gray">#C2C2C2</color>
 </resources>

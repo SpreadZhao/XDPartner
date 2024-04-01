@@ -5,6 +5,7 @@ import com.spread.xdplib.adapter.entry.Blog
 import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.MmkvUtil
 import com.spread.xdpnetwork.network.BasicThreadingCallback
+import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
@@ -72,5 +73,13 @@ class LoginServiceSingle private constructor() {
                     }
                 }
             ) {})
+    }
+
+    fun likeBlog(id:Long,callback: () -> Unit){
+        service.likeBlog(id).enqueue(object : BasicThreadingCallback<BaseResponse>({
+            if (it.code() == 200) {
+                callback.invoke()
+            }
+        }){})
     }
 }
