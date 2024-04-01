@@ -9,7 +9,16 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/XDPBusiness" />
+            <option value="$PROJECT_DIR$/XDPBusiness/XDPAddFriend" />
+            <option value="$PROJECT_DIR$/XDPBusiness/XDPAddNote" />
+            <option value="$PROJECT_DIR$/XDPBusiness/XDPFriendList" />
+            <option value="$PROJECT_DIR$/XDPBusiness/XDPLogin" />
+            <option value="$PROJECT_DIR$/XDPBusiness/XDPMe" />
+            <option value="$PROJECT_DIR$/XDPBusiness/XDPMessage" />
+            <option value="$PROJECT_DIR$/XDPBusiness/XDPSearch" />
             <option value="$PROJECT_DIR$/XDPLib" />
+            <option value="$PROJECT_DIR$/XDPNetwork" />
             <option value="$PROJECT_DIR$/XDPapp" />
           </set>
         </option>
