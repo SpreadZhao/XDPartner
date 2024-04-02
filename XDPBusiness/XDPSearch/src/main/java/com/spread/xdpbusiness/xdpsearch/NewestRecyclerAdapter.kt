@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.spread.xdplib.adapter.MultiTypeData
 import com.spread.xdplib.adapter.SubAdapterBase
-import com.spread.xdplib.adapter.utils.GlideUtil
 
+@Deprecated("请使用ViewpagerAdapter")
 class NewestRecyclerAdapter(
     private val context: Context, private val lifecycleOwner: LifecycleOwner
 ) : SubAdapterBase(), LifecycleEventObserver {
@@ -34,15 +34,15 @@ class NewestRecyclerAdapter(
                     DividerItemDecoration.VERTICAL
                 )
             )
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        GlideUtil.isResumeRequests(context, true)
-                    } else {
-                        GlideUtil.isResumeRequests(context, false)
-                    }
-                }
-            })
+//            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                        GlideUtil.isResumeRequests(context, true)
+//                    } else {
+//                        GlideUtil.isResumeRequests(context, false)
+//                    }
+//                }
+//            })
         }
         return RecycleViewHolder(recyclerView)
     }
@@ -53,18 +53,18 @@ class NewestRecyclerAdapter(
         position: Int
     ) {
         if (holder is RecycleViewHolder) {
-            PageManager(context, holder.recyclerView, position).apply {
-                searchData(position, holder.recyclerView)
-            }
+//            com.spread.xdpbusiness.xdpsearch.PageManager(context, holder.recyclerView, position).apply {
+//                searchData(position, holder.recyclerView)
+//            }
         }
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        when (event) {
-            Lifecycle.Event.ON_RESUME -> GlideUtil.isResumeRequests(context, true)
-            Lifecycle.Event.ON_PAUSE -> GlideUtil.isResumeRequests(context, false)
-            else -> {}
-        }
+//        when (event) {
+//            Lifecycle.Event.ON_RESUME -> GlideUtil.isResumeRequests(context, true)
+//            Lifecycle.Event.ON_PAUSE -> GlideUtil.isResumeRequests(context, false)
+//            else -> {}
+//        }
     }
 }
 

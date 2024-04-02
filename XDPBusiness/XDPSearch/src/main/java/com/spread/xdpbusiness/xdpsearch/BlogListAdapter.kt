@@ -4,11 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.spread.xdplib.adapter.entry.Blog
+import com.spread.xdplib.adapter.utils.StringUtils
 import com.spread.xdplib.databinding.LayoutBlogBinding
 import com.spread.xdplib.databinding.LayoutFootviewBinding
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
@@ -67,6 +69,14 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
                     tvTime.text = blog.updateTime
                     tvLovePerson.text = blog.liked.toString()
                     tvPerson.text = blog.viewTimes.toString()
+                    ivTitle.text = blog.title
+                    val message = StringUtils.getBlogPeopleText(blog.absent,blog.whenMeet,blog.location)
+                    if(message.isEmpty()){
+                        ivMessage.visibility = View.GONE
+                    }else {
+                        ivMessage.visibility = View.VISIBLE
+                        ivMessage.text = message
+                    }
                     if (blog.images.isNotEmpty()) {
                         Glide.with(context).load(blog.images[0]).transform(CenterCrop())
                             .into(ivImage)
@@ -82,7 +92,10 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
                         .into(ivHeader)
                     ivLove.setOnClickListener {
                         LoginServiceSingle.instance.likeBlog(blog.id) {
+                            Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
                             ivLove.isSelected = !ivLove.isSelected
+                            if(ivLove.isSelected) tvLovePerson.text = String.format("%d", (tvLovePerson.text.toString().toInt() +1))
+                            else tvLovePerson.text = String.format("%d", (tvLovePerson.text.toString().toInt() - 1))
                         }
                     }
                 }

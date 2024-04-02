@@ -41,4 +41,7 @@ interface LoginService {
 
     @GET("/wz/blog/like/{id}")
     fun likeBlog(@Path("id") id:Long):Call<BaseResponse>
+
+    @POST("/wz/blog/searchBlog")
+    fun searchBlog(@Query("current") current: Int,@Query("keyword") keyword: String): Call<BlogsResponse>
 }
