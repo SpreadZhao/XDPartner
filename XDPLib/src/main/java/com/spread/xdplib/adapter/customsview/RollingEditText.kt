@@ -67,7 +67,7 @@ class RollingEditText : androidx.appcompat.widget.AppCompatEditText {
                     invalidate()
                 }
                 animIn.addListener(
-                    onEnd = { useCurrBounds = true }
+                    onEnd = { useCurrBounds = false }
                 )
                 animIn.duration = 200
                 animIn.start()
