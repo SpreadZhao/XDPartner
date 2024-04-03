@@ -1,7 +1,6 @@
 package com.spread.xdplib.adapter.customsview
 
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -48,7 +47,6 @@ class RollingEditText : androidx.appcompat.widget.AppCompatEditText {
         )
     }
 
-    @SuppressLint("ResourceType")
     fun rollingTo(newHint: String) {
         val baseBounds = getLineBounds(0, null).toFloat()
         val lenHeight = measuredHeight
