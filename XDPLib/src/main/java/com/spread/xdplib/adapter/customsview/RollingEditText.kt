@@ -52,29 +52,29 @@ class RollingEditText : androidx.appcompat.widget.AppCompatEditText {
     fun rollingTo(newHint: String) {
         val baseBounds = getLineBounds(0, null).toFloat()
         val lenHeight = measuredHeight
-        val animStart = ValueAnimator.ofFloat(baseBounds, baseBounds - lenHeight)
-        animStart.addUpdateListener {
+        val animOut = ValueAnimator.ofFloat(baseBounds, baseBounds - lenHeight)
+        animOut.addUpdateListener {
             currBounds = it.animatedValue as? Float ?: return@addUpdateListener
             invalidate()
         }
-        animStart.addListener(
+        animOut.addListener(
             onStart = { useCurrBounds = true },
             onEnd = {
                 currRollingHint = newHint
-                val animEnd = ValueAnimator.ofFloat(baseBounds + lenHeight, baseBounds)
-                animEnd.addUpdateListener { animator ->
+                val animIn = ValueAnimator.ofFloat(baseBounds + lenHeight, baseBounds)
+                animIn.addUpdateListener { animator ->
                     currBounds = animator.animatedValue as? Float ?: return@addUpdateListener
                     invalidate()
                 }
-                animEnd.addListener(
+                animIn.addListener(
                     onEnd = { useCurrBounds = true }
                 )
-                animEnd.duration = 200
-                animEnd.start()
+                animIn.duration = 200
+                animIn.start()
             }
         )
-        animStart.duration = 200
-        animStart.start()
+        animOut.duration = 200
+        animOut.start()
     }
 
 }
