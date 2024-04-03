@@ -60,6 +60,9 @@ class TestActivity : AppCompatActivity() {
         PageUtil.gotoActivityIfExist(this@TestActivity,ArouterPath.PATH_ACTIVITY_LOGIN)
         Log.d("MultiTypeAdapter", "跳转登录页面")
       }),
+      MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("测试自定义View") {
+        startActivity(Intent(this, TestCustomViewActivity::class.java))
+      })
     )
   }
   private fun init() {
