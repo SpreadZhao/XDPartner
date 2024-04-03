@@ -26,7 +26,6 @@
                     android:id="@+id/circle"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-
                     android:src="@drawable/baseline_accessibility_select"
                     app:border_width="1dp"
                     app:layout_constraintStart_toStartOf="parent"

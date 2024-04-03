@@ -5,10 +5,11 @@
     android:layout_height="60dp"
     android:layout_gravity="center_vertical">
 
-    <ImageView
+    <com.spread.xdplib.adapter.customsview.CircleImageView
         android:id="@+id/header"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        app:border_width="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
