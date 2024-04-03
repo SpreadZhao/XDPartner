@@ -13,7 +13,7 @@
         android:background="@android:color/transparent"
         android:theme="@style/Theme.Design.NoActionBar">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll">
@@ -26,7 +26,6 @@
                     android:id="@+id/circle"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-
                     android:src="@drawable/baseline_accessibility_select"
                     app:border_width="1dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -184,7 +183,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -201,9 +200,10 @@
             android:background="@drawable/edit_background_search"
             app:tabGravity="fill"
             app:tabIndicatorAnimationMode="elastic"
-            app:tabIndicatorColor="@color/purple"
+            app:tabIndicatorColor="@color/transparency"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/purple"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/black"
             app:tabTextAppearance="@style/TabLayoutText"
             app:tabUnboundedRipple="true"/>
 

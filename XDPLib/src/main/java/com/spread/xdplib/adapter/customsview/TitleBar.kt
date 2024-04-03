@@ -61,4 +61,8 @@ class TitleBar : LinearLayout {
     fun setLeftListener(listener: (() -> Unit)) {
         this.leftListener = listener
     }
+
+    fun setTitleText(title:String){
+        binding.tvTitle.text = title
+    }
 }

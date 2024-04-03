@@ -19,4 +19,6 @@
     <color name="text_blown">#FF9046</color>
     <color name="eye_yellow">#D26452</color>
     <color name="share_gray">#C2C2C2</color>
+    <color name="transparency">#00000000</color>
+    <color name="background_grey">#F3F4F8</color>
 </resources>

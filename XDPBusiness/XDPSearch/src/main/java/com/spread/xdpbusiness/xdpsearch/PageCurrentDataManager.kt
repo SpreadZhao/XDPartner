@@ -7,6 +7,10 @@ object PageCurrentDataManager {
     const val newestBlogCurrent =0
     const val likeBlogCurrent = 1
     const val hottestBlogCurrent= 2
+    @JvmStatic
+    val searchBlogCurrent = 3
+    @JvmStatic
+    val searchBlogByTypeCurrent = 4
     private val sparseArray:SparseArray<Int> = SparseArray(3)
     init {
         initAll()
@@ -28,6 +32,11 @@ object PageCurrentDataManager {
         sparseArray.put(newestBlogCurrent,1)
         sparseArray.put(likeBlogCurrent,1)
         sparseArray.put(hottestBlogCurrent,1)
+        initSearchBlogCurrent()
+        sparseArray.put(searchBlogByTypeCurrent,1)
     }
 
+    fun initSearchBlogCurrent(){
+        sparseArray.put(searchBlogCurrent,1)
+    }
 }

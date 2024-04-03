@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.spread.xdpbusiness.xdpsearch"
+    namespace = "com.spread.xdppersondetail"
     compileSdk = 34
 
     defaultConfig {

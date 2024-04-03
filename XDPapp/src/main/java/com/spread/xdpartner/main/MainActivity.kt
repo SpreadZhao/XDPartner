@@ -12,7 +12,7 @@ import com.spread.xdpbusiness.xdpme.MeFragment
 import com.spread.xdpbusiness.xdpmessgae.MessageFragment
 import com.spread.xdpbusiness.xdpsearch.SearchFragment
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
-import com.spread.xdplib.adapter.constant.ArouterPath.PATH_ACTIVITY_MAIN
+import com.spread.xdplib.adapter.constant.ArouterUtil.PATH_ACTIVITY_MAIN
 import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spreadxdpbusiness.xdpaddfriend.FriendFragment
 
