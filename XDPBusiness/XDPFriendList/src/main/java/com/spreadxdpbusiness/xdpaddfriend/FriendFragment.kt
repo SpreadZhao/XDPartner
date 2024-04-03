@@ -3,7 +3,7 @@ package com.spreadxdpbusiness.xdpaddfriend
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.spread.xdplib.adapter.base.BaseViewBindingFragment
-import com.spread.xdplib.adapter.constant.ArouterPath
+import com.spread.xdplib.adapter.constant.ArouterUtil
 import com.spread.xdplib.adapter.utils.PageUtil
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import com.spreadxdpbusiness.friendlist.databinding.FragmentFriendBinding
@@ -31,7 +31,7 @@ class FriendFragment : BaseViewBindingFragment<FragmentFriendBinding>() {
 
         }
         binding.titleBar.setRightListener {
-            PageUtil.gotoActivity(ArouterPath.PATH_ACTIVITY_ADD_FRIEND)
+            PageUtil.gotoActivity(ArouterUtil.PATH_ACTIVITY_ADD_FRIEND)
         }
     }
 

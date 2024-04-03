@@ -15,7 +15,7 @@ import com.spread.xdpartner.test.adapter.TestButtonAdapter
 import com.spread.xdpartner.test.adapter.TestEditButtonAdapter
 import com.spread.xdplib.adapter.MultiTypeAdapter
 import com.spread.xdplib.adapter.MultiTypeData
-import com.spread.xdplib.adapter.constant.ArouterPath
+import com.spread.xdplib.adapter.constant.ArouterUtil
 import com.spread.xdplib.adapter.utils.PageUtil
 import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdpnetwork.network.NetworkConstant
@@ -57,7 +57,7 @@ class TestActivity : AppCompatActivity() {
         Log.d("MultiTypeAdapter", "跳转主页")
       }),
       MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("跳转登录页面") {
-        PageUtil.gotoActivityIfExist(this@TestActivity,ArouterPath.PATH_ACTIVITY_LOGIN)
+        PageUtil.gotoActivityIfExist(this@TestActivity,ArouterUtil.PATH_ACTIVITY_LOGIN)
         Log.d("MultiTypeAdapter", "跳转登录页面")
       }),
     )

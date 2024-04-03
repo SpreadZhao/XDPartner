@@ -10,6 +10,7 @@ import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 
+
 class LoginServiceSingle private constructor() {
     private var service: LoginService = ServiceCreator.create(LoginService::class.java)
 
@@ -87,6 +88,23 @@ class LoginServiceSingle private constructor() {
 
     fun searchBlog(current: Int, msg: String, callback: ((data: List<Blog>) -> Unit)) {
         service.searchBlog(current,msg).enqueue(object :
+            BasicThreadingCallback<BlogsResponse>(
+                {
+                    if (it.code() == 200) {
+                        callback.invoke(it.body()!!.data)
+                    }
+                }
+            ) {})
+
+    }
+
+    fun searchTagWordByTypeId(current: Int, type: Int,msg:String, callback: ((data: List<Blog>) -> Unit)) {
+//        val hashMap = HashMap<String,String>()
+//        hashMap["string"] = msg
+//        val gson = Gson()
+//        val json = gson.toJson(hashMap)
+//        val body = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        service.searchTagWordByTypeId(current,type,msg).enqueue(object :
             BasicThreadingCallback<BlogsResponse>(
                 {
                     if (it.code() == 200) {

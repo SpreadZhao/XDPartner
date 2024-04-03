@@ -11,6 +11,11 @@ android {
     defaultConfig {
         minSdk = 29
         consumerProguardFiles("consumer-rules.pro")
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.name)
+            }
+        }
     }
 
     buildTypes {
@@ -35,4 +40,5 @@ android {
 dependencies {
     api(project(":XDPLib"))
     api(project(":XDPNetwork"))
+    kapt("com.alibaba:arouter-compiler:1.5.2")
 }

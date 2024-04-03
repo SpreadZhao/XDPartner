@@ -44,4 +44,7 @@ interface LoginService {
 
     @POST("/wz/blog/searchBlog")
     fun searchBlog(@Query("current") current: Int,@Query("keyword") keyword: String): Call<BlogsResponse>
+
+    @GET("/wz/blog/searchTagWordByTypeId")
+    fun searchTagWordByTypeId(@Query("current") current: Int,@Query("typeId") typeId: Int,@Query("keyword") keyword:String): Call<BlogsResponse>
 }
