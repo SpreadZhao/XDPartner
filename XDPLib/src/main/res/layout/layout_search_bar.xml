@@ -6,7 +6,7 @@
     android:layout_marginHorizontal="20dp"
     android:background="@drawable/background_white">
 
-    <EditText
+    <com.spread.xdplib.adapter.customsview.RollingEditText
         android:id="@+id/edit"
         android:layout_width="0dp"
         app:layout_constraintHorizontal_weight="1"

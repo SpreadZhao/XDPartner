@@ -22,6 +22,7 @@ class MySearchBar : LinearLayout {
             override fun afterTextChanged(p0: Editable?) {}
         }
     }
+    var i = 1
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attar: AttributeSet?) : this(context, attar, 0)
@@ -39,10 +40,12 @@ class MySearchBar : LinearLayout {
         binding.edit.apply {
             hint = types.getString(R.styleable.MySearchBar_hint)
             addTextChangedListener(searchWatcher)
+            currRollingHint = "0"
         }
         types.recycle()
         binding.search.setOnClickListener{
             searchListener?.invoke(searchText)
+            binding.edit.rollingTo("${i++}")
         }
     }
 
