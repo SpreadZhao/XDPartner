@@ -11,8 +11,11 @@ object PageUtil {
         ARouter.getInstance().build(url).navigation()
     }
 
-    fun gotoActivity(url:String,type:Int){
+    fun gotoActivityWithType(url:String, type:Int){
         ARouter.getInstance().build(url).withInt(ArouterUtil.KEY_SEARCH_TYPE,type).navigation()
+    }
+    fun gotoActivityWithUserId(url:String, keyUserId:Long){
+        ARouter.getInstance().build(url).withLong(ArouterUtil.KEY_USERID,keyUserId).navigation()
     }
     fun gotoActivityIfExist(activity: Activity, url:String){
         ARouter.getInstance().build(url).navigation(activity,object : NavigationCallback{

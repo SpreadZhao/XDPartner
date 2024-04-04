@@ -1,4 +1,4 @@
-package com.spread.xdpbusiness.xdpsearch
+package com.spread.xdplib.adapter.datamanager
 
 import android.util.SparseArray
 import com.spread.xdplib.adapter.utils.TestLogger.logd
@@ -11,6 +11,8 @@ object PageCurrentDataManager {
     val searchBlogCurrent = 3
     @JvmStatic
     val searchBlogByTypeCurrent = 4
+    @JvmStatic
+    val searchBlogOnesCurrent = 5
     private val sparseArray:SparseArray<Int> = SparseArray(3)
     init {
         initAll()
@@ -34,6 +36,7 @@ object PageCurrentDataManager {
         sparseArray.put(hottestBlogCurrent,1)
         initSearchBlogCurrent()
         sparseArray.put(searchBlogByTypeCurrent,1)
+        sparseArray.put(searchBlogOnesCurrent,1)
     }
 
     fun initSearchBlogCurrent(){

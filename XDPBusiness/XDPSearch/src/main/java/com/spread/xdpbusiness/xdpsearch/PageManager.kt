@@ -1,6 +1,8 @@
 package com.spread.xdpbusiness.xdpsearch
 
 import androidx.recyclerview.widget.RecyclerView
+import com.spread.xdpcommon.BlogListAdapter
+import com.spread.xdplib.adapter.datamanager.PageCurrentDataManager
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 
 @Deprecated("please use viewPagerAdapter")

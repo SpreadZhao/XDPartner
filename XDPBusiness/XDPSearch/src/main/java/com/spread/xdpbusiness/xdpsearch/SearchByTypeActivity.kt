@@ -6,8 +6,10 @@ import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.spread.xdpbusiness.xdpsearch.databinding.ActivitySearchTypeBinding
+import com.spread.xdpcommon.BlogListAdapter
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
 import com.spread.xdplib.adapter.constant.ArouterUtil
+import com.spread.xdplib.adapter.datamanager.PageCurrentDataManager
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 
 
@@ -32,10 +34,14 @@ class SearchByTypeActivity : BaseViewBindingActivity<ActivitySearchTypeBinding>(
                 )
             )
         }
+        binding.title.setLeftListener {
+            finish()
+        }
         binding.searchBar.setSearchListener {
             PageCurrentDataManager.initAll()
             if(it.isNullOrEmpty()) return@setSearchListener
-            val blogListAdapter = BlogListAdapter(this@SearchByTypeActivity).apply {
+            val blogListAdapter = BlogListAdapter(this@SearchByTypeActivity)
+                .apply {
                 //1、当滑动到列表底部时，查询下一页数据
                 setOnFootViewAttachedToWindowListener {
                     //查询数据
@@ -47,7 +53,9 @@ class SearchByTypeActivity : BaseViewBindingActivity<ActivitySearchTypeBinding>(
         }
     }
     private fun searchData(msg:String){
-        LoginServiceSingle.instance.searchTagWordByTypeId(PageCurrentDataManager.get(PageCurrentDataManager.searchBlogByTypeCurrent),searchType,msg){
+        LoginServiceSingle.instance.searchTagWordByTypeId(
+            PageCurrentDataManager.get(
+                PageCurrentDataManager.searchBlogByTypeCurrent),searchType,msg){
             (binding.list.adapter as BlogListAdapter).setData(it)
         }
     }

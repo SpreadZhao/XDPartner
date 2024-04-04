@@ -38,7 +38,6 @@ android {
 
 }
 dependencies {
-    api(project(":XDPLib"))
-    api(project(":XDPNetwork"))
+    api(project(":XDPBusiness:XDPCommon"))
     kapt("com.alibaba:arouter-compiler:1.5.2")
 }

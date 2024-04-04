@@ -1,4 +1,4 @@
-package com.spread.xdpbusiness.xdpsearch
+package com.spread.xdpcommon
 
 import android.content.Context
 import android.view.LayoutInflater
