@@ -5,6 +5,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.spread.xdpbusiness.xdpsearch.databinding.FragmentSearchBinding
 import com.spread.xdplib.adapter.base.BaseViewBindingFragment
 import com.spread.xdplib.adapter.constant.ArouterUtil
+import com.spread.xdplib.adapter.datamanager.PageCurrentDataManager
 import com.spread.xdplib.adapter.utils.PageUtil
 
 
@@ -56,16 +57,16 @@ class SearchFragment : BaseViewBindingFragment<FragmentSearchBinding>() {
             setSelectedTabChoose(false)
         }
         binding.cvStudy.setOnClickListener{
-            PageUtil.gotoActivity(ArouterUtil.PATH_ACTIVITY_SEARCH_TYPE,1)
+            PageUtil.gotoActivityWithType(ArouterUtil.PATH_ACTIVITY_SEARCH_TYPE,1)
         }
         binding.cvHappy.setOnClickListener{
-            PageUtil.gotoActivity(ArouterUtil.PATH_ACTIVITY_SEARCH_TYPE,2)
+            PageUtil.gotoActivityWithType(ArouterUtil.PATH_ACTIVITY_SEARCH_TYPE,2)
         }
         binding.cvLove.setOnClickListener{
-            PageUtil.gotoActivity(ArouterUtil.PATH_ACTIVITY_SEARCH_TYPE,3)
+            PageUtil.gotoActivityWithType(ArouterUtil.PATH_ACTIVITY_SEARCH_TYPE,3)
         }
         binding.cvLife.setOnClickListener{
-            PageUtil.gotoActivity(ArouterUtil.PATH_ACTIVITY_SEARCH_TYPE,4)
+            PageUtil.gotoActivityWithType(ArouterUtil.PATH_ACTIVITY_SEARCH_TYPE,4)
         }
     }
 

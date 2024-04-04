@@ -1,5 +1,6 @@
 plugins {
     id("com.android.library")
+    id("kotlin-kapt")
     id("org.jetbrains.kotlin.android")
 }
 
@@ -10,6 +11,11 @@ android {
     defaultConfig {
         minSdk = 29
         consumerProguardFiles("consumer-rules.pro")
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.name)
+            }
+        }
     }
 
     buildTypes {
@@ -30,8 +36,10 @@ android {
         jvmTarget = "1.8"
     }
 
+
 }
 dependencies {
     api(project(":XDPLib"))
-    api(project(":XDPNetwork"))
+    api(project(":XDPBusiness:XDPCommon"))
+    kapt("com.alibaba:arouter-compiler:1.5.2")
 }

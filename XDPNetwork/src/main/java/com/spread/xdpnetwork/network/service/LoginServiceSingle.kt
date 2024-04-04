@@ -2,6 +2,7 @@ package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.constant.MmkvConstant
 import com.spread.xdplib.adapter.entry.Blog
+import com.spread.xdplib.adapter.entry.UserDetail
 import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.MmkvUtil
 import com.spread.xdpnetwork.network.BasicThreadingCallback
@@ -9,6 +10,7 @@ import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
+import com.spread.xdpnetwork.network.model.response.UserResponse
 
 
 class LoginServiceSingle private constructor() {
@@ -114,4 +116,28 @@ class LoginServiceSingle private constructor() {
             ) {})
 
     }
+    fun queryOnesBlog(current: Int, userId: Int, callback: ((data: List<Blog>) -> Unit)) {
+//        val hashMap = HashMap<String,String>()
+//        hashMap["string"] = msg
+//        val gson = Gson()
+//        val json = gson.toJson(hashMap)
+//        val body = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        service.queryOnesBlog(current,userId).enqueue(object :
+            BasicThreadingCallback<BlogsResponse>(
+                {
+                    if (it.code() == 200) {
+                        callback.invoke(it.body()!!.data)
+                    }
+                }
+            ) {})
+    }
+
+    fun queryOther(userId: Long,callback: ((userDetail:UserDetail) -> Unit)){
+        service.queryOther(userId).enqueue(object :BasicThreadingCallback<UserResponse>({
+            if (it.code() == 200) {
+                callback.invoke(it.body()!!.data)
+            }
+        }){})
+    }
+
 }

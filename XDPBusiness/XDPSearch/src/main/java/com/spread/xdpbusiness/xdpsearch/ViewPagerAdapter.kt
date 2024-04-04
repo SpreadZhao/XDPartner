@@ -9,10 +9,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.spread.xdpbusiness.xdpsearch.PageCurrentDataManager.searchBlogCurrent
+import com.spread.xdplib.adapter.datamanager.PageCurrentDataManager.searchBlogCurrent
 import com.spread.xdpbusiness.xdpsearch.SearchFragment.Companion.hottestBlog
 import com.spread.xdpbusiness.xdpsearch.SearchFragment.Companion.likeBlog
 import com.spread.xdpbusiness.xdpsearch.SearchFragment.Companion.newestBlog
+import com.spread.xdpcommon.BlogListAdapter
+import com.spread.xdplib.adapter.datamanager.PageCurrentDataManager
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 
 class ViewPagerAdapter(private val context: Context, private val lifecycleOwner: LifecycleOwner) :

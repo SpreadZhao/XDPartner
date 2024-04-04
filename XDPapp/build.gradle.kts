@@ -52,6 +52,7 @@ dependencies {
     api(project(":XDPBusiness:XDPAddNote"))
     api(project(":XDPBusiness:XDPMessage"))
     api(project(":XDPBusiness:XDPAddFriend"))
+    api(project(":XDPBusiness:XDPPersonDetail"))
     api(project(":XDPNetwork"))
     api("com.alibaba:arouter-api:1.5.2")
     implementation("androidx.appcompat:appcompat:1.6.1")

@@ -12,7 +12,7 @@ class FriendListAdapter(private val context: Context) : RecyclerView.Adapter<Fri
 
     private var items = emptyList<UserVo>()
 
-    private var mClickListener : ((Int)->Unit)? = null
+    private var mClickListener : ((Long)->Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendViewHolder {
         val binding = ItemFriendBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -28,7 +28,7 @@ class FriendListAdapter(private val context: Context) : RecyclerView.Adapter<Fri
         Glide.with(context).load(items[position].icon).into(holder.binding.header)
         holder.binding.name.text = items[position].nickName
         holder.binding.root.setOnClickListener{
-            mClickListener?.invoke(position)
+            mClickListener?.invoke(items[position].id)
         }
     }
 
@@ -37,7 +37,7 @@ class FriendListAdapter(private val context: Context) : RecyclerView.Adapter<Fri
         notifyItemRangeChanged(0,friends.size)
     }
 
-    fun setClickListener(listener : ((Int)->Unit)){
+    fun setClickListener(listener : ((Long)->Unit)){
         mClickListener = listener
     }
     inner class FriendViewHolder(val binding: ItemFriendBinding) : RecyclerView.ViewHolder(binding.root)

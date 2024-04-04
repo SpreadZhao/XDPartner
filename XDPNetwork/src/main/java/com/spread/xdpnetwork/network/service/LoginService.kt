@@ -6,6 +6,7 @@ import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 import com.spread.xdpnetwork.network.model.response.ThreadsResponse
+import com.spread.xdpnetwork.network.model.response.UserResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -47,4 +48,10 @@ interface LoginService {
 
     @GET("/wz/blog/searchTagWordByTypeId")
     fun searchTagWordByTypeId(@Query("current") current: Int,@Query("typeId") typeId: Int,@Query("keyword") keyword:String): Call<BlogsResponse>
+
+    @GET("/wz/blog/queryOnesBlog")
+    fun queryOnesBlog(@Query("current") current: Int,@Query("userId") userId: Int): Call<BlogsResponse>
+
+    @GET("/wz/user/otherUser/{userId}")
+    fun queryOther(@Path("userId") userId:Long):Call<UserResponse>
 }

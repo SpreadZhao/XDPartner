@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/status_bar_padding_top"
+    android:background="@color/background_grey">
+
+    <com.spread.xdplib.adapter.customsview.TitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="个人主页" />
+
+    <ImageView
+        android:id="@+id/header"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal|top"
+        android:src="@drawable/baseline_accessibility_select" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:paddingVertical="10dp"
+        android:background="@color/background_grey"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="10dp"
+        android:background="@color/background_grey"
+        android:textColor="@color/grey"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+    <com.spread.xdpcommon.PersonDetailLayout
+        android:id="@+id/layoutPerson"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
