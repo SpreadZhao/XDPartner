@@ -116,7 +116,7 @@ class LoginServiceSingle private constructor() {
             ) {})
 
     }
-    fun queryOnesBlog(current: Int, userId: Int, callback: ((data: List<Blog>) -> Unit)) {
+    fun queryOnesBlog(current: Int, userId: Long, callback: ((data: List<Blog>) -> Unit)) {
 //        val hashMap = HashMap<String,String>()
 //        hashMap["string"] = msg
 //        val gson = Gson()

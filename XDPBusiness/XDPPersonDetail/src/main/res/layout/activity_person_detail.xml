@@ -13,10 +13,11 @@
         android:layout_height="wrap_content"
         app:title="个人主页" />
 
-    <ImageView
+    <com.spread.xdplib.adapter.customsview.CircleImageView
         android:id="@+id/header"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        app:border_width="1dp"
         android:layout_gravity="center_horizontal|top"
         android:src="@drawable/baseline_accessibility_select" />
 

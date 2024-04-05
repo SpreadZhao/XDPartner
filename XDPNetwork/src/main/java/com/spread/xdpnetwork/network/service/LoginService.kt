@@ -50,7 +50,7 @@ interface LoginService {
     fun searchTagWordByTypeId(@Query("current") current: Int,@Query("typeId") typeId: Int,@Query("keyword") keyword:String): Call<BlogsResponse>
 
     @GET("/wz/blog/queryOnesBlog")
-    fun queryOnesBlog(@Query("current") current: Int,@Query("userId") userId: Int): Call<BlogsResponse>
+    fun queryOnesBlog(@Query("current") current: Int,@Query("userId") userId: Long): Call<BlogsResponse>
 
     @GET("/wz/user/otherUser/{userId}")
     fun queryOther(@Path("userId") userId:Long):Call<UserResponse>

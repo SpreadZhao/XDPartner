@@ -59,29 +59,33 @@ class PersonDetailLayout @JvmOverloads constructor(
                 )
             )
         }
+
+    }
+
+    fun intList(userId: Long){
         PageCurrentDataManager.initAll()
         val blogListAdapter = BlogListAdapter(context)
             .apply {
                 //1、当滑动到列表底部时，查询下一页数据
                 setOnFootViewAttachedToWindowListener {
                     //查询数据
-                    searchData()
+                    searchData(userId)
                 }
             }
         binding.list.adapter = blogListAdapter
-        searchData()
+        searchData(userId)
     }
     fun initTextView(userDetail: UserDetail){
         binding.tvMajor.setText("专业：${userDetail.majorName}")
         binding.tvConstellation.setText("星座：${MapUtil.getConstellationName(userDetail.constellation)}")
-        binding.tvDemand.setText("需求倾向：${userDetail.myDescription}")
-        binding.tvMBTI.setText("MBTI：${userDetail.mbti}")
+        binding.tvDemand.setText("需求倾向：${MapUtil.getDemandName(userDetail.highTag)}")
+        binding.tvMBTI.setText("MBTI：${MapUtil.getMbtiName(userDetail.mbti)}")
     }
-    private fun searchData() {
+    private fun searchData(userId:Long) {
         LoginServiceSingle.instance.queryOnesBlog(
             PageCurrentDataManager.get(
                 PageCurrentDataManager.searchBlogByTypeCurrent
-            ), 17
+            ), userId
         ) {
             (binding.list.adapter as BlogListAdapter).setData(it)
         }

@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.spread.xdplib.adapter.constant.ArouterUtil
 import com.spread.xdplib.adapter.entry.Blog
+import com.spread.xdplib.adapter.utils.PageUtil
 import com.spread.xdplib.adapter.utils.StringUtils
 import com.spread.xdplib.databinding.LayoutBlogBinding
 import com.spread.xdplib.databinding.LayoutFootviewBinding
@@ -97,6 +99,9 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
                             if(ivLove.isSelected) tvLovePerson.text = String.format("%d", (tvLovePerson.text.toString().toInt() +1))
                             else tvLovePerson.text = String.format("%d", (tvLovePerson.text.toString().toInt() - 1))
                         }
+                    }
+                    ivHeader.setOnClickListener {
+                        PageUtil.gotoActivityWithUserId(ArouterUtil.PATH_ACTIVITY_PERSON_DETAIL,blog.userVo.id)
                     }
                 }
             }
