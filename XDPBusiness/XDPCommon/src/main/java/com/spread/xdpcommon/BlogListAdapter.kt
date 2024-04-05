@@ -24,7 +24,10 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
     private val TYPE_ITEMVIEW: Int = 2 //item类型：itemview
     private var typeItem = TYPE_ITEMVIEW
     private var showFinished = false
-
+    private var isHeaderClickable = true
+    fun setHeaderClick(clickable:Boolean){
+        isHeaderClickable = clickable
+    }
     //定义footview附加到Window上时的回调
     private lateinit var footViewAttachedToWindowListener: () -> Unit
     fun setOnFootViewAttachedToWindowListener(pListener: () -> Unit) {
@@ -72,10 +75,11 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
                     tvLovePerson.text = blog.liked.toString()
                     tvPerson.text = blog.viewTimes.toString()
                     ivTitle.text = blog.title
-                    val message = StringUtils.getBlogPeopleText(blog.absent,blog.whenMeet,blog.location)
-                    if(message.isEmpty()){
+                    val message =
+                        StringUtils.getBlogPeopleText(blog.absent, blog.whenMeet, blog.location)
+                    if (message.isEmpty()) {
                         ivMessage.visibility = View.GONE
-                    }else {
+                    } else {
                         ivMessage.visibility = View.VISIBLE
                         ivMessage.text = message
                     }
@@ -94,14 +98,20 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
                         .into(ivHeader)
                     ivLove.setOnClickListener {
                         LoginServiceSingle.instance.likeBlog(blog.id) {
-                            Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                             ivLove.isSelected = !ivLove.isSelected
-                            if(ivLove.isSelected) tvLovePerson.text = String.format("%d", (tvLovePerson.text.toString().toInt() +1))
-                            else tvLovePerson.text = String.format("%d", (tvLovePerson.text.toString().toInt() - 1))
+                            if (ivLove.isSelected) tvLovePerson.text =
+                                String.format("%d", (tvLovePerson.text.toString().toInt() + 1))
+                            else tvLovePerson.text =
+                                String.format("%d", (tvLovePerson.text.toString().toInt() - 1))
                         }
                     }
                     ivHeader.setOnClickListener {
-                        PageUtil.gotoActivityWithUserId(ArouterUtil.PATH_ACTIVITY_PERSON_DETAIL,blog.userVo.id)
+                        if (isHeaderClickable)
+                            PageUtil.gotoActivityWithUserId(
+                                ArouterUtil.PATH_ACTIVITY_PERSON_DETAIL,
+                                blog.userVo.id
+                            )
                     }
                 }
             }

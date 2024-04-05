@@ -71,6 +71,7 @@ class PersonDetailLayout @JvmOverloads constructor(
                     //查询数据
                     searchData(userId)
                 }
+                setHeaderClick(false)
             }
         binding.list.adapter = blogListAdapter
         searchData(userId)
