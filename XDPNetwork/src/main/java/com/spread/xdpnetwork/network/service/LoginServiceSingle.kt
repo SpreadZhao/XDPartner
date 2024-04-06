@@ -63,8 +63,6 @@ class LoginServiceSingle private constructor() {
                         }
                     }
                 ) {})
-        } else if (position == 3){
-
         }
 
     }

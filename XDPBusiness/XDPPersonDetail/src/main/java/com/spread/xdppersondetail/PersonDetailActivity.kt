@@ -23,6 +23,12 @@ class PersonDetailActivity : BaseViewBindingActivity<ActivityPersonDetailBinding
         binding.titleBar.setLeftListener {
             finish()
         }
+        binding.message.setOnClickListener{
+
+        }
+        binding.add.setOnClickListener{
+
+        }
         searchDetail()
     }
     private fun searchDetail(){
