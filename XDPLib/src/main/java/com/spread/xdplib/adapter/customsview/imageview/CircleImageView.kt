@@ -1,4 +1,4 @@
-package com.spread.xdplib.adapter.customsview
+package com.spread.xdplib.adapter.customsview.imageview
 
 import android.content.Context
 import android.graphics.Bitmap

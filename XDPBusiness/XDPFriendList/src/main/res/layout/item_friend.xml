@@ -5,7 +5,7 @@
     android:layout_height="60dp"
     android:layout_gravity="center_vertical">
 
-    <com.spread.xdplib.adapter.customsview.CircleImageView
+    <com.spread.xdplib.adapter.customsview.imageview.CircleImageView
         android:id="@+id/header"
         android:layout_width="50dp"
         android:layout_height="50dp"

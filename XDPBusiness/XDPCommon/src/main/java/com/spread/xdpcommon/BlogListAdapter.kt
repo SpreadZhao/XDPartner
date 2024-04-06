@@ -83,17 +83,18 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
                         ivMessage.visibility = View.VISIBLE
                         ivMessage.text = message
                     }
-                    if (blog.images.isNotEmpty()) {
-                        Glide.with(context).load(blog.images[0]).transform(CenterCrop())
-                            .into(ivImage)
-                        if (blog.images.size >= 2) {
-                            Glide.with(context).load(blog.images[1]).transform(CenterCrop())
-                                .into(ivImage2)
-                        }
-                    } else {
-                        ivImage.visibility = View.GONE
-                        ivImage2.visibility = View.GONE
-                    }
+//                    if (blog.images.isNotEmpty()) {
+//                        Glide.with(context).load(blog.images[0]).transform(CenterCrop())
+//                            .into(ivImage)
+//                        if (blog.images.size >= 2) {
+//                            Glide.with(context).load(blog.images[1]).transform(CenterCrop())
+//                                .into(ivImage2)
+//                        }
+//                    } else {
+//                        ivImage.visibility = View.GONE
+//                        ivImage2.visibility = View.GONE
+//                    }
+                    ivImage.setImageUrls(blog.images)
                     Glide.with(context).load(it[position].userVo.icon).transform(CenterCrop())
                         .into(ivHeader)
                     ivLove.setOnClickListener {

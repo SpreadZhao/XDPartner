@@ -12,7 +12,7 @@ object StringUtils {
         if(time.isEmpty()){
             return res + people
         } else{
-            return res + people +"|" + time +"|" +location +"|"
+            return "$res$people|$time|$location"
         }
     }
 }

@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     app:title="个人主页" />
 
-                <com.spread.xdplib.adapter.customsview.CircleImageView
+                <com.spread.xdplib.adapter.customsview.imageview.CircleImageView
                     android:id="@+id/header"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
