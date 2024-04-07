@@ -11,10 +11,9 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textColor="@color/white"/>
-    <ImageView
+    <com.spread.xdplib.adapter.customsview.imageview.ScaleImageView
         android:id="@+id/zoomImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter" />
+        android:scaleType="matrix" />
 </LinearLayout>

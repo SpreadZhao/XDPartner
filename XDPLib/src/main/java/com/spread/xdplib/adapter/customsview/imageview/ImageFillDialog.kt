@@ -2,12 +2,16 @@ package com.spread.xdplib.adapter.customsview.imageview
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.Window
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.spread.xdplib.R
 import com.spread.xdplib.databinding.ItemPhotoViewBinding
 
@@ -48,10 +52,21 @@ class ImageViewPagerAdapter(
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        Glide.with(context).load(imageUrls[position]).into(holder.binding.zoomImageView)
-        holder.binding.rootView.setOnClickListener{
-            onRootViewClick?.invoke()
-        }
+        Glide.with(context)
+            .asBitmap() // 强制Glide加载Bitmap
+            .load(imageUrls[position]) // imageUrl是你要加载的图片的URL
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    holder.binding.zoomImageView.setPictureBitmap(resource)
+                    holder.binding.zoomImageView.setRootViewClick {
+                        onRootViewClick?.invoke()
+                    }
+                }
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    // 这里处理图片加载被取消的情况，如果需要的话
+                }
+            })
+
         holder.binding.indexView.text  = "${position + 1} / ${imageUrls.size}"
     }
 
