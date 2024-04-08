@@ -138,4 +138,11 @@ class LoginServiceSingle private constructor() {
         }){})
     }
 
+    fun makeFriend(friendId: Int,message: String,callback:((msg:String) -> Unit)){
+        service.makeFriend(friendId, message).enqueue(object :BasicThreadingCallback<BaseResponse>({
+            if (it.code() == 200) {
+                callback.invoke(it.body()!!.data)
+            }
+        }){})
+    }
 }

@@ -1,6 +1,7 @@
 package com.spread.xdplib.adapter.constant
 
 import android.util.SparseArray
+import com.spread.xdplib.adapter.utils.TestLogger.logd
 
 object MapUtil {
 
@@ -55,6 +56,7 @@ object MapUtil {
             append(1,"竞赛")
             append(2,"脱单")
             append(3,"出游")
+            append(4,"未知")
         }
     }
     fun getConstellationName(key: Int): String {
@@ -71,6 +73,7 @@ object MapUtil {
     }
 
     fun getDemandName(key: Int): String {
+        if(key == 0) return "未设置需求"
         return demandMap.get(key)
     }
 

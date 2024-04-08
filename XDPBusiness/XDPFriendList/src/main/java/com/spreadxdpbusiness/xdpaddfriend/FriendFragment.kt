@@ -31,7 +31,7 @@ class FriendFragment : BaseViewBindingFragment<FragmentFriendBinding>() {
             PageUtil.gotoActivityWithUserId(ArouterUtil.PATH_ACTIVITY_PERSON_DETAIL,it)
         }
         binding.titleBar.setRightListener {
-            PageUtil.gotoActivity(ArouterUtil.PATH_ACTIVITY_ADD_FRIEND)
+            PageUtil.gotoActivity(ArouterUtil.PATH_ACTIVITY_SEARCH_FRIEND)
         }
     }
 
