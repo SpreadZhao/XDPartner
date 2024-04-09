@@ -71,4 +71,10 @@ interface LoginService {
         @Query("friendId") friendId: Int,
         @Query("message") message: String
     ): Call<BaseResponse>
+
+    @POST("/wz/friend/changeFriendAlterName")
+    fun changeFriendAlterName(
+        @Query("friendId") friendId: Int,
+        @Query("alterName") alterName: String
+    ): Call<BaseResponse>
 }

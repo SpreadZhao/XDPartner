@@ -8,7 +8,7 @@ object ArouterUtil {
     const val PATH_ACTIVITY_ADD_FRIEND = "/add/friend"
     const val PATH_ACTIVITY_SEARCH_TYPE = "/search/type"
     const val PATH_ACTIVITY_PERSON_DETAIL = "/person/detail"
-
+    const val PATH_ACTIVITY_FRIEND_SETTING = "/friend/setting"
 
 
     const val KEY_SEARCH_TYPE = "searchType"

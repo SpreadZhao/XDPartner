@@ -145,4 +145,12 @@ class LoginServiceSingle private constructor() {
             }
         }){})
     }
+
+    fun changeFriendAlterName(friendId: Int,message: String,callback:((msg:String) -> Unit)){
+        service.changeFriendAlterName(friendId, message).enqueue(object :BasicThreadingCallback<BaseResponse>({
+            if (it.code() == 200) {
+                callback.invoke(it.body()!!.data)
+            }
+        }){})
+    }
 }
