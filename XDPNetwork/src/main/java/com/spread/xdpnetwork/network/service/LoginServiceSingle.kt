@@ -2,6 +2,7 @@ package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.constant.MmkvConstant
 import com.spread.xdplib.adapter.entry.Blog
+import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.entry.UserDetail
 import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.MmkvUtil
@@ -148,6 +149,14 @@ class LoginServiceSingle private constructor() {
 
     fun changeFriendAlterName(friendId: Int,message: String,callback:((msg:String) -> Unit)){
         service.changeFriendAlterName(friendId, message).enqueue(object :BasicThreadingCallback<BaseResponse>({
+            if (it.code() == 200) {
+                callback.invoke(it.body()!!.data)
+            }
+        }){})
+    }
+
+    fun pubBlog(bean: BlogBean,callback:((msg:String) -> Unit)){
+        service.pubBlog(bean).enqueue(object :BasicThreadingCallback<BaseResponse>({
             if (it.code() == 200) {
                 callback.invoke(it.body()!!.data)
             }

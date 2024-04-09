@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -30,7 +31,9 @@ import com.spread.xdpartner.test.adapter.TestAdapterType
 import com.spread.xdplib.adapter.MultiTypeAdapter
 import com.spread.xdplib.adapter.MultiTypeData
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
+import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.utils.TestLogger.logd
+import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -42,64 +45,6 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
 
     //相机拍照保存的位置
     private lateinit var photoUri: Uri
-    private var typeText: String = ""
-    private var sizeText: String = ""
-    private var timeText: String = ""
-    private var placeText: String = ""
-    private val dataSet = listOf(
-        MultiTypeData(
-            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
-            EditTextAdapter.EditData(typeText,true,"#剧本杀#来电", object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    p0?.let {
-                        typeText = p0.toString()
-                        logd("typeText $typeText")
-                    }
-                }
-                override fun afterTextChanged(p0: Editable?) {}
-            })
-        ),
-        MultiTypeData(
-            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
-            EditTextAdapter.EditData(sizeText,true,"请输入几缺几", object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    p0?.let {
-                        sizeText = p0.toString()
-                        logd("几缺几 $sizeText")
-                    }
-                }
-                override fun afterTextChanged(p0: Editable?) {}
-            })
-        ),
-        MultiTypeData(
-            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
-            EditTextAdapter.EditData(timeText,false,"请输入时间", object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    p0?.let {
-                        timeText = p0.toString()
-                        logd("时间 $timeText")
-                    }
-                }
-                override fun afterTextChanged(p0: Editable?) {}
-            })
-        ),
-        MultiTypeData(
-            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
-            EditTextAdapter.EditData(placeText,false,"请输入地点", object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    p0?.let {
-                        placeText = p0.toString()
-                        logd("地点 $placeText")
-                    }
-                }
-                override fun afterTextChanged(p0: Editable?) {}
-            })
-        ),
-    )
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1000 //权限
@@ -117,10 +62,10 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
             ViewGroup.LayoutParams.WRAP_CONTENT,
             true
         ).apply {
-                showAtLocation(binding.layoutParent, Gravity.BOTTOM, 0, 0)
-                setBackgroundDrawable(resources.getDrawable(com.spread.xdplib.R.color.white))
-                setOnDismissListener { setAlpha(1.0f) }
-            }
+            showAtLocation(binding.layoutParent, Gravity.BOTTOM, 0, 0)
+            setBackgroundDrawable(resources.getDrawable(com.spread.xdplib.R.color.white))
+            setOnDismissListener { setAlpha(1.0f) }
+        }
         setAlpha(0.3f)
         //把背景还原
         initPopupView()
@@ -140,29 +85,10 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
 
     override fun initView() {
         binding.imageAdd.setOnClickListener(this)
-        binding.back.setOnClickListener{
+        binding.back.setOnClickListener {
             finish()
         }
-        initRecyclerView()
-    }
-
-
-    private fun initRecyclerView() {
-        val layoutManager = LinearLayoutManager(this).apply {
-            isItemPrefetchEnabled = false // 禁止预获取
-            orientation = RecyclerView.VERTICAL
-        }
-        val adapter = MultiTypeAdapter().apply {
-            configDataSet(dataSet)
-            addSubAdapter(TestAdapterType.ADAPTER_TYPE_EDIT_TEXT, EditTextAdapter())
-        }
-        val recyclerView = binding.listEdit.apply {
-            setHasFixedSize(true)
-            setItemViewCacheSize(0)
-            this.layoutManager = layoutManager
-            this.adapter = adapter
-            addItemDecoration( DividerItemDecoration(this@AddNoteActivity, DividerItemDecoration.VERTICAL))
-        }
+        binding.buttonPublish.setOnClickListener(this)
     }
 
     override fun getViewBinding(): ActivityAddnoteBinding {
@@ -175,6 +101,19 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
             R.id.button_cancel -> popupWindow.dismiss()
             R.id.button_photo -> openPhoto()
             R.id.button_camera -> checkPermission()
+            R.id.button_publish -> publishBlog()
+        }
+    }
+
+    private fun publishBlog() {
+        val absent = binding.personEdit.text.toString()
+        val title = binding.titleEdit.text.toString()
+        val content = binding.desEdit.text.toString()
+        val location = binding.locationEdit.text.toString()
+        val mutableList = mutableListOf<String>().apply { add(binding.tagEdit.text.toString()) }
+        val blogBean = BlogBean(absent = absent,title=title,content=content,location=location, lowTags = mutableList.toList())
+        LoginServiceSingle.instance.pubBlog(blogBean){
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
         }
     }
 

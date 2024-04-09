@@ -1,5 +1,6 @@
 package com.spread.xdpnetwork.network.service
 
+import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.entry.LoginBean
 import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
@@ -77,4 +78,7 @@ interface LoginService {
         @Query("friendId") friendId: Int,
         @Query("alterName") alterName: String
     ): Call<BaseResponse>
+
+    @POST("/wz/blog/pubBlog")
+    fun pubBlog(@Body bean: BlogBean): Call<BaseResponse>
 }
