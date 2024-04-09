@@ -2,6 +2,7 @@ package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.entry.LoginBean
+import com.spread.xdpnetwork.network.interceptor.BaseUrl
 import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
@@ -81,4 +82,8 @@ interface LoginService {
 
     @POST("/wz/blog/pubBlog")
     fun pubBlog(@Body bean: BlogBean): Call<BaseResponse>
+
+    @BaseUrl("host")
+    @POST("")
+    fun policy() : Call<BaseResponse>
 }
