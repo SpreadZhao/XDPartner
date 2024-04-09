@@ -89,6 +89,11 @@
                         android:paddingVertical="10dp"
                         android:src="@drawable/baseline_group_add" />
                 </LinearLayout>
+                <com.spread.xdplib.adapter.customsview.imageview.NineGridImageView
+                    android:id="@+id/pictures"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>

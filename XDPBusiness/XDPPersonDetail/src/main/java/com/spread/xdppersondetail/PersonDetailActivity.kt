@@ -45,6 +45,7 @@ class PersonDetailActivity : BaseViewBindingActivity<ActivityPersonDetailBinding
             binding.description.text = "个人简介：${it.myDescription}"
             binding.name.text = it.nickName
             Glide.with(this).load(it.icon).into(binding.header)
+            binding.pictures.setImageUrls(it.picture)
         }
     }
 }

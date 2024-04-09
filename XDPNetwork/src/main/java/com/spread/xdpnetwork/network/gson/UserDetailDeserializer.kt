@@ -10,11 +10,6 @@ import java.lang.reflect.Type
 class UserDetailDeserializer : JsonDeserializer<UserDetail> {
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): UserDetail {
         val jsonObject = json.asJsonObject
-        val constellation = if (jsonObject.get("constellation")?.isJsonNull == false) {
-            jsonObject.get("constellation").asInt
-        } else {
-            0 // 假设默认值为 0
-        }
         return UserDetail(
             constellation =  if (jsonObject.has("constellation")) jsonObject.get("constellation").asInt else 0, // 需要处理可能的缺失或类型不匹配问题
             highTag = if (jsonObject.has("highTag")) jsonObject.get("highTag").asInt else 0,
@@ -23,7 +18,7 @@ class UserDetailDeserializer : JsonDeserializer<UserDetail> {
             mbti = if (jsonObject.has("mbti")) jsonObject.get("mbti").asInt else 0,
             myDescription = jsonObject.get("myDescription").asString,
             nickName = jsonObject.get("nickName").asString,
-            images = context.deserialize(jsonObject.get("images"), object : TypeToken<List<String>>() {}.type) ?: emptyList(),
+            picture = context.deserialize(jsonObject.get("picture"), object : TypeToken<List<String>>() {}.type) ?: emptyList(),
             qq = if (jsonObject.has("qq")) jsonObject.get("qq").asString else "未设置"
         )
     }

@@ -23,6 +23,7 @@ class MeFragment : BaseViewBindingFragment<FragmentMeBinding>() {
             binding.layoutPerson.initTextView(it)
             binding.tvPerson.text = "个人简介：${it.myDescription}"
             Glide.with(requireContext()).load(it.icon).into(binding.header)
+            binding.pictures.setImageUrls(it.picture)
         }
     }
 

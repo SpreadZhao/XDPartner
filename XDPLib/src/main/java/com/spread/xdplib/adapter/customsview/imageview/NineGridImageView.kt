@@ -47,7 +47,6 @@ class NineGridImageView @JvmOverloads constructor(
         val heightSpan = abs(rows - 1)
         val totalHeight = rows * imageSize + heightSpan * spacing
         setMeasuredDimension(width, totalHeight + paddingTop + paddingBottom)
-        logd("w:${width} h:${totalHeight} + ${paddingTop} + ${paddingBottom}")
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {

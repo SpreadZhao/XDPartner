@@ -13,7 +13,7 @@ data class UserDetail(
     @SerializedName("mbti") val mbti: Int,
     @SerializedName("myDescription")  val myDescription: String,
     @SerializedName("nickName")  val nickName: String,
-    @SerializedName("images") val images: List<String> = emptyList(),
+    @SerializedName("picture") val picture: List<String> = emptyList(),
     @SerializedName("qq") val qq: String
 ) : Parcelable{
 
