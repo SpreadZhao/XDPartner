@@ -123,17 +123,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         return Uri.fromFile(cropFile)
     }
 
-    private fun openCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        photoUri = getDestinationUri()
-        logd("openCamera $photoUri")
-        photoUri =
-                //适配Android 7.0文件权限，通过FileProvider创建一个content类型的Uri
-            FileProvider.getUriForFile(this, "$packageName.fileProvider", File(photoUri.path!!))
-        //android11以后强制分区存储，外部资源无法访问，所以添加一个输出保存位置，然后取值操作
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-        startActivityForResult(intent, REQUEST_CODE_CAMERA)
-    }
+
 
     private fun checkPermission() {
         popupWindow.dismiss()
@@ -162,6 +152,17 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         startActivityForResult(intent, REQUEST_CODE_ALBUM)
     }
 
+    private fun openCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        photoUri = getDestinationUri()
+        logd("openCamera $photoUri")
+        photoUri =
+                //适配Android 7.0文件权限，通过FileProvider创建一个content类型的Uri
+            FileProvider.getUriForFile(this, "$packageName.fileProvider", File(photoUri.path!!))
+        //android11以后强制分区存储，外部资源无法访问，所以添加一个输出保存位置，然后取值操作
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+        startActivityForResult(intent, REQUEST_CODE_CAMERA)
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         logd("onActivityResult->requestCode:$requestCode + resultCode: $resultCode")
@@ -193,9 +194,12 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                         val contentResolver: ContentResolver = contentResolver
                         val inputStream = contentResolver.openInputStream(photoUri)
                         val bitmap = BitmapFactory.decodeStream(inputStream)
-                        logd("REQUEST_CODE_ALBUM->bitmap:$bitmap ")
+                        logd("REQUEST_CODE_CAMERA->bitmap:$bitmap ")
                         binding.imageAdd.setImageBitmap(bitmap)
+                        val file = photoUri.path?.let { File(it) }
+                        logd("REQUEST_CODE_CAMERA->File:$file ")
                         inputStream?.close()
+                        LoginServiceSingle.instance.policy(file!!)
                         // 在这里你已经有了Bitmap对象，可以进行后续操作
                     } catch (e: FileNotFoundException) {
                         // 处理文件未找到的情况

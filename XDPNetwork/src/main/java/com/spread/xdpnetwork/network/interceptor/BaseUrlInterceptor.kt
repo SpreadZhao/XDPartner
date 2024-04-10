@@ -1,5 +1,6 @@
 package com.spread.xdpnetwork.network.interceptor
 
+import com.spread.xdplib.adapter.datamanager.UserManager
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
@@ -17,6 +18,7 @@ class BaseUrlInterceptor : Interceptor {
         request.tag(Invocation::class.java)?.method()?.let { method ->
             method.annotations.forEach { annotation ->
                 if (annotation is BaseUrl) {
+                    newUrl = UserManager.getInstance().getHost()?.toHttpUrlOrNull()
                     newUrl?.let { newHttpUrl ->
                         // 用新的BaseUrl替换原来的BaseUrl
                         val newUrl = request.url.newBuilder()

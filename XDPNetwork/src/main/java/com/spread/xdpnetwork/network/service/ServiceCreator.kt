@@ -14,7 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ServiceCreator {
-    val baseUrlInterceptor = BaseUrlInterceptor()
+    private val baseUrlInterceptor = BaseUrlInterceptor()
     private val okHttpClient =
         OkHttpClient.Builder().addInterceptor(baseUrlInterceptor)
             .addInterceptor(TokenInterceptor()).addInterceptor(LogInterceptor())

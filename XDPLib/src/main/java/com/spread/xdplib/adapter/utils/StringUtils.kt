@@ -4,15 +4,15 @@ object StringUtils {
     /**
      * 获取blog人数，时间，地点对应text
      */
-    fun getBlogPeopleText(people:String,time:String,location:String):String{
+    fun getBlogPeopleText(people:String?,time:String?,location:String?):String{
         val res =""
-        if(people.isEmpty()){
+        if(people.isNullOrEmpty()){
             return res
         }
-        if(time.isEmpty()){
-            return res + people
+        return if(time.isNullOrEmpty()){
+            res + people
         } else{
-            return "$res$people|$time|$location"
+            "$res$people|$time|$location"
         }
     }
 }

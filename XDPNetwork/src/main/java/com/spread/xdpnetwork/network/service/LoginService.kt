@@ -2,10 +2,12 @@ package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.entry.LoginBean
+import com.spread.xdplib.adapter.entry.PolicyBody
 import com.spread.xdpnetwork.network.interceptor.BaseUrl
 import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
+import com.spread.xdpnetwork.network.model.response.PolicyResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 import com.spread.xdpnetwork.network.model.response.ThreadsResponse
 import com.spread.xdpnetwork.network.model.response.UserResponse
@@ -17,6 +19,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 interface LoginService {
     @POST("/wz/user/login")
@@ -83,7 +86,10 @@ interface LoginService {
     @POST("/wz/blog/pubBlog")
     fun pubBlog(@Body bean: BlogBean): Call<BaseResponse>
 
-    @BaseUrl("host")
-    @POST("")
-    fun policy() : Call<BaseResponse>
+    @GET("/wz/api/file/oss/policy")
+    fun policy() : Call<PolicyResponse>
+
+
+    @POST
+    fun pubFile(@Url url: String, @Body bean: PolicyBody): Call<BaseResponse>
 }
