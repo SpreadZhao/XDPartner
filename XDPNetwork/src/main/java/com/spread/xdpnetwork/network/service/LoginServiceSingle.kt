@@ -1,17 +1,21 @@
 package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.constant.MmkvConstant
+import com.spread.xdplib.adapter.constant.StringConstant
 import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.entry.Blog
 import com.spread.xdplib.adapter.entry.BlogBean
+import com.spread.xdplib.adapter.entry.MessageFiendBean
 import com.spread.xdplib.adapter.entry.PolicyBody
 import com.spread.xdplib.adapter.entry.UserDetail
 import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.MmkvUtil
+import com.spread.xdplib.adapter.utils.StringUtils
 import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdpnetwork.network.BasicThreadingCallback
 import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
+import com.spread.xdpnetwork.network.model.response.ConnectResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
 import com.spread.xdpnetwork.network.model.response.PolicyResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
@@ -182,10 +186,11 @@ class LoginServiceSingle private constructor() {
 //                callback.invoke(it.body()!!.data)
                 logd("policy ${it.body()!!.data}")
                 val data = it.body()!!.data
+                val signature = StringUtils.calculateSignature(data.policy, StringConstant.AccessKeySecret)
                 val body = PolicyBody(
                     key = data.dir + file.name,
-                    policy = data.policy,
-                    signature = data.signature,
+                    policy = StringUtils.encodeToBase64(data.policy),
+                    signature = signature,
                     success_action_status = "200",
                     OSSAccessKeyId = data.accessid,
                     file = file
@@ -197,6 +202,14 @@ class LoginServiceSingle private constructor() {
                         logd("policy ${it.body()!!.data}")
                     }
                 }) {})
+            }
+        }) {})
+    }
+
+    fun connect(callback: (data: List<MessageFiendBean>) -> Unit){
+        service.connect().enqueue(object : BasicThreadingCallback<ConnectResponse>({
+            if (it.code() == 200) {
+                callback.invoke(it.body()!!.data)
             }
         }) {})
     }

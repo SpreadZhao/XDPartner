@@ -2,10 +2,12 @@ package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.entry.LoginBean
+import com.spread.xdplib.adapter.entry.MessageFiendBean
 import com.spread.xdplib.adapter.entry.PolicyBody
 import com.spread.xdpnetwork.network.interceptor.BaseUrl
 import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
+import com.spread.xdpnetwork.network.model.response.ConnectResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
 import com.spread.xdpnetwork.network.model.response.PolicyResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
@@ -92,4 +94,7 @@ interface LoginService {
 
     @POST
     fun pubFile(@Url url: String, @Body bean: PolicyBody): Call<BaseResponse>
+
+    @GET("/wz/message/connect")
+    fun connect(): Call<ConnectResponse>
 }

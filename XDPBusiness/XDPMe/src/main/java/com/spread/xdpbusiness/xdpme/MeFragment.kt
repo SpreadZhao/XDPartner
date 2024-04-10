@@ -19,12 +19,13 @@ class MeFragment : BaseViewBindingFragment<FragmentMeBinding>() {
     }
 
     private fun searchDetail(){
-        LoginServiceSingle.instance.queryOther(17){
+        LoginServiceSingle.instance.queryOther(35){
             binding.layoutPerson.initTextView(it)
             binding.tvPerson.text = "个人简介：${it.myDescription}"
             Glide.with(requireContext()).load(it.icon).into(binding.header)
             binding.pictures.setImageUrls(it.picture)
         }
+        binding.layoutPerson.intList(35)
     }
 
     override fun onDestroy() {
