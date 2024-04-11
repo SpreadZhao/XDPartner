@@ -6,14 +6,17 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.bumptech.glide.Glide
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
 import com.spread.xdplib.adapter.constant.ArouterUtil
+import com.spread.xdplib.adapter.entry.UserDetail
+import com.spread.xdplib.adapter.utils.PageUtil
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import com.spread.xdppersondetail.databinding.ActivityPersonDetailBinding
 
 @Route(path = ArouterUtil.PATH_ACTIVITY_PERSON_DETAIL)
 class PersonDetailActivity : BaseViewBindingActivity<ActivityPersonDetailBinding>() {
-    @Autowired(name = "keyUserId")
+    @Autowired(name = ArouterUtil.KEY_USERID)
     @JvmField
     var keyUserId: Long = 0
+    private var userDetail :UserDetail? = null
     override fun getViewBinding(): ActivityPersonDetailBinding {
         return ActivityPersonDetailBinding.inflate(layoutInflater)
     }
@@ -23,14 +26,26 @@ class PersonDetailActivity : BaseViewBindingActivity<ActivityPersonDetailBinding
         binding.titleBar.setLeftListener {
             finish()
         }
+        binding.message.setOnClickListener{
+
+        }
+        binding.add.setOnClickListener{
+            userDetail?.let {
+                PageUtil.gotoActivityWithUserIdAndUserDetail(ArouterUtil.PATH_ACTIVITY_ADD_FRIEND,keyUserId,it)
+            }
+
+        }
         searchDetail()
     }
     private fun searchDetail(){
         LoginServiceSingle.instance.queryOther(keyUserId){
+            userDetail = it
+            binding.layoutPerson.intList(keyUserId)
             binding.layoutPerson.initTextView(it)
             binding.description.text = "个人简介：${it.myDescription}"
             binding.name.text = it.nickName
             Glide.with(this).load(it.icon).into(binding.header)
+            binding.pictures.setImageUrls(it.picture)
         }
     }
 }

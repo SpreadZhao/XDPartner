@@ -1,16 +1,26 @@
 package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.constant.MmkvConstant
+import com.spread.xdplib.adapter.constant.StringConstant
+import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.entry.Blog
+import com.spread.xdplib.adapter.entry.BlogBean
+import com.spread.xdplib.adapter.entry.MessageFiendBean
+import com.spread.xdplib.adapter.entry.PolicyBody
 import com.spread.xdplib.adapter.entry.UserDetail
 import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.MmkvUtil
+import com.spread.xdplib.adapter.utils.StringUtils
+import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdpnetwork.network.BasicThreadingCallback
 import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
+import com.spread.xdpnetwork.network.model.response.ConnectResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
+import com.spread.xdpnetwork.network.model.response.PolicyResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 import com.spread.xdpnetwork.network.model.response.UserResponse
+import java.io.File
 
 
 class LoginServiceSingle private constructor() {
@@ -63,8 +73,6 @@ class LoginServiceSingle private constructor() {
                         }
                     }
                 ) {})
-        } else if (position == 3){
-
         }
 
     }
@@ -89,7 +97,7 @@ class LoginServiceSingle private constructor() {
     }
 
     fun searchBlog(current: Int, msg: String, callback: ((data: List<Blog>) -> Unit)) {
-        service.searchBlog(current,msg).enqueue(object :
+        service.searchBlog(current, msg).enqueue(object :
             BasicThreadingCallback<BlogsResponse>(
                 {
                     if (it.code() == 200) {
@@ -100,13 +108,18 @@ class LoginServiceSingle private constructor() {
 
     }
 
-    fun searchTagWordByTypeId(current: Int, type: Int,msg:String, callback: ((data: List<Blog>) -> Unit)) {
+    fun searchTagWordByTypeId(
+        current: Int,
+        type: Int,
+        msg: String,
+        callback: ((data: List<Blog>) -> Unit)
+    ) {
 //        val hashMap = HashMap<String,String>()
 //        hashMap["string"] = msg
 //        val gson = Gson()
 //        val json = gson.toJson(hashMap)
 //        val body = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-        service.searchTagWordByTypeId(current,type,msg).enqueue(object :
+        service.searchTagWordByTypeId(current, type, msg).enqueue(object :
             BasicThreadingCallback<BlogsResponse>(
                 {
                     if (it.code() == 200) {
@@ -116,13 +129,14 @@ class LoginServiceSingle private constructor() {
             ) {})
 
     }
-    fun queryOnesBlog(current: Int, userId: Int, callback: ((data: List<Blog>) -> Unit)) {
+
+    fun queryOnesBlog(current: Int, userId: Long, callback: ((data: List<Blog>) -> Unit)) {
 //        val hashMap = HashMap<String,String>()
 //        hashMap["string"] = msg
 //        val gson = Gson()
 //        val json = gson.toJson(hashMap)
 //        val body = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-        service.queryOnesBlog(current,userId).enqueue(object :
+        service.queryOnesBlog(current, userId).enqueue(object :
             BasicThreadingCallback<BlogsResponse>(
                 {
                     if (it.code() == 200) {
@@ -132,12 +146,71 @@ class LoginServiceSingle private constructor() {
             ) {})
     }
 
-    fun queryOther(userId: Long,callback: ((userDetail:UserDetail) -> Unit)){
-        service.queryOther(userId).enqueue(object :BasicThreadingCallback<UserResponse>({
+    fun queryOther(userId: Long, callback: ((userDetail: UserDetail) -> Unit)) {
+        service.queryOther(userId).enqueue(object : BasicThreadingCallback<UserResponse>({
             if (it.code() == 200) {
                 callback.invoke(it.body()!!.data)
             }
-        }){})
+        }) {})
     }
 
+    fun makeFriend(friendId: Int, message: String, callback: ((msg: String) -> Unit)) {
+        service.makeFriend(friendId, message)
+            .enqueue(object : BasicThreadingCallback<BaseResponse>({
+                if (it.code() == 200) {
+                    callback.invoke(it.body()!!.data)
+                }
+            }) {})
+    }
+
+    fun changeFriendAlterName(friendId: Int, message: String, callback: ((msg: String) -> Unit)) {
+        service.changeFriendAlterName(friendId, message)
+            .enqueue(object : BasicThreadingCallback<BaseResponse>({
+                if (it.code() == 200) {
+                    callback.invoke(it.body()!!.data)
+                }
+            }) {})
+    }
+
+    fun pubBlog(bean: BlogBean, callback: ((msg: String) -> Unit)) {
+        service.pubBlog(bean).enqueue(object : BasicThreadingCallback<BaseResponse>({
+            if (it.code() == 200) {
+                callback.invoke(it.body()!!.data)
+            }
+        }) {})
+    }
+
+    fun policy(file: File) {
+        service.policy().enqueue(object : BasicThreadingCallback<PolicyResponse>({
+            if (it.code() == 200) {
+//                callback.invoke(it.body()!!.data)
+                logd("policy ${it.body()!!.data}")
+                val data = it.body()!!.data
+                val signature = StringUtils.calculateSignature(data.policy, StringConstant.AccessKeySecret)
+                val body = PolicyBody(
+                    key = data.dir + file.name,
+                    policy = StringUtils.encodeToBase64(data.policy),
+                    signature = signature,
+                    success_action_status = "200",
+                    OSSAccessKeyId = data.accessid,
+                    file = file
+                )
+                UserManager.getInstance().saveHost(data.host)
+                // todo 接口调试
+                service.pubFile(data.host,body).enqueue(object : BasicThreadingCallback<BaseResponse>({
+                    if (it.code() == 200) {
+                        logd("policy ${it.body()!!.data}")
+                    }
+                }) {})
+            }
+        }) {})
+    }
+
+    fun connect(callback: (data: List<MessageFiendBean>) -> Unit){
+        service.connect().enqueue(object : BasicThreadingCallback<ConnectResponse>({
+            if (it.code() == 200) {
+                callback.invoke(it.body()!!.data)
+            }
+        }) {})
+    }
 }

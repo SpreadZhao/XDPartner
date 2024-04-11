@@ -22,7 +22,8 @@
         app:layout_constraintEnd_toStartOf="@id/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="22sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
     <ImageView
         android:id="@+id/ic_add"
         android:layout_width="24dp"

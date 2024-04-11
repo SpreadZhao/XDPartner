@@ -11,7 +11,7 @@ class TokenInterceptor:Interceptor {
         val token = MmkvUtil.getString(MmkvConstant.MMKV_KEY_TOKEN)
 
         // 如果Token存在，将其添加到请求头中
-        val request = if (token != null) {
+        val request = if (token == null) {
             original.newBuilder()
                 .header("token", "12345678")
                 .method(original.method, original.body)

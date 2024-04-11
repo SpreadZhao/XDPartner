@@ -12,7 +12,6 @@ import java.io.IOException
 import java.nio.charset.Charset
 import java.nio.charset.UnsupportedCharsetException
 
-
 class LogInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Chain): Response {
@@ -31,13 +30,10 @@ class LogInterceptor : Interceptor {
             }
             reqBody = buffer.readString(charset)
         }
-        Log.d(
-           TAG, java.lang.String.format(
-                "发送请求\nmethod：%s\nurl：%s\nheaders: %s\nbody：%s",
-                request.method, request.url, request.headers, reqBody
-            )
-        )
-
+        Log.d(TAG, String.format("发送请求 method：%s", request.method))
+        Log.d(TAG, String.format( "url：%s",request.url))
+        Log.d(TAG, String.format( "headers: %s",request.headers))
+        (reqBody)?.let {Log.d(TAG, it)}
         // 打印返回报文
         // 先执行请求，才能够获取报文
         val response: Response = chain.proceed(request)
@@ -58,12 +54,11 @@ class LogInterceptor : Interceptor {
             }
             respBody = buffer.clone().readString(charset)
         }
-        Log.d(
-            TAG, java.lang.String.format(
-                "收到响应\n%s %s\n请求url：%s\n请求body：%s\n响应body：%s",
-                response.code, response.message, response.request.url, reqBody, respBody
-            )
-        )
+
+        Log.d(TAG, String.format("收到响应 method：%s %s", request.method,response.message))
+        Log.d(TAG, String.format( "url：%s",request.url))
+        Log.d(TAG, String.format( "请求body: %s",reqBody))
+        Log.d(TAG, String.format( "响应body: %s",respBody))
         return response
     }
 

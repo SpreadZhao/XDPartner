@@ -9,6 +9,7 @@ import com.spread.xdpbusiness.xdpsearch.databinding.ActivitySearchTypeBinding
 import com.spread.xdpcommon.BlogListAdapter
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
 import com.spread.xdplib.adapter.constant.ArouterUtil
+import com.spread.xdplib.adapter.constant.MapUtil
 import com.spread.xdplib.adapter.datamanager.PageCurrentDataManager
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 
@@ -60,14 +61,7 @@ class SearchByTypeActivity : BaseViewBindingActivity<ActivitySearchTypeBinding>(
         }
     }
     private fun setTitle() {
-        val title = when (searchType) {
-            1 -> "学习"
-            2 -> "娱乐"
-            3 -> "恋爱"
-            4 -> "生活"
-            else -> { "学习" }
-        }
-        binding.title.setTitleText(title)
+        binding.title.setTitleText(MapUtil.getTypeName(searchType))
     }
 
     override fun onStop() {

@@ -5,6 +5,7 @@ import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.facade.callback.NavigationCallback
 import com.alibaba.android.arouter.launcher.ARouter
 import com.spread.xdplib.adapter.constant.ArouterUtil
+import com.spread.xdplib.adapter.entry.UserDetail
 
 object PageUtil {
     fun gotoActivity(url:String){
@@ -16,6 +17,11 @@ object PageUtil {
     }
     fun gotoActivityWithUserId(url:String, keyUserId:Long){
         ARouter.getInstance().build(url).withLong(ArouterUtil.KEY_USERID,keyUserId).navigation()
+    }
+    fun gotoActivityWithUserIdAndUserDetail(url:String, keyUserId:Long,userDetail: UserDetail){
+        ARouter.getInstance().build(url)
+            .withLong(ArouterUtil.KEY_USERID,keyUserId)
+            .withParcelable(ArouterUtil.KEY_USER_DETAIL,userDetail).navigation()
     }
     fun gotoActivityIfExist(activity: Activity, url:String){
         ARouter.getInstance().build(url).navigation(activity,object : NavigationCallback{

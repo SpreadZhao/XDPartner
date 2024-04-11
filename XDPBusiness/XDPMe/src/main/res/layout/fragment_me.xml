@@ -48,6 +48,11 @@
         android:textColor="@color/share_gray"
         android:text="个人简介:"
         />
+    <com.spread.xdplib.adapter.customsview.imageview.NineGridImageView
+        android:id="@+id/pictures"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_height="wrap_content" />
     <com.spread.xdpcommon.PersonDetailLayout
         android:id="@+id/layout_person"
         android:layout_width="match_parent"

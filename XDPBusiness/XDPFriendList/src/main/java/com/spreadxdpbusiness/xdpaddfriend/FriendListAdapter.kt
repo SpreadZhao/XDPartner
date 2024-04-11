@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.spread.xdplib.adapter.constant.ArouterUtil
 import com.spread.xdplib.adapter.entry.UserVo
+import com.spread.xdplib.adapter.utils.PageUtil
+import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spreadxdpbusiness.friendlist.databinding.ItemFriendBinding
 
 class FriendListAdapter(private val context: Context) : RecyclerView.Adapter<FriendListAdapter.FriendViewHolder>(){
@@ -29,6 +32,10 @@ class FriendListAdapter(private val context: Context) : RecyclerView.Adapter<Fri
         holder.binding.name.text = items[position].nickName
         holder.binding.root.setOnClickListener{
             mClickListener?.invoke(items[position].id)
+        }
+        holder.binding.settings.setOnClickListener {
+            logd("test:${items[position].id}")
+            PageUtil.gotoActivityWithUserId(ArouterUtil.PATH_ACTIVITY_FRIEND_SETTING,items[position].id)
         }
     }
 

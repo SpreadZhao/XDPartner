@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -30,7 +31,9 @@ import com.spread.xdpartner.test.adapter.TestAdapterType
 import com.spread.xdplib.adapter.MultiTypeAdapter
 import com.spread.xdplib.adapter.MultiTypeData
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
+import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.utils.TestLogger.logd
+import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -42,64 +45,6 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
 
     //相机拍照保存的位置
     private lateinit var photoUri: Uri
-    private var typeText: String = ""
-    private var sizeText: String = ""
-    private var timeText: String = ""
-    private var placeText: String = ""
-    private val dataSet = listOf(
-        MultiTypeData(
-            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
-            EditTextAdapter.EditData(typeText,true,"#剧本杀#来电", object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    p0?.let {
-                        typeText = p0.toString()
-                        logd("typeText $typeText")
-                    }
-                }
-                override fun afterTextChanged(p0: Editable?) {}
-            })
-        ),
-        MultiTypeData(
-            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
-            EditTextAdapter.EditData(sizeText,true,"请输入几缺几", object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    p0?.let {
-                        sizeText = p0.toString()
-                        logd("几缺几 $sizeText")
-                    }
-                }
-                override fun afterTextChanged(p0: Editable?) {}
-            })
-        ),
-        MultiTypeData(
-            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
-            EditTextAdapter.EditData(timeText,false,"请输入时间", object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    p0?.let {
-                        timeText = p0.toString()
-                        logd("时间 $timeText")
-                    }
-                }
-                override fun afterTextChanged(p0: Editable?) {}
-            })
-        ),
-        MultiTypeData(
-            TestAdapterType.ADAPTER_TYPE_EDIT_TEXT,
-            EditTextAdapter.EditData(placeText,false,"请输入地点", object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    p0?.let {
-                        placeText = p0.toString()
-                        logd("地点 $placeText")
-                    }
-                }
-                override fun afterTextChanged(p0: Editable?) {}
-            })
-        ),
-    )
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1000 //权限
@@ -117,10 +62,10 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
             ViewGroup.LayoutParams.WRAP_CONTENT,
             true
         ).apply {
-                showAtLocation(binding.layoutParent, Gravity.BOTTOM, 0, 0)
-                setBackgroundDrawable(resources.getDrawable(com.spread.xdplib.R.color.white))
-                setOnDismissListener { setAlpha(1.0f) }
-            }
+            showAtLocation(binding.layoutParent, Gravity.BOTTOM, 0, 0)
+            setBackgroundDrawable(resources.getDrawable(com.spread.xdplib.R.color.white))
+            setOnDismissListener { setAlpha(1.0f) }
+        }
         setAlpha(0.3f)
         //把背景还原
         initPopupView()
@@ -140,29 +85,10 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
 
     override fun initView() {
         binding.imageAdd.setOnClickListener(this)
-        binding.back.setOnClickListener{
+        binding.back.setOnClickListener {
             finish()
         }
-        initRecyclerView()
-    }
-
-
-    private fun initRecyclerView() {
-        val layoutManager = LinearLayoutManager(this).apply {
-            isItemPrefetchEnabled = false // 禁止预获取
-            orientation = RecyclerView.VERTICAL
-        }
-        val adapter = MultiTypeAdapter().apply {
-            configDataSet(dataSet)
-            addSubAdapter(TestAdapterType.ADAPTER_TYPE_EDIT_TEXT, EditTextAdapter())
-        }
-        val recyclerView = binding.listEdit.apply {
-            setHasFixedSize(true)
-            setItemViewCacheSize(0)
-            this.layoutManager = layoutManager
-            this.adapter = adapter
-            addItemDecoration( DividerItemDecoration(this@AddNoteActivity, DividerItemDecoration.VERTICAL))
-        }
+        binding.buttonPublish.setOnClickListener(this)
     }
 
     override fun getViewBinding(): ActivityAddnoteBinding {
@@ -175,6 +101,19 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
             R.id.button_cancel -> popupWindow.dismiss()
             R.id.button_photo -> openPhoto()
             R.id.button_camera -> checkPermission()
+            R.id.button_publish -> publishBlog()
+        }
+    }
+
+    private fun publishBlog() {
+        val absent = binding.personEdit.text.toString()
+        val title = binding.titleEdit.text.toString()
+        val content = binding.desEdit.text.toString()
+        val location = binding.locationEdit.text.toString()
+        val mutableList = mutableListOf<String>().apply { add(binding.tagEdit.text.toString()) }
+        val blogBean = BlogBean(absent = absent,title=title,content=content,location=location, lowTags = mutableList.toList())
+        LoginServiceSingle.instance.pubBlog(blogBean){
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -184,17 +123,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         return Uri.fromFile(cropFile)
     }
 
-    private fun openCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        photoUri = getDestinationUri()
-        logd("openCamera $photoUri")
-        photoUri =
-                //适配Android 7.0文件权限，通过FileProvider创建一个content类型的Uri
-            FileProvider.getUriForFile(this, "$packageName.fileProvider", File(photoUri.path!!))
-        //android11以后强制分区存储，外部资源无法访问，所以添加一个输出保存位置，然后取值操作
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-        startActivityForResult(intent, REQUEST_CODE_CAMERA)
-    }
+
 
     private fun checkPermission() {
         popupWindow.dismiss()
@@ -223,6 +152,17 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         startActivityForResult(intent, REQUEST_CODE_ALBUM)
     }
 
+    private fun openCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        photoUri = getDestinationUri()
+        logd("openCamera $photoUri")
+        photoUri =
+                //适配Android 7.0文件权限，通过FileProvider创建一个content类型的Uri
+            FileProvider.getUriForFile(this, "$packageName.fileProvider", File(photoUri.path!!))
+        //android11以后强制分区存储，外部资源无法访问，所以添加一个输出保存位置，然后取值操作
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+        startActivityForResult(intent, REQUEST_CODE_CAMERA)
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         logd("onActivityResult->requestCode:$requestCode + resultCode: $resultCode")
@@ -254,9 +194,12 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                         val contentResolver: ContentResolver = contentResolver
                         val inputStream = contentResolver.openInputStream(photoUri)
                         val bitmap = BitmapFactory.decodeStream(inputStream)
-                        logd("REQUEST_CODE_ALBUM->bitmap:$bitmap ")
+                        logd("REQUEST_CODE_CAMERA->bitmap:$bitmap ")
                         binding.imageAdd.setImageBitmap(bitmap)
+                        val file = photoUri.path?.let { File(it) }
+                        logd("REQUEST_CODE_CAMERA->File:$file ")
                         inputStream?.close()
+                        LoginServiceSingle.instance.policy(file!!)
                         // 在这里你已经有了Bitmap对象，可以进行后续操作
                     } catch (e: FileNotFoundException) {
                         // 处理文件未找到的情况

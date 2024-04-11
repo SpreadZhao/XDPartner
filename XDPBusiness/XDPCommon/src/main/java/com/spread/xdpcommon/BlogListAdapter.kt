@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.spread.xdplib.adapter.constant.ArouterUtil
 import com.spread.xdplib.adapter.entry.Blog
+import com.spread.xdplib.adapter.utils.PageUtil
 import com.spread.xdplib.adapter.utils.StringUtils
 import com.spread.xdplib.databinding.LayoutBlogBinding
 import com.spread.xdplib.databinding.LayoutFootviewBinding
@@ -22,7 +24,10 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
     private val TYPE_ITEMVIEW: Int = 2 //item类型：itemview
     private var typeItem = TYPE_ITEMVIEW
     private var showFinished = false
-
+    private var isHeaderClickable = true
+    fun setHeaderClick(clickable:Boolean){
+        isHeaderClickable = clickable
+    }
     //定义footview附加到Window上时的回调
     private lateinit var footViewAttachedToWindowListener: () -> Unit
     fun setOnFootViewAttachedToWindowListener(pListener: () -> Unit) {
@@ -70,33 +75,44 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
                     tvLovePerson.text = blog.liked.toString()
                     tvPerson.text = blog.viewTimes.toString()
                     ivTitle.text = blog.title
-                    val message = StringUtils.getBlogPeopleText(blog.absent,blog.whenMeet,blog.location)
-                    if(message.isEmpty()){
+                    val message =
+                        StringUtils.getBlogPeopleText(blog.absent, blog.whenMeet, blog.location)
+                    if (message.isEmpty()) {
                         ivMessage.visibility = View.GONE
-                    }else {
+                    } else {
                         ivMessage.visibility = View.VISIBLE
                         ivMessage.text = message
                     }
-                    if (blog.images.isNotEmpty()) {
-                        Glide.with(context).load(blog.images[0]).transform(CenterCrop())
-                            .into(ivImage)
-                        if (blog.images.size >= 2) {
-                            Glide.with(context).load(blog.images[1]).transform(CenterCrop())
-                                .into(ivImage2)
-                        }
-                    } else {
-                        ivImage.visibility = View.GONE
-                        ivImage2.visibility = View.GONE
-                    }
+//                    if (blog.images.isNotEmpty()) {
+//                        Glide.with(context).load(blog.images[0]).transform(CenterCrop())
+//                            .into(ivImage)
+//                        if (blog.images.size >= 2) {
+//                            Glide.with(context).load(blog.images[1]).transform(CenterCrop())
+//                                .into(ivImage2)
+//                        }
+//                    } else {
+//                        ivImage.visibility = View.GONE
+//                        ivImage2.visibility = View.GONE
+//                    }
+                    ivImage.setImageUrls(blog.images)
                     Glide.with(context).load(it[position].userVo.icon).transform(CenterCrop())
                         .into(ivHeader)
                     ivLove.setOnClickListener {
                         LoginServiceSingle.instance.likeBlog(blog.id) {
-                            Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                             ivLove.isSelected = !ivLove.isSelected
-                            if(ivLove.isSelected) tvLovePerson.text = String.format("%d", (tvLovePerson.text.toString().toInt() +1))
-                            else tvLovePerson.text = String.format("%d", (tvLovePerson.text.toString().toInt() - 1))
+                            if (ivLove.isSelected) tvLovePerson.text =
+                                String.format("%d", (tvLovePerson.text.toString().toInt() + 1))
+                            else tvLovePerson.text =
+                                String.format("%d", (tvLovePerson.text.toString().toInt() - 1))
                         }
+                    }
+                    ivHeader.setOnClickListener {
+                        if (isHeaderClickable)
+                            PageUtil.gotoActivityWithUserId(
+                                ArouterUtil.PATH_ACTIVITY_PERSON_DETAIL,
+                                blog.userVo.id
+                            )
                     }
                 }
             }
