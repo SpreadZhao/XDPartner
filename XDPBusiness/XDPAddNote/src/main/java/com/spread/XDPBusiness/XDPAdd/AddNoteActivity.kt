@@ -36,16 +36,16 @@ import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.io.IOException
 
 
 class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.OnClickListener {
-    lateinit var popupWindow: PopupWindow
-    var popupView: View? = null
-
+    private lateinit var popupWindow: PopupWindow
+    private var popupView: View? = null
     //相机拍照保存的位置
     private lateinit var photoUri: Uri
-
+    private var mFile:File?=null
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1000 //权限
         private const val REQUEST_CODE_ALBUM = 1001 //相册
@@ -106,15 +106,28 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
     }
 
     private fun publishBlog() {
-        val absent = binding.personEdit.text.toString()
-        val title = binding.titleEdit.text.toString()
-        val content = binding.desEdit.text.toString()
-        val location = binding.locationEdit.text.toString()
-        val mutableList = mutableListOf<String>().apply { add(binding.tagEdit.text.toString()) }
-        val blogBean = BlogBean(absent = absent,title=title,content=content,location=location, lowTags = mutableList.toList())
-        LoginServiceSingle.instance.pubBlog(blogBean){
-            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+        mFile?.let { file ->
+            LoginServiceSingle.instance.policy(file) {
+            val absent = binding.personEdit.text.toString()
+            val title = binding.titleEdit.text.toString()
+            val content = binding.desEdit.text.toString()
+            val location = binding.locationEdit.text.toString()
+            val mutableList = mutableListOf<String>().apply { add(binding.tagEdit.text.toString()) }
+            val imageList = mutableListOf<String>().apply { add(it) }
+            val blogBean = BlogBean(
+                absent = absent,
+                title = title,
+                content = content,
+                location = location,
+                lowTags = mutableList.toList(),
+                imageList = imageList
+            )
+            LoginServiceSingle.instance.pubBlog(blogBean) {msg ->
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
         }
+        }
+
     }
 
     private fun getDestinationUri(): Uri {
@@ -122,8 +135,6 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         val cropFile = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName)
         return Uri.fromFile(cropFile)
     }
-
-
 
     private fun checkPermission() {
         popupWindow.dismiss()
@@ -178,6 +189,8 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                         binding.imageAdd.setImageBitmap(bitmap)
                         inputStream?.close()
                         // 在这里你已经有了Bitmap对象，可以进行后续操作
+                        data?.data?.let { getFileByUrl(it) }
+
                     } catch (e: FileNotFoundException) {
                         // 处理文件未找到的情况
                         e.printStackTrace()
@@ -196,10 +209,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                         val bitmap = BitmapFactory.decodeStream(inputStream)
                         logd("REQUEST_CODE_CAMERA->bitmap:$bitmap ")
                         binding.imageAdd.setImageBitmap(bitmap)
-                        val file = photoUri.path?.let { File(it) }
-                        logd("REQUEST_CODE_CAMERA->File:$file ")
-                        inputStream?.close()
-                        LoginServiceSingle.instance.policy(file!!)
+                        getFileByUrl(photoUri)
                         // 在这里你已经有了Bitmap对象，可以进行后续操作
                     } catch (e: FileNotFoundException) {
                         // 处理文件未找到的情况
@@ -208,10 +218,24 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                         // 处理输入输出异常
                         e.printStackTrace()
                     }
-                    var bitmap = BitmapFactory.decodeFile(photoUri.toString())
                 }
 
             }
         }
     }
+
+    private fun getFileByUrl(uri: Uri){
+        val contentResolver: ContentResolver = contentResolver
+        val photoFile = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "photo_${System.currentTimeMillis()}.jpg")
+        // 创建一个文件输出流来写入文件
+        val outputStream = FileOutputStream(photoFile)
+        // 将输入流的内容复制到输出流，即保存到文件中
+        val inputStreamPhoto = contentResolver.openInputStream(uri)
+        inputStreamPhoto?.copyTo(outputStream)
+        // 关闭流
+        inputStreamPhoto?.close()
+        outputStream.close()
+        mFile = photoFile
+    }
+
 }

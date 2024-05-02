@@ -13,12 +13,18 @@ import com.spread.xdpnetwork.network.model.response.PolicyResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 import com.spread.xdpnetwork.network.model.response.ThreadsResponse
 import com.spread.xdpnetwork.network.model.response.UserResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
@@ -89,11 +95,15 @@ interface LoginService {
     fun pubBlog(@Body bean: BlogBean): Call<BaseResponse>
 
     @GET("/wz/api/file/oss/policy")
-    fun policy() : Call<PolicyResponse>
+    fun policy(): Call<PolicyResponse>
 
-
+    @Multipart
     @POST
-    fun pubFile(@Url url: String, @Body bean: PolicyBody): Call<BaseResponse>
+    fun pubFile(
+        @Url url: String,
+        @PartMap requestBodyMap: MutableMap<String, RequestBody>,
+        @Part file: MultipartBody.Part
+    ): Call<ResponseBody>
 
     @GET("/wz/message/connect")
     fun connect(): Call<ConnectResponse>

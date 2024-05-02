@@ -36,6 +36,7 @@ open class BasicThreadingCallback<T : XDPartnerResponse>(
 
   override fun onFailure(call: Call<T>, t: Throwable) {
     logd("failure ${t.message} + , + ${t.javaClass}" )
+    logd("failure $t" )
     t.printStackTrace()
   }
 }
