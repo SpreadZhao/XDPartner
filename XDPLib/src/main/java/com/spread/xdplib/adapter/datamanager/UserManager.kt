@@ -18,6 +18,9 @@ class UserManager private constructor(){
     fun saveHost(host:String){
         MmkvUtil.put(MmkvConstant.MMKV_KEY_HOST,host)
     }
+    fun getUserId(): Int {
+        return MmkvUtil.getInt(MmkvConstant.MMKV_KEY_USERID)
+    }
     fun getHost(): String? {
         return MmkvUtil.getString(MmkvConstant.MMKV_KEY_HOST)
     }

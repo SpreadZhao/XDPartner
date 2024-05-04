@@ -30,3 +30,12 @@ data class UserVo (
     @SerializedName("id")  val id: Long,
     @SerializedName("nickName")  val nickName: String
 ) : Parcelable
+
+data class MessageBean @JvmOverloads constructor(
+    @SerializedName("command") val command: Int,
+    @SerializedName("content")  val content: String,
+    @SerializedName("createTime")  val createTime: String,
+    @SerializedName("fromId")  val fromId: Long,
+    @SerializedName("toId")  val toId: Long,
+    @SerializedName("type")  val type: String,
+)

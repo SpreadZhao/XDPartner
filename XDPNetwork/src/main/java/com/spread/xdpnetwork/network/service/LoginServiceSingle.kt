@@ -6,6 +6,7 @@ import com.spread.xdplib.adapter.constant.MmkvConstant
 import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.entry.Blog
 import com.spread.xdplib.adapter.entry.BlogBean
+import com.spread.xdplib.adapter.entry.MessageBean
 import com.spread.xdplib.adapter.entry.MessageFiendBean
 import com.spread.xdplib.adapter.entry.PolicyBody
 import com.spread.xdplib.adapter.entry.UserDetail
@@ -240,6 +241,14 @@ class LoginServiceSingle private constructor() {
     }
     fun connect(callback: (data: List<MessageFiendBean>) -> Unit){
         service.connect().enqueue(object : BasicThreadingCallback<ConnectResponse>({
+            if (it.code() == 200) {
+                callback.invoke(it.body()!!.data)
+            }
+        }) {})
+    }
+
+    fun sendMessage(bean: MessageBean,callback: ((msg: String) -> Unit)){
+        service.sendMessage(bean).enqueue(object : BasicThreadingCallback<BaseResponse>({
             if (it.code() == 200) {
                 callback.invoke(it.body()!!.data)
             }

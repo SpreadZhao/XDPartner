@@ -2,6 +2,7 @@ package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.entry.LoginBean
+import com.spread.xdplib.adapter.entry.MessageBean
 import com.spread.xdplib.adapter.entry.MessageFiendBean
 import com.spread.xdplib.adapter.entry.PolicyBody
 import com.spread.xdpnetwork.network.interceptor.BaseUrl
@@ -107,4 +108,7 @@ interface LoginService {
 
     @GET("/wz/message/connect")
     fun connect(): Call<ConnectResponse>
+
+    @POST("/wz/message/sendMessage")
+    fun sendMessage(@Body bean: MessageBean):Call<BaseResponse>
 }
