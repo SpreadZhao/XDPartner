@@ -1,6 +1,8 @@
 package com.spread.xdplib.adapter.entry
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 
 data class Blog (
@@ -22,9 +24,9 @@ data class Blog (
     @SerializedName("viewTimes")  val viewTimes: Long,
     @SerializedName("whenMeet")  val whenMeet: String
 )
-
+@Parcelize
 data class UserVo (
     @SerializedName("icon") val icon: String,
     @SerializedName("id")  val id: Long,
     @SerializedName("nickName")  val nickName: String
-)
+) : Parcelable

@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import androidx.core.animation.addListener
 
 class RollingEditText : androidx.appcompat.widget.AppCompatEditText {
-
+    private var isOpen = true
     var currRollingHint = ""
         set(value) {
             field = value
@@ -21,9 +21,19 @@ class RollingEditText : androidx.appcompat.widget.AppCompatEditText {
     private var currBounds = getLineBounds(0, null).toFloat()
 
     constructor(context: Context) : this(context, null)
+
     // 注意android.R.attr.editTextStyle，不能写成0
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, android.R.attr.editTextStyle)
-    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+    constructor(context: Context, attrs: AttributeSet?) : this(
+        context,
+        attrs,
+        android.R.attr.editTextStyle
+    )
+
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    )
 
     init {
         mPaint.apply {
@@ -48,31 +58,38 @@ class RollingEditText : androidx.appcompat.widget.AppCompatEditText {
     }
 
     fun rollingTo(newHint: String) {
-        val baseBounds = getLineBounds(0, null).toFloat()
-        val lenHeight = measuredHeight
-        val animOut = ValueAnimator.ofFloat(baseBounds, baseBounds - lenHeight)
-        animOut.addUpdateListener {
-            currBounds = it.animatedValue as? Float ?: return@addUpdateListener
-            invalidate()
-        }
-        animOut.addListener(
-            onStart = { useCurrBounds = true },
-            onEnd = {
-                currRollingHint = newHint
-                val animIn = ValueAnimator.ofFloat(baseBounds + lenHeight, baseBounds)
-                animIn.addUpdateListener { animator ->
-                    currBounds = animator.animatedValue as? Float ?: return@addUpdateListener
-                    invalidate()
-                }
-                animIn.addListener(
-                    onEnd = { useCurrBounds = false }
-                )
-                animIn.duration = 200
-                animIn.start()
+        if (isOpen) {
+            val baseBounds = getLineBounds(0, null).toFloat()
+            val lenHeight = measuredHeight
+            val animOut = ValueAnimator.ofFloat(baseBounds, baseBounds - lenHeight)
+            animOut.addUpdateListener {
+                currBounds = it.animatedValue as? Float ?: return@addUpdateListener
+                invalidate()
             }
-        )
-        animOut.duration = 200
-        animOut.start()
+            animOut.addListener(
+                onStart = { useCurrBounds = true },
+                onEnd = {
+                    currRollingHint = newHint
+                    val animIn = ValueAnimator.ofFloat(baseBounds + lenHeight, baseBounds)
+                    animIn.addUpdateListener { animator ->
+                        currBounds = animator.animatedValue as? Float ?: return@addUpdateListener
+                        invalidate()
+                    }
+                    animIn.addListener(
+                        onEnd = { useCurrBounds = false }
+                    )
+                    animIn.duration = 200
+                    animIn.start()
+                }
+            )
+            animOut.duration = 200
+            animOut.start()
+        }
+
     }
 
+    fun close(){
+        isOpen = false
+        currRollingHint = ""
+    }
 }

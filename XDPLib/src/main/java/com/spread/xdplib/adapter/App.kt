@@ -2,6 +2,8 @@ package com.spread.xdplib.adapter
 
 import android.app.Application
 import android.content.Context
+import android.os.Looper
+import android.os.MessageQueue.IdleHandler
 import com.alibaba.android.arouter.launcher.ARouter
 import com.tencent.mmkv.MMKV
 
@@ -22,4 +24,6 @@ class App : Application() {
         ARouter.init(this) // 尽可能早，推荐在Application中初始化
         MMKV.initialize(this)
     }
+
+
 }

@@ -6,16 +6,20 @@ import com.spread.xdpnetwork.network.service.LoginServiceSingle
 
 class MessageFragment : BaseViewBindingFragment<FragmentMessageBinding>() {
     override fun initView() {
-        searchData()
+
     }
 
     override fun getViewBinding(): FragmentMessageBinding {
         return FragmentMessageBinding.inflate(layoutInflater)
     }
 
+    override fun onStart() {
+        super.onStart()
+        searchData()
+    }
     private fun searchData(){
         LoginServiceSingle.instance.connect {
-
+            binding.layout.setData(it)
         }
     }
 }

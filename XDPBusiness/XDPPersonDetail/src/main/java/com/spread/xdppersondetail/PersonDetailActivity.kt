@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
 import com.spread.xdplib.adapter.constant.ArouterUtil
 import com.spread.xdplib.adapter.entry.UserDetail
+import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.PageUtil
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import com.spread.xdppersondetail.databinding.ActivityPersonDetailBinding
@@ -27,7 +28,9 @@ class PersonDetailActivity : BaseViewBindingActivity<ActivityPersonDetailBinding
             finish()
         }
         binding.message.setOnClickListener{
-
+            userDetail?.let {
+                PageUtil.gotoActivityWithUserVo(ArouterUtil.PATH_ACTIVITY_MESSAGE_IM, UserVo(userDetail!!.icon,keyUserId, userDetail!!.nickName))
+            }
         }
         binding.add.setOnClickListener{
             userDetail?.let {

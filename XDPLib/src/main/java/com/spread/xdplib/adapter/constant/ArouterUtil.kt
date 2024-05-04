@@ -9,9 +9,10 @@ object ArouterUtil {
     const val PATH_ACTIVITY_SEARCH_TYPE = "/search/type"
     const val PATH_ACTIVITY_PERSON_DETAIL = "/person/detail"
     const val PATH_ACTIVITY_FRIEND_SETTING = "/friend/setting"
-
+    const val PATH_ACTIVITY_MESSAGE_IM = "/message/imessage"
 
     const val KEY_SEARCH_TYPE = "searchType"
     const val KEY_USERID = "keyUserId"
     const val KEY_USER_DETAIL = "keyUserDetail"
+    const val KEY_USER_VO = "keyUserVo"
 }

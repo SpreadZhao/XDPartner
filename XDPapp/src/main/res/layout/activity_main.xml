@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/index_rl_contain"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="50dp">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/index_vp_fragment_list_top"
