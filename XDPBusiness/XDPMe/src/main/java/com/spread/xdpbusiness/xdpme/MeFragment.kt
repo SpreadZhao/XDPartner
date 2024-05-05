@@ -21,6 +21,7 @@ class MeFragment : BaseViewBindingFragment<FragmentMeBinding>() {
     private fun searchDetail(){
         LoginServiceSingle.instance.queryOther(35){
             binding.layoutPerson.initTextView(it)
+            binding.tvName.text = it.nickName
             binding.tvPerson.text = "个人简介：${it.myDescription}"
             Glide.with(requireContext()).load(it.icon).into(binding.header)
             binding.pictures.setImageUrls(it.picture)

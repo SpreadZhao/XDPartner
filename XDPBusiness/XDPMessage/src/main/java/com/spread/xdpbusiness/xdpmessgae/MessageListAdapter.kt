@@ -22,7 +22,7 @@ class MessageListAdapter(private val context: Context) :
                 mData.add(message)
             }
         }
-        notifyItemRangeChanged(0, mData.size)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {

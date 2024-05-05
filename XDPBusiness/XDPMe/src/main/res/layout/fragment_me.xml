@@ -13,48 +13,85 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp">
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="96dp"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/edit_background"
-            android:gravity="center|bottom"
-            android:paddingBottom="16dp"
-            android:text="立即登录/注册"
-            android:textSize="22sp" />
+            android:gravity="center">
 
-        <ImageView
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:text="立即登录/注册"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/background_grey"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="2dp"
+                android:text="资料修改"
+                android:textColor="@color/purple"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/loginOut"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/loginOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/background_grey"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="2dp"
+                android:text="退出登录"
+                android:textColor="@color/purple"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/edit" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.spread.xdplib.adapter.customsview.imageview.CircleImageView
             android:id="@+id/header"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal|top"
-            android:src="@drawable/baseline_accessibility_select" />
+            android:src="@drawable/baseline_accessibility_select"
+            app:border_width="1dp" />
     </FrameLayout>
 
-    <ImageView
-        android:id="@+id/image_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/login"
-        android:visibility="gone" />
     <TextView
         android:id="@+id/tvPerson"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
         android:layout_marginHorizontal="10dp"
-        android:textColor="@color/share_gray"
+        android:paddingVertical="10dp"
         android:text="个人简介:"
-        />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/share_gray" />
+
     <com.spread.xdplib.adapter.customsview.imageview.NineGridImageView
         android:id="@+id/pictures"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="24dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp" />
+
     <com.spread.xdpcommon.PersonDetailLayout
         android:id="@+id/layout_person"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>
