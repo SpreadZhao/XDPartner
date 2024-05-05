@@ -60,7 +60,7 @@ class MessageTypeListLayout @JvmOverloads constructor(
     fun setData(data: List<MessageFiendBean>) {
         mData = data
         binding.list.adapter = adapter
-        adapter.setData(mData, 0)
+        adapter.setData(mData, binding.tabLayout.selectedTabPosition)
     }
 
     private fun changeView(position: Int) {

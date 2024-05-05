@@ -15,6 +15,7 @@ import com.spread.xdplib.adapter.entry.MessageBean
 import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdplib.adapter.utils.closeSoftInput
+import com.spread.xdpnetwork.network.NetworkConstant
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import kotlin.math.log
 
@@ -67,7 +68,7 @@ class IMActivity : BaseViewBindingActivity<ActivityImBinding>() {
             val bean =
                 MessageBean(
                     content = it,
-                    fromId = UserManager.getInstance().getUserId().toLong(),
+                    fromId = NetworkConstant.userId,
                     toId = keyUserVo.id,
                     createTime = System.currentTimeMillis().toString(),
                     type = "1",
