@@ -62,11 +62,15 @@ class TestActivity : AppCompatActivity() {
       }),
       MultiTypeData(TestAdapterType.ADAPTER_TYPE_BUTTON, TestButtonAdapter.ButtonData("测试自定义View") {
         startActivity(Intent(this, TestCustomViewActivity::class.java))
-      })
+      }),
+      MultiTypeData(TestAdapterType.ADAPTER_TYPE_EDIT_BUTTON, TestEditButtonAdapter.EditButtonData("更换ip") {
+        Log.d("MultiTypeAdapter", "更换ip：$it")
+        NetworkConstant.BASE_URL = it
+      }),
     )
   }
   private fun init() {
-    service = ServiceCreator.create(BlogService::class.java)
+//    service = ServiceCreator.create(BlogService::class.java)
     initDataSet()
     val layoutManager = LinearLayoutManager(this).apply {
       isItemPrefetchEnabled = false
