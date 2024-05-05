@@ -1,5 +1,6 @@
 package com.spread.xdpbusiness.xdpmessgae
 
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +13,11 @@ import com.spread.xdplib.adapter.constant.ArouterUtil
 import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.entry.MessageBean
 import com.spread.xdplib.adapter.entry.UserVo
+import com.spread.xdplib.adapter.utils.TestLogger.logd
+import com.spread.xdplib.adapter.utils.closeSoftInput
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
+import kotlin.math.log
+
 
 @Route(path = ArouterUtil.PATH_ACTIVITY_MESSAGE_IM)
 class IMActivity : BaseViewBindingActivity<ActivityImBinding>() {
@@ -24,7 +29,18 @@ class IMActivity : BaseViewBindingActivity<ActivityImBinding>() {
     override fun getViewBinding(): ActivityImBinding {
         return ActivityImBinding.inflate(layoutInflater)
     }
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return super.onTouchEvent(event)
+    }
 
+    private fun closeKeyBoard() {
+        logd("closeKeyBoard")
+        if (currentFocus != null && currentFocus!!.windowToken != null) {
+            val v = currentFocus
+            logd("clear")
+           closeSoftInput(this, v)
+        }
+    }
     override fun initView() {
         ARouter.getInstance().inject(this)
         mAdapter = MessageAdapter(this)
@@ -46,6 +62,7 @@ class IMActivity : BaseViewBindingActivity<ActivityImBinding>() {
         }
         binding.send.setSendType()
         binding.send.setSearchListener {
+            closeKeyBoard()
             if (it == null) return@setSearchListener
             val bean =
                 MessageBean(
@@ -57,8 +74,10 @@ class IMActivity : BaseViewBindingActivity<ActivityImBinding>() {
                     command = 1
                 )
             LoginServiceSingle.instance.sendMessage(bean) {
-                data->
-                Toast.makeText(this,data,Toast.LENGTH_SHORT).show()
+                data-> Toast.makeText(this,data,Toast.LENGTH_SHORT).show()
+                if(data == "发送成功"){
+                    mAdapter.sendMessage(bean)
+                }
             }
         }
     }

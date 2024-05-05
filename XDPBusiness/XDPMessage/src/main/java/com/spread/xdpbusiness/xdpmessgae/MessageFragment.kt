@@ -20,7 +20,6 @@ class MessageFragment : BaseViewBindingFragment<FragmentMessageBinding>() {
     }
     private fun searchData(){
         LoginServiceSingle.instance.connect {
-            logd("searchData:setData")
             binding.layout.setData(it)
         }
     }

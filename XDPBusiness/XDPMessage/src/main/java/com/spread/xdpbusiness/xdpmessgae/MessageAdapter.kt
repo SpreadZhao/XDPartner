@@ -43,7 +43,6 @@ class MessageAdapter(private val context:Context) : RecyclerView.Adapter<Recycle
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -55,6 +54,12 @@ class MessageAdapter(private val context:Context) : RecyclerView.Adapter<Recycle
             TYPE_LEFT
         }
     }
+
+    fun sendMessage(bean: MessageBean){
+        mData.add(bean)
+        notifyItemRangeChanged(mData.size - 1,1)
+    }
+
     inner class MessageLeftHolder(val binding:ItemMessageLeftBinding) :RecyclerView.ViewHolder(binding.root){
 
     }
