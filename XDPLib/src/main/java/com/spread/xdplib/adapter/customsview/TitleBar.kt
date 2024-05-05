@@ -65,4 +65,8 @@ class TitleBar : LinearLayout {
     fun setTitleText(title:String){
         binding.tvTitle.text = title
     }
+
+    fun setLeftVisible(vis:Int){
+        binding.icBack.visibility = vis
+    }
 }

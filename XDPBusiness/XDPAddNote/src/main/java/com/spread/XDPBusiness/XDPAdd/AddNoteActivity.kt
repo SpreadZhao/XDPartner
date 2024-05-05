@@ -31,6 +31,7 @@ import com.spread.xdpartner.test.adapter.TestAdapterType
 import com.spread.xdplib.adapter.MultiTypeAdapter
 import com.spread.xdplib.adapter.MultiTypeData
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
+import com.spread.xdplib.adapter.constant.MapUtil
 import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
@@ -43,9 +44,12 @@ import java.io.IOException
 class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.OnClickListener {
     private lateinit var popupWindow: PopupWindow
     private var popupView: View? = null
+    private lateinit var selectPopupWindow: PopupWindow
+    private var selectopupView: View? = null
     //相机拍照保存的位置
     private lateinit var photoUri: Uri
     private var mFile:File?=null
+    private var mHighId = 1
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1000 //权限
         private const val REQUEST_CODE_ALBUM = 1001 //相册
@@ -77,6 +81,35 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         popupView!!.findViewById<Button>(R.id.button_cancel).setOnClickListener(this)
     }
 
+    private fun createSelectPopupWindow() {
+        if (selectopupView == null) {
+            selectopupView = layoutInflater.inflate(R.layout.popup_select, null)
+        }
+        selectPopupWindow = PopupWindow(
+            selectopupView,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        ).apply {
+            showAtLocation(binding.layoutParent, Gravity.BOTTOM, 0, 0)
+            setBackgroundDrawable(resources.getDrawable(com.spread.xdplib.R.color.white))
+            setOnDismissListener { setAlpha(1.0f) }
+        }
+        setAlpha(0.3f)
+        //把背景还原
+        initSelectPopupView()
+    }
+
+    private fun initSelectPopupView() {
+        selectopupView!!.findViewById<Button>(R.id.study).setOnClickListener(this)
+        selectopupView!!.findViewById<Button>(R.id.love).setOnClickListener(this)
+        selectopupView!!.findViewById<Button>(R.id.live).setOnClickListener(this)
+        selectopupView!!.findViewById<Button>(R.id.joy).setOnClickListener(this)
+        selectopupView!!.findViewById<Button>(R.id.button_cancel).setOnClickListener {
+            selectPopupWindow.dismiss()
+        }
+    }
+
     private fun setAlpha(f: Float) {
         val lp = window.attributes
         lp.alpha = f
@@ -89,6 +122,9 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
             finish()
         }
         binding.buttonPublish.setOnClickListener(this)
+        binding.layoutType.setOnClickListener{
+            createSelectPopupWindow()
+        }
     }
 
     override fun getViewBinding(): ActivityAddnoteBinding {
@@ -102,9 +138,18 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
             R.id.button_photo -> openPhoto()
             R.id.button_camera -> checkPermission()
             R.id.button_publish -> publishBlog()
+            R.id.love -> setHighId(3)
+            R.id.study -> setHighId(1)
+            R.id.joy -> setHighId(2)
+            R.id.live -> setHighId(4)
         }
     }
 
+    private fun setHighId(highId:Int){
+        mHighId = highId
+        binding.tvType.text = MapUtil.getTypeName(highId)
+        selectPopupWindow.dismiss()
+    }
     private fun publishBlog() {
         mFile?.let { file ->
             LoginServiceSingle.instance.policy(file) {
@@ -120,7 +165,8 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                 content = content,
                 location = location,
                 lowTags = mutableList.toList(),
-                imageList = imageList
+                imageList = imageList,
+                highTagId = mHighId
             )
             LoginServiceSingle.instance.pubBlog(blogBean) {msg ->
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()

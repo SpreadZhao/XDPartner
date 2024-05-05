@@ -18,6 +18,7 @@ data class BlogBean(
         content: String,
         location: String,
         lowTags: List<String>,
-        imageList: List<String>
-    ) : this(absent, null, content, 1, imageList, 0, location,lowTags,title,null)
+        imageList: List<String>,
+        highTagId: Int
+    ) : this(absent, null, content, highTagId, imageList, 0, location,lowTags,title,null)
 }
