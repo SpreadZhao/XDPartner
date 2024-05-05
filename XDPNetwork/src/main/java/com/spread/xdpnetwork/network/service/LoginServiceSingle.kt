@@ -167,7 +167,16 @@ class LoginServiceSingle private constructor() {
     fun queryOther(userId: Long, callback: ((userDetail: UserDetail) -> Unit)) {
         service.queryOther(userId).enqueue(object : BasicThreadingCallback<UserResponse>({
             if (it.code() == 200) {
-                callback.invoke(it.body()!!.data)
+                if(it.body()!!.code==1000) {
+                    callback.invoke(it.body()!!.data)
+                    UserManager.getInstance().saveUserDetail(userDetail = it.body()!!.data)
+                } else{
+                    Toast.makeText(
+                        App.instance().applicationContext,
+                        it.body()!!.msg,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }) {})
     }

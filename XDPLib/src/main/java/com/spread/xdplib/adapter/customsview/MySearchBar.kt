@@ -60,4 +60,8 @@ class MySearchBar : LinearLayout {
         binding.search.setImageDrawable(context.getDrawable(R.drawable.baseline_arrow_forward_24))
         binding.edit.close()
     }
+
+    fun clearEditText(){
+        binding.edit.clearText()
+    }
 }

@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
-                android:text="立即登录/注册"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/edit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="24dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/background_grey"
                 android:paddingHorizontal="20dp"
@@ -51,7 +51,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/loginOut"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="24dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/background_grey"
                 android:paddingHorizontal="20dp"

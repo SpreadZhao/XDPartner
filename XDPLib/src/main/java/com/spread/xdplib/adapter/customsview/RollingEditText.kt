@@ -92,4 +92,9 @@ class RollingEditText : androidx.appcompat.widget.AppCompatEditText {
         isOpen = false
         currRollingHint = ""
     }
+
+    fun clearText(){
+        setText("")
+        close()
+    }
 }

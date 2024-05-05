@@ -43,7 +43,7 @@ class IMActivity : BaseViewBindingActivity<ActivityImBinding>() {
     }
     override fun initView() {
         ARouter.getInstance().inject(this)
-        mAdapter = MessageAdapter(this)
+        mAdapter = MessageAdapter(this,keyUserVo)
         binding.titleBar.apply {
             setTitleText(keyUserVo.nickName)
             setLeftListener {
@@ -77,6 +77,7 @@ class IMActivity : BaseViewBindingActivity<ActivityImBinding>() {
                 data-> Toast.makeText(this,data,Toast.LENGTH_SHORT).show()
                 if(data == "发送成功"){
                     mAdapter.sendMessage(bean)
+                    binding.send.clearEditText()
                 }
             }
         }

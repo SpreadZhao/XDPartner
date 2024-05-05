@@ -1,5 +1,6 @@
 package com.spread.xdpbusiness.xdpsearch
 
+import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.spread.xdpbusiness.xdpsearch.databinding.FragmentSearchBinding
@@ -7,6 +8,7 @@ import com.spread.xdplib.adapter.base.BaseViewBindingFragment
 import com.spread.xdplib.adapter.constant.ArouterUtil
 import com.spread.xdplib.adapter.datamanager.PageCurrentDataManager
 import com.spread.xdplib.adapter.utils.PageUtil
+import com.spread.xdpnetwork.network.service.LoginServiceSingle
 
 
 class SearchFragment : BaseViewBindingFragment<FragmentSearchBinding>() {
@@ -27,6 +29,7 @@ class SearchFragment : BaseViewBindingFragment<FragmentSearchBinding>() {
         ViewPagerAdapter(requireContext(),this@SearchFragment)
     }
     override fun initView() {
+        searchData()
         binding.list.adapter = viewPagerAdapter
         // No sliding
         binding.list.isUserInputEnabled = false
@@ -90,5 +93,12 @@ class SearchFragment : BaseViewBindingFragment<FragmentSearchBinding>() {
 
     override fun getViewBinding(): FragmentSearchBinding {
         return FragmentSearchBinding.inflate(layoutInflater)
+    }
+
+    private fun searchData(){
+        LoginServiceSingle.instance.queryOther(35){
+            binding.tvName.text = "${it.nickName}，你好"
+            Glide.with(requireContext()).load(it.icon).into(binding.circle)
+        }
     }
 }
