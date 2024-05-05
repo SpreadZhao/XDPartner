@@ -39,6 +39,7 @@ class MessageListAdapter(private val context: Context) :
         Glide.with(context).load(mData[position].userVo.icon).transform(CenterCrop())
             .into(holder.binding.header)
         holder.binding.name.text = mData[position].userVo.nickName
+        holder.binding.message.text = mData[position].messages[0].content
         holder.binding.header.setOnClickListener {
                 PageUtil.gotoActivityWithUserId(
                     ArouterUtil.PATH_ACTIVITY_PERSON_DETAIL,
