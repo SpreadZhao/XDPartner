@@ -31,10 +31,6 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface LoginService {
-    @POST("/wz/user/login")
-    fun login(
-        @Body bean: LoginBean
-    ): Call<ThreadsResponse>
 
     @FormUrlEncoded
     @POST("/wz/user/testLogin")
@@ -110,5 +106,15 @@ interface LoginService {
     fun connect(): Call<ConnectResponse>
 
     @POST("/wz/message/sendMessage")
-    fun sendMessage(@Body bean: MessageBean):Call<BaseResponse>
+    fun sendMessage(@Body bean: MessageBean): Call<BaseResponse>
+
+    @GET("/wz/verify/send/phone")
+    fun sendVerify(
+        @Query("phone") phone: String,
+    ): Call<BaseResponse>
+
+    @POST("/verify/login/phone")
+    fun login(
+        @Body bean: LoginBean
+    ): Call<BaseResponse>
 }

@@ -39,3 +39,4 @@ data class MessageBean @JvmOverloads constructor(
     @SerializedName("toId")  val toId: Long,
     @SerializedName("type")  val type: String,
 )
+

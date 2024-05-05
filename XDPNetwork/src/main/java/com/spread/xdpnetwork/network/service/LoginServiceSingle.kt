@@ -6,6 +6,7 @@ import com.spread.xdplib.adapter.constant.MmkvConstant
 import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.entry.Blog
 import com.spread.xdplib.adapter.entry.BlogBean
+import com.spread.xdplib.adapter.entry.LoginBean
 import com.spread.xdplib.adapter.entry.MessageBean
 import com.spread.xdplib.adapter.entry.MessageFiendBean
 import com.spread.xdplib.adapter.entry.PolicyBody
@@ -95,7 +96,11 @@ class LoginServiceSingle private constructor() {
                         if (it.body()!!.code == 1000)
                             callback.invoke(it.body()!!.data)
                         else
-                            Toast.makeText(App.instance().applicationContext,it.body()!!.msg,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                App.instance().applicationContext,
+                                it.body()!!.msg,
+                                Toast.LENGTH_SHORT
+                            ).show()
                     }
                 }
             ) {})
@@ -193,40 +198,48 @@ class LoginServiceSingle private constructor() {
         }) {})
     }
 
-    fun policy(file: File,callback: ((msg: String) -> Unit)) {
+    fun policy(file: File, callback: ((msg: String) -> Unit)) {
         service.policy().enqueue(object : BasicThreadingCallback<PolicyResponse>({
             if (it.code() == 200) {
                 logd("policy ${it.body()!!.data}")
                 val data = it.body()!!.data
-                val map = HashMap<String,String>()
+                val map = HashMap<String, String>()
                 map["key"] = data.dir + file.name
                 map["policy"] = data.policy
                 map["signature"] = data.signature
                 map["success_action_status"] = "200"
                 map["OSSAccessKeyId"] = data.accessid
                 logd("key: ${data.dir + file.name}")
-                val params = generateRequestBody(map,file)
+                val params = generateRequestBody(map, file)
                 UserManager.getInstance().saveHost(data.host)
                 val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val body = MultipartBody.Part.createFormData("file",file.name,requestBody)
-                service.pubFile(data.host,params,body).enqueue(object : retrofit2.Callback<ResponseBody> {
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                        if (response.isSuccessful){
-                            callback.invoke(data.host + "/" + data.dir + file.name)
+                val body = MultipartBody.Part.createFormData("file", file.name, requestBody)
+                service.pubFile(data.host, params, body)
+                    .enqueue(object : retrofit2.Callback<ResponseBody> {
+                        override fun onResponse(
+                            call: Call<ResponseBody>,
+                            response: Response<ResponseBody>
+                        ) {
+                            if (response.isSuccessful) {
+                                callback.invoke(data.host + "/" + data.dir + file.name)
+                            }
                         }
-                    }
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        // 处理失败
-                        logd("onFailure : $t")
-                    }
-                })
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            // 处理失败
+                            logd("onFailure : $t")
+                        }
+                    })
             }
         }) {})
     }
 
     //比如可以这样生成Map<String, RequestBody> requestBodyMap
     //Map<String, String> requestDataMap这里面放置上传数据的键值对。
-    private fun generateRequestBody(requestDataMap: Map<String, String?>,file: File): MutableMap<String, RequestBody> {
+    private fun generateRequestBody(
+        requestDataMap: Map<String, String?>,
+        file: File
+    ): MutableMap<String, RequestBody> {
         val requestBodyMap: MutableMap<String, RequestBody> = HashMap()
         for (key in requestDataMap.keys) {
             val requestBody = RequestBody.create(
@@ -239,7 +252,8 @@ class LoginServiceSingle private constructor() {
 //        requestBodyMap["file"] = requestBody
         return requestBodyMap
     }
-    fun connect(callback: (data: List<MessageFiendBean>) -> Unit){
+
+    fun connect(callback: (data: List<MessageFiendBean>) -> Unit) {
         service.connect().enqueue(object : BasicThreadingCallback<ConnectResponse>({
             if (it.code() == 200) {
                 callback.invoke(it.body()!!.data)
@@ -247,11 +261,30 @@ class LoginServiceSingle private constructor() {
         }) {})
     }
 
-    fun sendMessage(bean: MessageBean,callback: ((msg: String) -> Unit)){
+    fun sendMessage(bean: MessageBean, callback: ((msg: String) -> Unit)) {
         service.sendMessage(bean).enqueue(object : BasicThreadingCallback<BaseResponse>({
             if (it.code() == 200) {
                 callback.invoke(it.body()!!.data)
             }
         }) {})
+    }
+
+    fun sendVerify(phone: String, callback: ((msg: String) -> Unit)) {
+        service.sendVerify(phone).enqueue(object : BasicThreadingCallback<BaseResponse>({
+            if (it.code() == 200) {
+                callback.invoke(it.body()!!.data)
+            }
+        }) {})
+    }
+
+    fun login(stuId: String, password: String, callback: ((msg: String) -> Unit)) {
+        val loginBean = LoginBean(stuId, password, "")
+        service.login(loginBean).enqueue(object :
+            BasicThreadingCallback<BaseResponse>({
+                if (it.code() == 200) {
+                    callback.invoke(it.body()!!.data)
+                }
+            }) {})
+
     }
 }
