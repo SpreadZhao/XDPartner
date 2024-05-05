@@ -10,6 +10,7 @@ import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.ConnectResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
+import com.spread.xdpnetwork.network.model.response.MessageResponse
 import com.spread.xdpnetwork.network.model.response.PolicyResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 import com.spread.xdpnetwork.network.model.response.ThreadsResponse
@@ -113,8 +114,15 @@ interface LoginService {
         @Query("phone") phone: String,
     ): Call<BaseResponse>
 
-    @POST("/verify/login/phone")
+    @POST("/wz/verify/login/phone")
     fun login(
         @Body bean: LoginBean
     ): Call<BaseResponse>
+
+
+    @POST("/wz/message/historyMessage")
+    fun history(
+        @Query("fromId") fromId:Int,
+        @Query("messageId") messageId:Int
+    ) : Call<MessageResponse>
 }

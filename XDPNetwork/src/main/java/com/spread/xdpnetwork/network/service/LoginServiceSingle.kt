@@ -15,10 +15,12 @@ import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.MmkvUtil
 import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdpnetwork.network.BasicThreadingCallback
+import com.spread.xdpnetwork.network.NetworkConstant
 import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.ConnectResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
+import com.spread.xdpnetwork.network.model.response.MessageResponse
 import com.spread.xdpnetwork.network.model.response.PolicyResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 import com.spread.xdpnetwork.network.model.response.UserResponse
@@ -169,6 +171,8 @@ class LoginServiceSingle private constructor() {
             if (it.code() == 200) {
                 if(it.body()!!.code==1000) {
                     callback.invoke(it.body()!!.data)
+                    //todo 由于登录不完善 暂时存储这个个人信息
+                    if(userId == NetworkConstant.userId)
                     UserManager.getInstance().saveUserDetail(userDetail = it.body()!!.data)
                 } else{
                     Toast.makeText(
@@ -264,8 +268,14 @@ class LoginServiceSingle private constructor() {
 
     fun connect(callback: (data: List<MessageFiendBean>) -> Unit) {
         service.connect().enqueue(object : BasicThreadingCallback<ConnectResponse>({
-            if (it.code() == 200) {
+            if(it.body()!!.code() == 1000) {
                 callback.invoke(it.body()!!.data)
+            }  else{
+                Toast.makeText(
+                    App.instance().applicationContext,
+                    it.body()!!.msg,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }) {})
     }
@@ -294,6 +304,23 @@ class LoginServiceSingle private constructor() {
                     callback.invoke(it.body()!!.data)
                 }
             }) {})
+
+    }
+
+    fun history(fromId:Int, messageId: Int, callback: ((data : List<MessageBean>) -> Unit)){
+        service.history(fromId, messageId).enqueue(object : BasicThreadingCallback<MessageResponse>({
+            if (it.code() == 200) {
+                if(it.body()!!.code() == 1000) {
+                    callback.invoke(it.body()!!.data)
+                }  else{
+                    Toast.makeText(
+                        App.instance().applicationContext,
+                        it.body()!!.msg,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }) {})
 
     }
 }

@@ -8,6 +8,7 @@ import com.spread.xdplib.adapter.base.BaseViewBindingFragment
 import com.spread.xdplib.adapter.constant.ArouterUtil
 import com.spread.xdplib.adapter.datamanager.PageCurrentDataManager
 import com.spread.xdplib.adapter.utils.PageUtil
+import com.spread.xdpnetwork.network.NetworkConstant
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 
 
@@ -96,7 +97,7 @@ class SearchFragment : BaseViewBindingFragment<FragmentSearchBinding>() {
     }
 
     private fun searchData(){
-        LoginServiceSingle.instance.queryOther(35){
+        LoginServiceSingle.instance.queryOther(NetworkConstant.userId){
             binding.tvName.text = "${it.nickName}，你好"
             Glide.with(requireContext()).load(it.icon).into(binding.circle)
         }

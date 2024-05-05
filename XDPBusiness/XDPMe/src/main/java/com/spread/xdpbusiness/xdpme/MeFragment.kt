@@ -7,7 +7,7 @@ import com.spread.xdplib.adapter.constant.ArouterUtil
 import com.spread.xdplib.adapter.datamanager.PageCurrentDataManager
 import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.utils.PageUtil
-import com.spread.xdpnetwork.network.service.LoginServiceSingle
+import com.spread.xdpnetwork.network.NetworkConstant
 
 class MeFragment : BaseViewBindingFragment<FragmentMeBinding>() {
     override fun getViewBinding(): FragmentMeBinding {
@@ -30,7 +30,7 @@ class MeFragment : BaseViewBindingFragment<FragmentMeBinding>() {
             Glide.with(requireContext()).load(it.icon).into(binding.header)
             binding.pictures.setImageUrls(it.picture)
         }
-        binding.layoutPerson.intList(35)
+        binding.layoutPerson.intList(NetworkConstant.userId)
     }
 
     override fun onDestroy() {

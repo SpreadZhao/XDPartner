@@ -8,9 +8,11 @@ import com.bumptech.glide.Glide
 import com.spread.xdpbusiness.xdpmessgae.databinding.ItemMessageLeftBinding
 import com.spread.xdpbusiness.xdpmessgae.databinding.ItemMessageRightBinding
 import com.spread.xdpbusiness.xdpmessgae.databinding.ItemTopBinding
+import com.spread.xdpcommon.BlogListAdapter
 import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.entry.MessageBean
 import com.spread.xdplib.adapter.entry.UserVo
+import com.spread.xdpnetwork.network.service.LoginServiceSingle
 
 class MessageAdapter(private val context: Context, val userVo: UserVo) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -20,8 +22,9 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
         const val TYPE_TOP = 0
     }
 
+    private var current = 1
     private var mData: MutableList<MessageBean> = mutableListOf()
-
+    private var showFinished = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
@@ -52,6 +55,7 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
         if (holder is MessageLeftHolder) {
             Glide.with(context).load(userVo.icon).into(holder.binding.header)
             holder.binding.message.text = mData[position - 1].content
+
         }
         if (holder is MessageRightHolder) {
             Glide.with(context).load(UserManager.getInstance().getUserDetail()?.icon)
@@ -59,10 +63,31 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
             holder.binding.message.text = mData[position - 1].content
         }
         if (holder is MessageTopHolder) {
-            holder.binding.root.setOnClickListener{
-
+            if (showFinished) {
+                holder.binding.text.text = "已全部加载完毕"
+            }
+            holder.binding.root.setOnClickListener {
+                if (!showFinished)
+                    searchData()
             }
         }
+    }
+
+    private fun searchData() {
+        LoginServiceSingle.instance.history(UserManager.getInstance().getUserId(), current) {
+            if (it.isEmpty()) {
+                setShowFooter(true)
+            } else {
+                mData.addAll(0, it)
+                notifyDataSetChanged()
+            }
+        }
+
+    }
+
+    fun setShowFooter(show: Boolean) {
+        showFinished = show
+        notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
