@@ -21,4 +21,12 @@ data class BlogBean(
         imageList: List<String>,
         highTagId: Int
     ) : this(absent, null, content, highTagId, imageList, 0, location,lowTags,title,null)
+    constructor(
+        absent: String,
+        title: String,
+        content: String,
+        location: String,
+        lowTags: List<String>,
+        highTagId: Int
+    ) : this(absent, null, content, highTagId, emptyList(), 0, location,lowTags,title,null)
 }

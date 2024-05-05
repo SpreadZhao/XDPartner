@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
@@ -33,6 +34,7 @@ import com.spread.xdplib.adapter.MultiTypeData
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
 import com.spread.xdplib.adapter.constant.MapUtil
 import com.spread.xdplib.adapter.entry.BlogBean
+import com.spread.xdplib.adapter.utils.ProgressDialogUtils
 import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import java.io.File
@@ -151,6 +153,19 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         selectPopupWindow.dismiss()
     }
     private fun publishBlog() {
+        if(TextUtils.isEmpty(binding.titleEdit.text.toString())){
+            Toast.makeText(this,"请输入标题",Toast.LENGTH_SHORT).show()
+            return
+        }
+        if(TextUtils.isEmpty(binding.desEdit.text.toString())){
+            Toast.makeText(this,"请输入内容",Toast.LENGTH_SHORT).show()
+            return
+        }
+        if(TextUtils.isEmpty(binding.tagEdit.text.toString())){
+            Toast.makeText(this,"请输入tag",Toast.LENGTH_SHORT).show()
+            return
+        }
+        ProgressDialogUtils.showProgressDialog(this,"加载中")
         mFile?.let { file ->
             LoginServiceSingle.instance.policy(file) {
             val absent = binding.personEdit.text.toString()
@@ -170,10 +185,29 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
             )
             LoginServiceSingle.instance.pubBlog(blogBean) {msg ->
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                ProgressDialogUtils.hideProgressDialog()
             }
         }
         }
-
+        if(mFile == null){
+            val absent = binding.personEdit.text.toString()
+            val title = binding.titleEdit.text.toString()
+            val content = binding.desEdit.text.toString()
+            val location = binding.locationEdit.text.toString()
+            val mutableList = mutableListOf<String>().apply { add(binding.tagEdit.text.toString()) }
+            val blogBean = BlogBean(
+                absent = absent,
+                title = title,
+                content = content,
+                location = location,
+                lowTags = mutableList.toList(),
+                highTagId = mHighId
+            )
+            LoginServiceSingle.instance.pubBlog(blogBean) {msg ->
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                ProgressDialogUtils.hideProgressDialog()
+            }
+        }
     }
 
     private fun getDestinationUri(): Uri {
