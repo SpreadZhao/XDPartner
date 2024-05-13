@@ -25,6 +25,10 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
     private var typeItem = TYPE_ITEMVIEW
     private var showFinished = false
     private var isHeaderClickable = true
+    private var canDelete = false
+    fun setCanDelete(b : Boolean){
+        canDelete = b
+    }
     fun setHeaderClick(clickable:Boolean){
         isHeaderClickable = clickable
     }
@@ -83,17 +87,16 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
                         ivMessage.visibility = View.VISIBLE
                         ivMessage.text = message
                     }
-//                    if (blog.images.isNotEmpty()) {
-//                        Glide.with(context).load(blog.images[0]).transform(CenterCrop())
-//                            .into(ivImage)
-//                        if (blog.images.size >= 2) {
-//                            Glide.with(context).load(blog.images[1]).transform(CenterCrop())
-//                                .into(ivImage2)
-//                        }
-//                    } else {
-//                        ivImage.visibility = View.GONE
-//                        ivImage2.visibility = View.GONE
-//                    }
+                    if(canDelete){
+                        ivMore.visibility = View.VISIBLE
+                        ivMore.setOnClickListener{
+                            LoginServiceSingle.instance.delete(blog.id.toInt()){
+                                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                                mData.remove(blog)
+                                notifyDataSetChanged()
+                            }
+                        }
+                    }
                     ivImage.setImageUrls(blog.images)
                     Glide.with(context).load(it[position].userVo.icon).transform(CenterCrop())
                         .into(ivHeader)

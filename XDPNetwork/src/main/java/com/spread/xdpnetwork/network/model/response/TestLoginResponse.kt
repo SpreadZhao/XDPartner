@@ -2,7 +2,7 @@ package com.spread.xdpnetwork.network.model.response
 
 import com.google.gson.annotations.SerializedName
 import com.spread.xdplib.adapter.entry.Blog
-import com.spread.xdplib.adapter.entry.MessageBean
+import com.spread.xdplib.adapter.entry.Message
 import com.spread.xdplib.adapter.entry.MessageFiendBean
 import com.spread.xdplib.adapter.entry.PolicyBean
 import com.spread.xdplib.adapter.entry.UserBean
@@ -71,7 +71,7 @@ data class ConnectResponse(@SerializedName("code") val code: Int,
 }
 
 data class MessageResponse(@SerializedName("code") val code: Int,
-                           @SerializedName("data") val data: List<MessageBean>,
+                           @SerializedName("data") val data: List<Message>,
                            @SerializedName("msg") val msg: String): XDPartnerResponse {
     override fun code() = code
 

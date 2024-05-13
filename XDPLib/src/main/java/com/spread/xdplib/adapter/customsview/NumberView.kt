@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import com.spread.xdplib.adapter.utils.TestLogger.logd
 
 class NumberView @JvmOverloads constructor(
     context: Context,
@@ -33,9 +34,10 @@ class NumberView @JvmOverloads constructor(
         addView(numberTextView)
 
         numberTextView.apply {
-            layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+            layoutParams = LayoutParams(100, 100)
             gravity = Gravity.CENTER
-            setTextColor(Color.WHITE)
+            setTextColor(Color.BLACK)
+            background = SolidCircleDrawable()
             textSize = 24f
         }
     }
@@ -47,7 +49,6 @@ class NumberView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawOval(rectF, paint)
     }
 
     fun setNumber(number: Int) {

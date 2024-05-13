@@ -11,8 +11,8 @@ data class MessageFiendBean(
 )
 data class Message(
     @SerializedName("type") val type: Int,
-    @SerializedName("id") val isFriend: Int,
-    @SerializedName("fromId") val fromId: Int,
+    @SerializedName("id") val id: Long,
+    @SerializedName("fromId") val fromId: Long,
     @SerializedName("content") val content: String,
-    @SerializedName("createTime")   val createTime: String,
+    @SerializedName("createTime") val createTime: String,
 )

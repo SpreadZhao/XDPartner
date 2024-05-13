@@ -2,6 +2,7 @@ package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.entry.LoginBean
+import com.spread.xdplib.adapter.entry.Message
 import com.spread.xdplib.adapter.entry.MessageBean
 import com.spread.xdplib.adapter.entry.MessageFiendBean
 import com.spread.xdplib.adapter.entry.PolicyBody
@@ -125,4 +126,9 @@ interface LoginService {
         @Query("fromId") fromId:Int,
         @Query("messageId") messageId:Int
     ) : Call<MessageResponse>
+
+    @GET("/wz/blog/delete")
+    fun delete(
+        @Query("id") id : Int,
+    ): Call<BaseResponse>
 }

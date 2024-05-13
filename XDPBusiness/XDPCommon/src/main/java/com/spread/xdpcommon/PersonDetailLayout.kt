@@ -62,7 +62,8 @@ class PersonDetailLayout @JvmOverloads constructor(
 
     }
 
-    fun intList(userId: Long){
+
+    fun intList(userId: Long,canDelete:Boolean){
         PageCurrentDataManager.initAll()
         val blogListAdapter = BlogListAdapter(context)
             .apply {
@@ -72,10 +73,12 @@ class PersonDetailLayout @JvmOverloads constructor(
                     searchData(userId)
                 }
                 setHeaderClick(false)
+                setCanDelete(canDelete)
             }
         binding.list.adapter = blogListAdapter
         searchData(userId)
     }
+
     fun initTextView(userDetail: UserDetail){
         binding.tvMajor.setText("专业：${userDetail.majorName}")
         binding.tvConstellation.setText("星座：${MapUtil.getConstellationName(userDetail.constellation)}")

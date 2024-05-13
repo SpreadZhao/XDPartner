@@ -10,9 +10,13 @@ import com.spread.xdpbusiness.xdpmessgae.databinding.ItemMessageRightBinding
 import com.spread.xdpbusiness.xdpmessgae.databinding.ItemTopBinding
 import com.spread.xdpcommon.BlogListAdapter
 import com.spread.xdplib.adapter.datamanager.UserManager
+import com.spread.xdplib.adapter.entry.Message
 import com.spread.xdplib.adapter.entry.MessageBean
 import com.spread.xdplib.adapter.entry.UserVo
+import com.spread.xdplib.adapter.utils.TestLogger.logd
+import com.spread.xdpnetwork.network.NetworkConstant
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
+import java.util.Arrays
 
 class MessageAdapter(private val context: Context, val userVo: UserVo) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -23,7 +27,7 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
     }
 
     private var current = 1
-    private var mData: MutableList<MessageBean> = mutableListOf()
+    private var mData: MutableList<Message> = mutableListOf()
     private var showFinished = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -74,7 +78,7 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
     }
 
     private fun searchData() {
-        LoginServiceSingle.instance.history(UserManager.getInstance().getUserId(), current) {
+        LoginServiceSingle.instance.history(NetworkConstant.userId.toInt(), current) {
             if (it.isEmpty()) {
                 setShowFooter(true)
             } else {
@@ -93,7 +97,7 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
     override fun getItemViewType(position: Int): Int {
         if (position == 0)
             return TYPE_TOP
-        return if (mData[position - 1].fromId.toInt() == UserManager.getInstance().getUserId()) {
+        return if (mData[position - 1].fromId.toLong() == NetworkConstant.userId) {
             TYPE_RIGHT
         } else {
             TYPE_LEFT
@@ -101,8 +105,21 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
     }
 
     fun sendMessage(bean: MessageBean) {
-        mData.add(bean)
+        val message = Message(
+            type = 1,
+            id = bean.toId,
+            fromId = bean.fromId,
+            content = bean.content,
+            createTime = bean.createTime
+        )
+        mData.add(message)
         notifyItemRangeChanged(mData.size - 1, 1)
+    }
+
+    fun addMessage(list: List<Message>) {
+        mData.addAll(list)
+        logd("addMessage $list")
+        notifyDataSetChanged()
     }
 
     inner class MessageLeftHolder(val binding: ItemMessageLeftBinding) :

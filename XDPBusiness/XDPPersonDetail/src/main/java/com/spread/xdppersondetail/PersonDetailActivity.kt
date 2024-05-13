@@ -43,7 +43,7 @@ class PersonDetailActivity : BaseViewBindingActivity<ActivityPersonDetailBinding
     private fun searchDetail(){
         LoginServiceSingle.instance.queryOther(keyUserId){
             userDetail = it
-            binding.layoutPerson.intList(keyUserId)
+            binding.layoutPerson.intList(keyUserId,false)
             binding.layoutPerson.initTextView(it)
             binding.description.text = "个人简介：${it.myDescription}"
             binding.name.text = it.nickName

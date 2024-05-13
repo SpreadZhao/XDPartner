@@ -7,7 +7,9 @@ import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.entry.Blog
 import com.spread.xdplib.adapter.entry.BlogBean
 import com.spread.xdplib.adapter.entry.LoginBean
+import com.spread.xdplib.adapter.entry.Message
 import com.spread.xdplib.adapter.entry.MessageBean
+
 import com.spread.xdplib.adapter.entry.MessageFiendBean
 import com.spread.xdplib.adapter.entry.PolicyBody
 import com.spread.xdplib.adapter.entry.UserDetail
@@ -307,7 +309,7 @@ class LoginServiceSingle private constructor() {
 
     }
 
-    fun history(fromId:Int, messageId: Int, callback: ((data : List<MessageBean>) -> Unit)){
+    fun history(fromId:Int, messageId: Int, callback: ((data : List<Message>) -> Unit)){
         service.history(fromId, messageId).enqueue(object : BasicThreadingCallback<MessageResponse>({
             if (it.code() == 200) {
                 if(it.body()!!.code() == 1000) {
@@ -321,6 +323,15 @@ class LoginServiceSingle private constructor() {
                 }
             }
         }) {})
+    }
+
+    fun delete(stuId: Int,  callback: ((msg: String) -> Unit)) {
+        service.delete(stuId).enqueue(object :
+            BasicThreadingCallback<BaseResponse>({
+                if (it.code() == 200) {
+                    callback.invoke(it.body()!!.data)
+                }
+            }) {})
 
     }
 }

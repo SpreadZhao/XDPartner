@@ -15,4 +15,5 @@ object ArouterUtil {
     const val KEY_USERID = "keyUserId"
     const val KEY_USER_DETAIL = "keyUserDetail"
     const val KEY_USER_VO = "keyUserVo"
+    const val KEY_USER_MESSAGE = "keyUserMessage"
 }

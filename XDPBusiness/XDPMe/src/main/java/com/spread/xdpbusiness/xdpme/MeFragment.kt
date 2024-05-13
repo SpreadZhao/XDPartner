@@ -30,7 +30,7 @@ class MeFragment : BaseViewBindingFragment<FragmentMeBinding>() {
             Glide.with(requireContext()).load(it.icon).into(binding.header)
             binding.pictures.setImageUrls(it.picture)
         }
-        binding.layoutPerson.intList(NetworkConstant.userId)
+        binding.layoutPerson.intList(NetworkConstant.userId,true)
     }
 
     override fun onDestroy() {
