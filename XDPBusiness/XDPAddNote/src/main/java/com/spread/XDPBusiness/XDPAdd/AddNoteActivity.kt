@@ -48,10 +48,12 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
     private var popupView: View? = null
     private lateinit var selectPopupWindow: PopupWindow
     private var selectopupView: View? = null
+
     //相机拍照保存的位置
     private lateinit var photoUri: Uri
-    private var mFile:File?=null
+    private var mFile: File? = null
     private var mHighId = 1
+
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1000 //权限
         private const val REQUEST_CODE_ALBUM = 1001 //相册
@@ -124,7 +126,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
             finish()
         }
         binding.buttonPublish.setOnClickListener(this)
-        binding.layoutType.setOnClickListener{
+        binding.layoutType.setOnClickListener {
             createSelectPopupWindow()
         }
     }
@@ -147,49 +149,51 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         }
     }
 
-    private fun setHighId(highId:Int){
+    private fun setHighId(highId: Int) {
         mHighId = highId
         binding.tvType.text = MapUtil.getTypeName(highId)
         selectPopupWindow.dismiss()
     }
+
     private fun publishBlog() {
-        if(TextUtils.isEmpty(binding.titleEdit.text.toString())){
-            Toast.makeText(this,"请输入标题",Toast.LENGTH_SHORT).show()
+        if (TextUtils.isEmpty(binding.titleEdit.text.toString())) {
+            Toast.makeText(this, "请输入标题", Toast.LENGTH_SHORT).show()
             return
         }
-        if(TextUtils.isEmpty(binding.desEdit.text.toString())){
-            Toast.makeText(this,"请输入内容",Toast.LENGTH_SHORT).show()
+        if (TextUtils.isEmpty(binding.desEdit.text.toString())) {
+            Toast.makeText(this, "请输入内容", Toast.LENGTH_SHORT).show()
             return
         }
-        if(TextUtils.isEmpty(binding.tagEdit.text.toString())){
-            Toast.makeText(this,"请输入tag",Toast.LENGTH_SHORT).show()
+        if (TextUtils.isEmpty(binding.tagEdit.text.toString())) {
+            Toast.makeText(this, "请输入tag", Toast.LENGTH_SHORT).show()
             return
         }
-        ProgressDialogUtils.showProgressDialog(this,"加载中")
+        ProgressDialogUtils.showProgressDialog(this, "发布中")
         mFile?.let { file ->
             LoginServiceSingle.instance.policy(file) {
-            val absent = binding.personEdit.text.toString()
-            val title = binding.titleEdit.text.toString()
-            val content = binding.desEdit.text.toString()
-            val location = binding.locationEdit.text.toString()
-            val mutableList = mutableListOf<String>().apply { add(binding.tagEdit.text.toString()) }
-            val imageList = mutableListOf<String>().apply { add(it) }
-            val blogBean = BlogBean(
-                absent = absent,
-                title = title,
-                content = content,
-                location = location,
-                lowTags = mutableList.toList(),
-                imageList = imageList,
-                highTagId = mHighId
-            )
-            LoginServiceSingle.instance.pubBlog(blogBean) {msg ->
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-                ProgressDialogUtils.hideProgressDialog()
+                val absent = binding.personEdit.text.toString()
+                val title = binding.titleEdit.text.toString()
+                val content = binding.desEdit.text.toString()
+                val location = binding.locationEdit.text.toString()
+                val mutableList =
+                    mutableListOf<String>().apply { add(binding.tagEdit.text.toString()) }
+                val imageList = mutableListOf<String>().apply { add(it) }
+                val blogBean = BlogBean(
+                    absent = absent,
+                    title = title,
+                    content = content,
+                    location = location,
+                    lowTags = mutableList.toList(),
+                    imageList = imageList,
+                    highTagId = mHighId
+                )
+                LoginServiceSingle.instance.pubBlog(blogBean) { msg ->
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                    ProgressDialogUtils.hideProgressDialog()
+                }
             }
         }
-        }
-        if(mFile == null){
+        if (mFile == null) {
             val absent = binding.personEdit.text.toString()
             val title = binding.titleEdit.text.toString()
             val content = binding.desEdit.text.toString()
@@ -203,7 +207,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                 lowTags = mutableList.toList(),
                 highTagId = mHighId
             )
-            LoginServiceSingle.instance.pubBlog(blogBean) {msg ->
+            LoginServiceSingle.instance.pubBlog(blogBean) { msg ->
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
                 ProgressDialogUtils.hideProgressDialog()
             }
@@ -254,6 +258,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
         startActivityForResult(intent, REQUEST_CODE_CAMERA)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         logd("onActivityResult->requestCode:$requestCode + resultCode: $resultCode")
@@ -304,9 +309,12 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         }
     }
 
-    private fun getFileByUrl(uri: Uri){
+    private fun getFileByUrl(uri: Uri) {
         val contentResolver: ContentResolver = contentResolver
-        val photoFile = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "photo_${System.currentTimeMillis()}.jpg")
+        val photoFile = File(
+            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "photo_${System.currentTimeMillis()}.jpg"
+        )
         // 创建一个文件输出流来写入文件
         val outputStream = FileOutputStream(photoFile)
         // 将输入流的内容复制到输出流，即保存到文件中

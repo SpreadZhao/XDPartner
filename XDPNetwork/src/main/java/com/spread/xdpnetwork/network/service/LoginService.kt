@@ -1,6 +1,7 @@
 package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.entry.BlogBean
+import com.spread.xdplib.adapter.entry.ChangeUserBean
 import com.spread.xdplib.adapter.entry.LoginBean
 import com.spread.xdplib.adapter.entry.Message
 import com.spread.xdplib.adapter.entry.MessageBean
@@ -110,12 +111,12 @@ interface LoginService {
     @POST("/wz/message/sendMessage")
     fun sendMessage(@Body bean: MessageBean): Call<BaseResponse>
 
-    @GET("/wz/verify/send/phone")
+    @GET("/wz/verify/phone/send")
     fun sendVerify(
         @Query("phone") phone: String,
     ): Call<BaseResponse>
 
-    @POST("/wz/verify/login/phone")
+    @POST("/wz/verify/phone/login")
     fun login(
         @Body bean: LoginBean
     ): Call<BaseResponse>
@@ -123,12 +124,17 @@ interface LoginService {
 
     @POST("/wz/message/historyMessage")
     fun history(
-        @Query("fromId") fromId:Int,
-        @Query("messageId") messageId:Int
+        @Query("fromId") fromId:Long,
+        @Query("messageId") messageId:Long
     ) : Call<MessageResponse>
 
     @GET("/wz/blog/delete")
     fun delete(
         @Query("id") id : Int,
+    ): Call<BaseResponse>
+
+    @POST("/wz/user/change")
+    fun changeUser(
+        @Body bean: ChangeUserBean
     ): Call<BaseResponse>
 }

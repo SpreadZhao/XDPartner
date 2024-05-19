@@ -40,3 +40,11 @@ data class MessageBean @JvmOverloads constructor(
     @SerializedName("type")  val type: String,
 )
 
+data class ChangeUserBean @JvmOverloads constructor(
+    @SerializedName("icon") val icon: String,
+    @SerializedName("majorName")  val majorName: String,
+    @SerializedName("myDescription")  val myDescription: String,
+    @SerializedName("nickName")  val nickName: String,
+    @SerializedName("qq")  val qq: String,
+)
+

@@ -56,4 +56,7 @@ dependencies {
   api("com.tencent:mmkv:1.3.4")
   api("com.github.bumptech.glide:glide:4.16.0") // 替换成你使用的Glide版本
   kapt("com.github.bumptech.glide:compiler:4.16.0") // 注解处理器
+  api("io.ktor:ktor-client-android:1.6.4")
+  api("io.ktor:ktor-client-websockets:1.6.4")
+  api("io.ktor:ktor-client-okhttp:1.6.4")
 }

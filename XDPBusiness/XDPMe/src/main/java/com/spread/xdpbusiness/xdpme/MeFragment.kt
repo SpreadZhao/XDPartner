@@ -1,5 +1,6 @@
 package com.spread.xdpbusiness.xdpme
 
+import android.content.Intent
 import com.bumptech.glide.Glide
 import com.spread.xdpbusiness.xdpme.databinding.FragmentMeBinding
 import com.spread.xdplib.adapter.base.BaseViewBindingFragment
@@ -18,6 +19,10 @@ class MeFragment : BaseViewBindingFragment<FragmentMeBinding>() {
         searchDetail()
         binding.loginOut.setOnClickListener{
             this@MeFragment.activity?.let { it1 -> PageUtil.gotoActivityIfExist(it1, ArouterUtil.PATH_ACTIVITY_LOGIN) }
+        }
+        binding.edit.setOnClickListener {
+            val intent = Intent(requireContext(), ModifyDataActivity::class.java)
+            startActivity(intent)
         }
     }
 

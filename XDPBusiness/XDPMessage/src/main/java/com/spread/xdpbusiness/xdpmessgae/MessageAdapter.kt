@@ -25,11 +25,11 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
         const val TYPE_RIGHT = 2
         const val TYPE_TOP = 0
     }
-
-    private var current = 1
+    private var mKuserVo : UserVo? = null
     private var mData: MutableList<Message> = mutableListOf()
     private var showFinished = false
-
+    private var messageId = 0L
+    private var messageIdSet :MutableSet<Long> = mutableSetOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
         when (viewType) {
@@ -78,18 +78,24 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
     }
 
     private fun searchData() {
-        LoginServiceSingle.instance.history(NetworkConstant.userId.toInt(), current) {
+        LoginServiceSingle.instance.history(mKuserVo!!.id, mData[0].id) {
             if (it.isEmpty()) {
                 setShowFooter(true)
             } else {
-                mData.addAll(0, it)
+                val size = mData.size
+                for (item in it) {
+                    if(!messageIdSet.contains(item.id)){
+                        mData.add(0,item)
+                        messageIdSet.add(item.id)
+                    }
+                }
+                if(size == mData.size) setShowFooter(true)
                 notifyDataSetChanged()
             }
         }
-
     }
 
-    fun setShowFooter(show: Boolean) {
+    private fun setShowFooter(show: Boolean) {
         showFinished = show
         notifyDataSetChanged()
     }
@@ -97,7 +103,7 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
     override fun getItemViewType(position: Int): Int {
         if (position == 0)
             return TYPE_TOP
-        return if (mData[position - 1].fromId.toLong() == NetworkConstant.userId) {
+        return if (mData[position - 1].fromId == NetworkConstant.userId) {
             TYPE_RIGHT
         } else {
             TYPE_LEFT
@@ -116,8 +122,10 @@ class MessageAdapter(private val context: Context, val userVo: UserVo) :
         notifyItemRangeChanged(mData.size - 1, 1)
     }
 
-    fun addMessage(list: List<Message>) {
+    fun addMessage(list: List<Message>, userVo: UserVo) {
         mData.addAll(list)
+        messageIdSet.add(list[0].id)
+        mKuserVo = userVo
         logd("addMessage $list")
         notifyDataSetChanged()
     }

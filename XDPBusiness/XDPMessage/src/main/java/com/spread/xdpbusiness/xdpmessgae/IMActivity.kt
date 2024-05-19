@@ -72,7 +72,7 @@ class IMActivity : BaseViewBindingActivity<ActivityImBinding>() {
         if(!TextUtils.isEmpty(keyUserMessage)){
             val listType: Type? = object : TypeToken<List<Message>>() {}.type
             val message =  Gson().fromJson<List<Message>>(keyUserMessage, listType)
-            mAdapter.addMessage(message)
+            mAdapter.addMessage(message,keyUserVo)
         }
 
         binding.send.setSendType()

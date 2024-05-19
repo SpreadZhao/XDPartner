@@ -6,12 +6,12 @@ import com.spread.xdplib.adapter.constant.MmkvConstant
 import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.entry.Blog
 import com.spread.xdplib.adapter.entry.BlogBean
+import com.spread.xdplib.adapter.entry.ChangeUserBean
 import com.spread.xdplib.adapter.entry.LoginBean
 import com.spread.xdplib.adapter.entry.Message
 import com.spread.xdplib.adapter.entry.MessageBean
 
 import com.spread.xdplib.adapter.entry.MessageFiendBean
-import com.spread.xdplib.adapter.entry.PolicyBody
 import com.spread.xdplib.adapter.entry.UserDetail
 import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.MmkvUtil
@@ -175,7 +175,7 @@ class LoginServiceSingle private constructor() {
                     callback.invoke(it.body()!!.data)
                     //todo 由于登录不完善 暂时存储这个个人信息
                     if(userId == NetworkConstant.userId)
-                    UserManager.getInstance().saveUserDetail(userDetail = it.body()!!.data)
+                        UserManager.getInstance().saveUserDetail(userDetail = it.body()!!.data)
                 } else{
                     Toast.makeText(
                         App.instance().applicationContext,
@@ -299,7 +299,7 @@ class LoginServiceSingle private constructor() {
     }
 
     fun login(stuId: String, password: String, callback: ((msg: String) -> Unit)) {
-        val loginBean = LoginBean(stuId, password, "")
+        val loginBean = LoginBean(stuId, password)
         service.login(loginBean).enqueue(object :
             BasicThreadingCallback<BaseResponse>({
                 if (it.code() == 200) {
@@ -309,7 +309,7 @@ class LoginServiceSingle private constructor() {
 
     }
 
-    fun history(fromId:Int, messageId: Int, callback: ((data : List<Message>) -> Unit)){
+    fun history(fromId:Long, messageId: Long, callback: ((data : List<Message>) -> Unit)){
         service.history(fromId, messageId).enqueue(object : BasicThreadingCallback<MessageResponse>({
             if (it.code() == 200) {
                 if(it.body()!!.code() == 1000) {
@@ -333,5 +333,14 @@ class LoginServiceSingle private constructor() {
                 }
             }) {})
 
+    }
+
+    fun changeUser(bean: ChangeUserBean, callback: ((msg: String) -> Unit)){
+        service.changeUser(bean).enqueue(object :
+            BasicThreadingCallback<BaseResponse>({
+                if (it.code() == 200) {
+                    callback.invoke(it.body()!!.data)
+                }
+            }) {})
     }
 }

@@ -1,8 +1,12 @@
 package com.spread.xdpartner.main
 
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
 import android.view.View
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -14,7 +18,9 @@ import com.spread.xdpbusiness.xdpsearch.SearchFragment
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
 import com.spread.xdplib.adapter.constant.ArouterUtil.PATH_ACTIVITY_MAIN
 import com.spread.xdplib.adapter.utils.TestLogger.logd
+import com.spread.xdplib.adapter.webs.MyService
 import com.spreadxdpbusiness.xdpaddfriend.FriendFragment
+
 
 @Route(path = PATH_ACTIVITY_MAIN)
 class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
@@ -26,7 +32,12 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
         const val index_add = 4
         const val fragment_size = 4
     }
+
+    private var intent: Intent? = null
+    private var conn: MyConn? = null
+    var binder: MyService.MyBinder? = null
     override fun initView() {
+
         binding.indexVpFragmentListTop.adapter = object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
                 return when (position) {
@@ -49,7 +60,24 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
         binding.indexBottomBarFriend.setOnClickListener(TabOnClickListener(index_friend))
         binding.indexBottomMe.setOnClickListener(TabOnClickListener(index_me))
         binding.indexBottomBarScan.setOnClickListener(TabOnClickListener(index_add))
+        intent = Intent(this, MyService::class.java)
+        conn = MyConn()
+        conn?.let { bindService(intent!!, it, BIND_AUTO_CREATE) }
+
+        logd("main connect")
     }
+    inner class MyConn : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            logd("MyConn connect")
+            binder = service as MyService.MyBinder
+            binder?.connect()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+
+        }
+    }
+
 
     override fun getViewBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
@@ -79,6 +107,11 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
             binding.indexBottomMe.isSelected = false
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        conn?.let { unbindService(it) }
     }
 }
 
