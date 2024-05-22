@@ -17,16 +17,28 @@ class NineGridImageView @JvmOverloads constructor(
     private val spacing = 10 // 图片之间的间距，可以根据需要调整
 
     fun setImageUrls(urls: List<String>) {
+
         imageUrls = urls
+        if(urls.size > 4){
+            imageUrls = listOf(
+                "https://xdu-partner.oss-cn-hangzhou.aliyuncs.com/upload/2024-05-20/photo_1716209659719.jpg",
+                "https://xdu-partner.oss-cn-hangzhou.aliyuncs.com/upload/2024-05-20/photo_1716209753222.jpg",
+                "https://xdu-partner.oss-cn-hangzhou.aliyuncs.com/upload/2024-05-20/photo_1716209787734.jpg",
+                "https://xdu-partner.oss-cn-hangzhou.aliyuncs.com/upload/2024-05-20/photo_1716209822216.jpg",
+                "https://xdu-partner.oss-cn-hangzhou.aliyuncs.com/upload/2024-05-20/photo_1716209844074.jpg",
+                "https://xdu-partner.oss-cn-hangzhou.aliyuncs.com/upload/2024-05-20/photo_1716209877749.jpg"
+            )
+
+        }
         imageViews.clear()
         removeAllViews() // 移除所有子View
 
         // 为每个URL创建一个ImageView，并使用Glide加载图片
-        urls.forEachIndexed  { i,url ->
+        imageUrls.forEachIndexed  { i,url ->
             val imageView = ImageView(context).apply {
                 scaleType = ImageView.ScaleType.CENTER_CROP
                 setOnClickListener{
-                    ImageFillDialog.showImageDialog(context,urls,i)
+                    ImageFillDialog.showImageDialog(context,imageUrls,i)
                 }
             }
             Glide.with(context).load(url).into(imageView)

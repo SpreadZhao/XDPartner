@@ -1,5 +1,6 @@
 package com.spread.xdpbusiness.xdpmessgae
 
+import android.content.Intent
 import android.view.View
 import com.spread.xdpbusiness.xdpmessgae.databinding.FragmentMessageBinding
 import com.spread.xdplib.adapter.base.BaseViewBindingFragment

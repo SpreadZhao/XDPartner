@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="SourceHanSansSC-regular"
             android:gravity="start"
-            android:text="欢迎您加入西电搭子~"
+            android:text="欢迎您加入南瓜搭子~"
             android:textColor="#FF7565C6"
             android:textSize="20sp" />
 

@@ -2,6 +2,7 @@ package com.spread.xdpbusiness.xdpmessgae
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
@@ -41,8 +42,13 @@ class MessageListAdapter(private val context: Context) :
         return mData.size
     }
 
+    private var isDo = false
     override fun onBindViewHolder(holder: MessageHolder, position: Int) {
-        holder.binding.number.setNumber(mData[position].count)
+        if(!isDo) {
+            holder.binding.number.setNumber(mData[position].count)
+        } else{
+            holder.binding.number.visibility = View.GONE
+        }
         Glide.with(context).load(mData[position].userVo.icon).transform(CenterCrop())
             .into(holder.binding.header)
         holder.binding.name.text = mData[position].userVo.nickName
@@ -57,9 +63,11 @@ class MessageListAdapter(private val context: Context) :
         holder.binding.root.setOnClickListener {
             val toJson = Gson().toJson(mData[position].messages)
             TestLogger.logd("toJson $toJson")
+            TestLogger.logd("toJson ${mData[position].userVo}")
             ARouter.getInstance().build(ArouterUtil.PATH_ACTIVITY_MESSAGE_IM)
                 .withParcelable(ArouterUtil.KEY_USER_VO, mData[position].userVo)
                 .withString(ArouterUtil.KEY_USER_MESSAGE,toJson).navigation()
+            isDo = true
 
         }
     }

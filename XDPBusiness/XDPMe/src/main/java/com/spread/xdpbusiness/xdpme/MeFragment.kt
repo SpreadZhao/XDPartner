@@ -9,6 +9,7 @@ import com.spread.xdplib.adapter.datamanager.PageCurrentDataManager
 import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.utils.PageUtil
 import com.spread.xdpnetwork.network.NetworkConstant
+import com.spread.xdpnetwork.network.service.LoginServiceSingle
 
 class MeFragment : BaseViewBindingFragment<FragmentMeBinding>() {
     override fun getViewBinding(): FragmentMeBinding {
@@ -16,7 +17,7 @@ class MeFragment : BaseViewBindingFragment<FragmentMeBinding>() {
     }
 
     override fun initView() {
-        searchDetail()
+
         binding.loginOut.setOnClickListener{
             this@MeFragment.activity?.let { it1 -> PageUtil.gotoActivityIfExist(it1, ArouterUtil.PATH_ACTIVITY_LOGIN) }
         }
@@ -26,15 +27,22 @@ class MeFragment : BaseViewBindingFragment<FragmentMeBinding>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        searchDetail()
+    }
     private fun searchDetail(){
         val userDetail = UserManager.getInstance().getUserDetail()
-        userDetail?.let {
-            binding.layoutPerson.initTextView(it)
-            binding.tvName.text = it.nickName
-            binding.tvPerson.text = "个人简介：${it.myDescription}"
-            Glide.with(requireContext()).load(it.icon).into(binding.header)
-            binding.pictures.setImageUrls(it.picture)
+        LoginServiceSingle.instance.queryOther(NetworkConstant.userId) {
+            it?.let {
+                binding.layoutPerson.initTextView(it)
+                binding.tvName.text = it.nickName
+                binding.tvPerson.text = "个人简介：${it.myDescription}"
+                Glide.with(requireContext()).load(it.icon).into(binding.header)
+                binding.pictures.setImageUrls(it.picture)
+            }
         }
+
         binding.layoutPerson.intList(NetworkConstant.userId,true)
     }
 

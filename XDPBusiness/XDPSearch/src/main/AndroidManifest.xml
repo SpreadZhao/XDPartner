@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
         <activity android:name=".SearchByTypeActivity" />
+        <receiver
+            android:name=".YourBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="TODO"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.example.ACTION_TRIGGER_FUNCTION" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

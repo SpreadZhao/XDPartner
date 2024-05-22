@@ -303,7 +303,7 @@ class LoginServiceSingle private constructor() {
         service.login(loginBean).enqueue(object :
             BasicThreadingCallback<BaseResponse>({
                 if (it.code() == 200) {
-                    callback.invoke(it.body()!!.data)
+                    callback.invoke("it.body()!!.data")
                 }
             }) {})
 

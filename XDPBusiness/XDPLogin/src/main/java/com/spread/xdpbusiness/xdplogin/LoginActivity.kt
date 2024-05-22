@@ -45,9 +45,7 @@ class LoginActivity : BaseViewBindingActivity<ActivityLoginBinding>() {
 
         binding.login.setOnClickListener{
             PageUtil.gotoActivityIfExist(this@LoginActivity,ArouterUtil.PATH_ACTIVITY_MAIN)
-            LoginServiceSingle.instance.login(textAccount,textPW) {
-                PageUtil.gotoActivityIfExist(this@LoginActivity,ArouterUtil.PATH_ACTIVITY_MAIN)
-            }
+//
         }
         binding.sendVerity.setListener{
             LoginServiceSingle.instance.sendVerify(textAccount){

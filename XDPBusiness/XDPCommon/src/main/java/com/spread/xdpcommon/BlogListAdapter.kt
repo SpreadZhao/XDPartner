@@ -73,14 +73,14 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
             mData.let {
                 val blog = it[position]
                 holder.binding.apply {
-                    ivContent.text = blog.content
-                    tvName.text = blog.userVo.nickName
+                    ivContent.text = getTrue(blog.content)
+                    tvName.text = getTrue(blog.userVo.nickName)
                     tvTime.text = blog.updateTime
                     tvLovePerson.text = blog.liked.toString()
                     tvPerson.text = blog.viewTimes.toString()
-                    ivTitle.text = blog.title
+                    ivTitle.text = getTrue(blog.title)
                     val message =
-                        StringUtils.getBlogPeopleText(blog.absent, blog.whenMeet, blog.location)
+                        getTrue(StringUtils.getBlogPeopleText(blog.absent, blog.whenMeet, blog.location))
                     if (message.isEmpty()) {
                         ivMessage.visibility = View.GONE
                     } else {
@@ -158,5 +158,18 @@ class BlogListAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
 
     inner class FootViewHolder(val binding: LayoutFootviewBinding) : ViewHolder(binding.root) {
 
+    }
+
+    private fun getTrue(s:String):String{
+        return if(s.contains("西电") || s.contains("西安电子科技大学")
+            || s.contains("C楼")
+            || s.contains("西小电")){
+            val a = s.replace("西电","南瓜")
+            val b = a.replace("西安电子科技大学","南华大学")
+            val c= b.replace("C楼","院楼")
+            c.replace("西小电","南瓜")
+        } else {
+            s
+        }
     }
 }
