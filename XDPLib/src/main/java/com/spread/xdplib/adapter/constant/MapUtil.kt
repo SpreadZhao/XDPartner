@@ -23,22 +23,22 @@ object MapUtil {
     }
     private val mbtiMap: SparseArray<String> by lazy(LazyThreadSafetyMode.NONE) {
         SparseArray<String>(17).apply {
-            append(1, "ISTJ: 内倾感觉型思考者")
-            append(2, "ISFJ: 内倾感觉型情感者")
-            append(3, "INFJ: 内倾直觉型情感者")
-            append(4, "INTJ: 内倾直觉型思考者")
-            append(5, "ISTP: 内倾感觉型思考型")
-            append(6, "ISFP: 内倾感觉型情感型")
-            append(7, "INFP: 内倾直觉型情感型")
-            append(8, "INTP: 内倾直觉型思考型")
-            append(9, "ESTP: 外倾感觉型思考型")
-            append(10, "ESFP: 外倾感觉型情感型")
-            append(11, "ENFP: 外倾直觉型情感型")
-            append(12, "ENTP: 外倾直觉型思考型")
-            append(13, "ESTJ: 外倾感觉型思考者")
-            append(14, "ESFJ: 外倾感觉型情感者")
-            append(15, "ENFJ: 外倾直觉型情感者")
-            append(16, "ENTJ: 外倾直觉型思考者")
+            append(1, "ISTJ, 内倾感觉型思考者")
+            append(2, "ISFJ, 内倾感觉型情感者")
+            append(3, "INFJ, 内倾直觉型情感者")
+            append(4, "INTJ, 内倾直觉型思考者")
+            append(5, "ISTP, 内倾感觉型思考型")
+            append(6, "ISFP, 内倾感觉型情感型")
+            append(7, "INFP, 内倾直觉型情感型")
+            append(8, "INTP, 内倾直觉型思考型")
+            append(9, "ESTP, 外倾感觉型思考型")
+            append(10, "ESFP, 外倾感觉型情感型")
+            append(11, "ENFP, 外倾直觉型情感型")
+            append(12, "ENTP, 外倾直觉型思考型")
+            append(13, "ESTJ, 外倾感觉型思考者")
+            append(14, "ESFJ, 外倾感觉型情感者")
+            append(15, "ENFJ, 外倾直觉型情感者")
+            append(16, "ENTJ, 外倾直觉型思考者")
 
         }
     }
@@ -65,6 +65,7 @@ object MapUtil {
     }
 
     fun getMbtiName(key: Int): String {
+        if(key == 0) return "未设置mbti"
         return mbtiMap.get(key)
     }
 

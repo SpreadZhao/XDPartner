@@ -60,4 +60,7 @@ dependencies {
     implementation("androidx.activity:activity:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     kapt("com.alibaba:arouter-compiler:1.5.2")
+    api("io.ktor:ktor-client-android:1.6.4")
+    api("io.ktor:ktor-client-websockets:1.6.4")
+    api("io.ktor:ktor-client-okhttp:1.6.4")
 }

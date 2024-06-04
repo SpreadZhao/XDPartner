@@ -1,25 +1,40 @@
 package com.spread.xdpnetwork.network.service
 
+import android.widget.Toast
+import com.spread.xdplib.adapter.App
 import com.spread.xdplib.adapter.constant.MmkvConstant
-import com.spread.xdplib.adapter.constant.StringConstant
 import com.spread.xdplib.adapter.datamanager.UserManager
 import com.spread.xdplib.adapter.entry.Blog
 import com.spread.xdplib.adapter.entry.BlogBean
+import com.spread.xdplib.adapter.entry.ChangeUserBean
+import com.spread.xdplib.adapter.entry.LoginBean
+import com.spread.xdplib.adapter.entry.Message
+import com.spread.xdplib.adapter.entry.MessageBean
+
 import com.spread.xdplib.adapter.entry.MessageFiendBean
-import com.spread.xdplib.adapter.entry.PolicyBody
 import com.spread.xdplib.adapter.entry.UserDetail
 import com.spread.xdplib.adapter.entry.UserVo
 import com.spread.xdplib.adapter.utils.MmkvUtil
-import com.spread.xdplib.adapter.utils.StringUtils
 import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdpnetwork.network.BasicThreadingCallback
+import com.spread.xdpnetwork.network.NetworkConstant
 import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.ConnectResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
+import com.spread.xdpnetwork.network.model.response.MessageResponse
 import com.spread.xdpnetwork.network.model.response.PolicyResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 import com.spread.xdpnetwork.network.model.response.UserResponse
+import okhttp3.Callback
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Response
 import java.io.File
 
 
@@ -82,7 +97,14 @@ class LoginServiceSingle private constructor() {
             BasicThreadingCallback<FriendsResponse>(
                 {
                     if (it.code() == 200) {
-                        callback.invoke(it.body()!!.data)
+                        if (it.body()!!.code == 1000)
+                            callback.invoke(it.body()!!.data)
+                        else
+                            Toast.makeText(
+                                App.instance().applicationContext,
+                                it.body()!!.msg,
+                                Toast.LENGTH_SHORT
+                            ).show()
                     }
                 }
             ) {})
@@ -149,7 +171,18 @@ class LoginServiceSingle private constructor() {
     fun queryOther(userId: Long, callback: ((userDetail: UserDetail) -> Unit)) {
         service.queryOther(userId).enqueue(object : BasicThreadingCallback<UserResponse>({
             if (it.code() == 200) {
-                callback.invoke(it.body()!!.data)
+                if(it.body()!!.code==1000) {
+                    callback.invoke(it.body()!!.data)
+                    //todo 由于登录不完善 暂时存储这个个人信息
+                    if(userId == NetworkConstant.userId)
+                        UserManager.getInstance().saveUserDetail(userDetail = it.body()!!.data)
+                } else{
+                    Toast.makeText(
+                        App.instance().applicationContext,
+                        it.body()!!.msg,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }) {})
     }
@@ -180,37 +213,134 @@ class LoginServiceSingle private constructor() {
         }) {})
     }
 
-    fun policy(file: File) {
+    fun policy(file: File, callback: ((msg: String) -> Unit)) {
         service.policy().enqueue(object : BasicThreadingCallback<PolicyResponse>({
             if (it.code() == 200) {
-//                callback.invoke(it.body()!!.data)
                 logd("policy ${it.body()!!.data}")
                 val data = it.body()!!.data
-                val signature = StringUtils.calculateSignature(data.policy, StringConstant.AccessKeySecret)
-                val body = PolicyBody(
-                    key = data.dir + file.name,
-                    policy = StringUtils.encodeToBase64(data.policy),
-                    signature = signature,
-                    success_action_status = "200",
-                    OSSAccessKeyId = data.accessid,
-                    file = file
-                )
+                val map = HashMap<String, String>()
+                map["key"] = data.dir + file.name
+                map["policy"] = data.policy
+                map["signature"] = data.signature
+                map["success_action_status"] = "200"
+                map["OSSAccessKeyId"] = data.accessid
+                logd("key: ${data.dir + file.name}")
+                val params = generateRequestBody(map, file)
                 UserManager.getInstance().saveHost(data.host)
-                // todo 接口调试
-                service.pubFile(data.host,body).enqueue(object : BasicThreadingCallback<BaseResponse>({
-                    if (it.code() == 200) {
-                        logd("policy ${it.body()!!.data}")
-                    }
-                }) {})
+                val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val body = MultipartBody.Part.createFormData("file", file.name, requestBody)
+                service.pubFile(data.host, params, body)
+                    .enqueue(object : retrofit2.Callback<ResponseBody> {
+                        override fun onResponse(
+                            call: Call<ResponseBody>,
+                            response: Response<ResponseBody>
+                        ) {
+                            if (response.isSuccessful) {
+                                callback.invoke(data.host + "/" + data.dir + file.name)
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            // 处理失败
+                            logd("onFailure : $t")
+                        }
+                    })
             }
         }) {})
     }
 
-    fun connect(callback: (data: List<MessageFiendBean>) -> Unit){
+    //比如可以这样生成Map<String, RequestBody> requestBodyMap
+    //Map<String, String> requestDataMap这里面放置上传数据的键值对。
+    private fun generateRequestBody(
+        requestDataMap: Map<String, String?>,
+        file: File
+    ): MutableMap<String, RequestBody> {
+        val requestBodyMap: MutableMap<String, RequestBody> = HashMap()
+        for (key in requestDataMap.keys) {
+            val requestBody = RequestBody.create(
+                MultipartBody.FORM,
+                (if (requestDataMap[key] == null) "" else requestDataMap[key])!!
+            )
+            requestBodyMap[key] = requestBody
+        }
+//        val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+//        requestBodyMap["file"] = requestBody
+        return requestBodyMap
+    }
+
+    fun connect(callback: (data: List<MessageFiendBean>) -> Unit) {
         service.connect().enqueue(object : BasicThreadingCallback<ConnectResponse>({
+            if(it.body()!!.code() == 1000) {
+                callback.invoke(it.body()!!.data)
+            }  else{
+                Toast.makeText(
+                    App.instance().applicationContext,
+                    it.body()!!.msg,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }) {})
+    }
+
+    fun sendMessage(bean: MessageBean, callback: ((msg: String) -> Unit)) {
+        service.sendMessage(bean).enqueue(object : BasicThreadingCallback<BaseResponse>({
             if (it.code() == 200) {
                 callback.invoke(it.body()!!.data)
             }
         }) {})
+    }
+
+    fun sendVerify(phone: String, callback: ((msg: String) -> Unit)) {
+        service.sendVerify(phone).enqueue(object : BasicThreadingCallback<BaseResponse>({
+            if (it.code() == 200) {
+                callback.invoke(it.body()!!.data)
+            }
+        }) {})
+    }
+
+    fun login(stuId: String, password: String, callback: ((msg: String) -> Unit)) {
+        val loginBean = LoginBean(stuId, password)
+        service.login(loginBean).enqueue(object :
+            BasicThreadingCallback<BaseResponse>({
+                if (it.code() == 200) {
+                    callback.invoke(it.body()!!.data)
+                }
+            }) {})
+
+    }
+
+    fun history(fromId:Long, messageId: Long, callback: ((data : List<Message>) -> Unit)){
+        service.history(fromId, messageId).enqueue(object : BasicThreadingCallback<MessageResponse>({
+            if (it.code() == 200) {
+                if(it.body()!!.code() == 1000) {
+                    callback.invoke(it.body()!!.data)
+                }  else{
+                    Toast.makeText(
+                        App.instance().applicationContext,
+                        it.body()!!.msg,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }) {})
+    }
+
+    fun delete(stuId: Int,  callback: ((msg: String) -> Unit)) {
+        service.delete(stuId).enqueue(object :
+            BasicThreadingCallback<BaseResponse>({
+                if (it.code() == 200) {
+                    callback.invoke(it.body()!!.data)
+                }
+            }) {})
+
+    }
+
+    fun changeUser(bean: ChangeUserBean, callback: ((msg: String) -> Unit)){
+        service.changeUser(bean).enqueue(object :
+            BasicThreadingCallback<BaseResponse>({
+                if (it.code() == 200) {
+                    callback.invoke(it.body()!!.data)
+                }
+            }) {})
     }
 }

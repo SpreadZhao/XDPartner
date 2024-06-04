@@ -1,7 +1,10 @@
 package com.spread.xdpnetwork.network.service
 
 import com.spread.xdplib.adapter.entry.BlogBean
+import com.spread.xdplib.adapter.entry.ChangeUserBean
 import com.spread.xdplib.adapter.entry.LoginBean
+import com.spread.xdplib.adapter.entry.Message
+import com.spread.xdplib.adapter.entry.MessageBean
 import com.spread.xdplib.adapter.entry.MessageFiendBean
 import com.spread.xdplib.adapter.entry.PolicyBody
 import com.spread.xdpnetwork.network.interceptor.BaseUrl
@@ -9,25 +12,28 @@ import com.spread.xdpnetwork.network.model.response.BaseResponse
 import com.spread.xdpnetwork.network.model.response.BlogsResponse
 import com.spread.xdpnetwork.network.model.response.ConnectResponse
 import com.spread.xdpnetwork.network.model.response.FriendsResponse
+import com.spread.xdpnetwork.network.model.response.MessageResponse
 import com.spread.xdpnetwork.network.model.response.PolicyResponse
 import com.spread.xdpnetwork.network.model.response.TestLoginResponse
 import com.spread.xdpnetwork.network.model.response.ThreadsResponse
 import com.spread.xdpnetwork.network.model.response.UserResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface LoginService {
-    @POST("/wz/user/login")
-    fun login(
-        @Body bean: LoginBean
-    ): Call<ThreadsResponse>
 
     @FormUrlEncoded
     @POST("/wz/user/testLogin")
@@ -89,12 +95,46 @@ interface LoginService {
     fun pubBlog(@Body bean: BlogBean): Call<BaseResponse>
 
     @GET("/wz/api/file/oss/policy")
-    fun policy() : Call<PolicyResponse>
+    fun policy(): Call<PolicyResponse>
 
-
+    @Multipart
     @POST
-    fun pubFile(@Url url: String, @Body bean: PolicyBody): Call<BaseResponse>
+    fun pubFile(
+        @Url url: String,
+        @PartMap requestBodyMap: MutableMap<String, RequestBody>,
+        @Part file: MultipartBody.Part
+    ): Call<ResponseBody>
 
     @GET("/wz/message/connect")
     fun connect(): Call<ConnectResponse>
+
+    @POST("/wz/message/sendMessage")
+    fun sendMessage(@Body bean: MessageBean): Call<BaseResponse>
+
+    @GET("/wz/verify/phone/send")
+    fun sendVerify(
+        @Query("phone") phone: String,
+    ): Call<BaseResponse>
+
+    @POST("/wz/verify/phone/login")
+    fun login(
+        @Body bean: LoginBean
+    ): Call<BaseResponse>
+
+
+    @POST("/wz/message/historyMessage")
+    fun history(
+        @Query("fromId") fromId:Long,
+        @Query("messageId") messageId:Long
+    ) : Call<MessageResponse>
+
+    @GET("/wz/blog/delete")
+    fun delete(
+        @Query("id") id : Int,
+    ): Call<BaseResponse>
+
+    @POST("/wz/user/change")
+    fun changeUser(
+        @Body bean: ChangeUserBean
+    ): Call<BaseResponse>
 }

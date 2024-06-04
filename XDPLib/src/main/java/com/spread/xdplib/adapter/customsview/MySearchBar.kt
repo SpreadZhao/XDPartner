@@ -1,5 +1,6 @@
 package com.spread.xdplib.adapter.customsview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
@@ -51,5 +52,16 @@ class MySearchBar : LinearLayout {
 
     fun setSearchListener(listener: ((text:String?) -> Unit)) {
         this.searchListener = listener
+    }
+
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    fun setSendType(){
+        binding.search.setImageDrawable(context.getDrawable(R.drawable.baseline_arrow_forward_24))
+        binding.edit.close()
+    }
+
+    fun clearEditText(){
+        binding.edit.clearText()
     }
 }

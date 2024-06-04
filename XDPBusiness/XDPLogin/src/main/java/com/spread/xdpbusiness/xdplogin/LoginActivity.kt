@@ -2,6 +2,7 @@ package com.spread.xdpbusiness.xdplogin
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.spread.xdpbusiness.xdplogin.databinding.ActivityLoginBinding
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
@@ -41,11 +42,16 @@ class LoginActivity : BaseViewBindingActivity<ActivityLoginBinding>() {
         service = ServiceCreator.create(LoginService::class.java)
         binding.editAccount.addTextChangedListener(accountWatcher)
         binding.editPW.addTextChangedListener(pwWatcher)
+
         binding.login.setOnClickListener{
-//            val loginBean  = LoginBean("12345678","12345678","0")
-//            service.login(loginBean).enqueue(TestCallBackManager.threadsCallback)
-            LoginServiceSingle.instance.testLogin("12345678","12345678") {
+            PageUtil.gotoActivityIfExist(this@LoginActivity,ArouterUtil.PATH_ACTIVITY_MAIN)
+            LoginServiceSingle.instance.login(textAccount,textPW) {
                 PageUtil.gotoActivityIfExist(this@LoginActivity,ArouterUtil.PATH_ACTIVITY_MAIN)
+            }
+        }
+        binding.sendVerity.setListener{
+            LoginServiceSingle.instance.sendVerify(textAccount){
+                Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
             }
         }
     }

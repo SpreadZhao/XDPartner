@@ -1,5 +1,7 @@
 package com.spreadxdpbusiness.xdpaddfriend
 
+import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.spread.xdplib.adapter.base.BaseViewBindingFragment
@@ -12,6 +14,7 @@ class FriendFragment : BaseViewBindingFragment<FragmentFriendBinding>() {
 
     private lateinit var mFriendListAdapter :FriendListAdapter
     override fun initView() {
+        binding.titleBar.setLeftVisible(View.GONE)
         mFriendListAdapter = FriendListAdapter(requireContext())
         binding.listFriend.apply {
             layoutManager = LinearLayoutManager(this@FriendFragment.context,

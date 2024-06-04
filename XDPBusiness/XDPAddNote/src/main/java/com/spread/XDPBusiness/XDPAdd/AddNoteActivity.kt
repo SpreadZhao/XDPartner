@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
@@ -31,20 +32,27 @@ import com.spread.xdpartner.test.adapter.TestAdapterType
 import com.spread.xdplib.adapter.MultiTypeAdapter
 import com.spread.xdplib.adapter.MultiTypeData
 import com.spread.xdplib.adapter.base.BaseViewBindingActivity
+import com.spread.xdplib.adapter.constant.MapUtil
 import com.spread.xdplib.adapter.entry.BlogBean
+import com.spread.xdplib.adapter.utils.ProgressDialogUtils
 import com.spread.xdplib.adapter.utils.TestLogger.logd
 import com.spread.xdpnetwork.network.service.LoginServiceSingle
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.io.IOException
 
 
 class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.OnClickListener {
-    lateinit var popupWindow: PopupWindow
-    var popupView: View? = null
+    private lateinit var popupWindow: PopupWindow
+    private var popupView: View? = null
+    private lateinit var selectPopupWindow: PopupWindow
+    private var selectopupView: View? = null
 
     //相机拍照保存的位置
     private lateinit var photoUri: Uri
+    private var mFile: File? = null
+    private var mHighId = 1
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1000 //权限
@@ -77,6 +85,35 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         popupView!!.findViewById<Button>(R.id.button_cancel).setOnClickListener(this)
     }
 
+    private fun createSelectPopupWindow() {
+        if (selectopupView == null) {
+            selectopupView = layoutInflater.inflate(R.layout.popup_select, null)
+        }
+        selectPopupWindow = PopupWindow(
+            selectopupView,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        ).apply {
+            showAtLocation(binding.layoutParent, Gravity.BOTTOM, 0, 0)
+            setBackgroundDrawable(resources.getDrawable(com.spread.xdplib.R.color.white))
+            setOnDismissListener { setAlpha(1.0f) }
+        }
+        setAlpha(0.3f)
+        //把背景还原
+        initSelectPopupView()
+    }
+
+    private fun initSelectPopupView() {
+        selectopupView!!.findViewById<Button>(R.id.study).setOnClickListener(this)
+        selectopupView!!.findViewById<Button>(R.id.love).setOnClickListener(this)
+        selectopupView!!.findViewById<Button>(R.id.live).setOnClickListener(this)
+        selectopupView!!.findViewById<Button>(R.id.joy).setOnClickListener(this)
+        selectopupView!!.findViewById<Button>(R.id.button_cancel).setOnClickListener {
+            selectPopupWindow.dismiss()
+        }
+    }
+
     private fun setAlpha(f: Float) {
         val lp = window.attributes
         lp.alpha = f
@@ -89,6 +126,9 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
             finish()
         }
         binding.buttonPublish.setOnClickListener(this)
+        binding.layoutType.setOnClickListener {
+            createSelectPopupWindow()
+        }
     }
 
     override fun getViewBinding(): ActivityAddnoteBinding {
@@ -102,18 +142,75 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
             R.id.button_photo -> openPhoto()
             R.id.button_camera -> checkPermission()
             R.id.button_publish -> publishBlog()
+            R.id.love -> setHighId(3)
+            R.id.study -> setHighId(1)
+            R.id.joy -> setHighId(2)
+            R.id.live -> setHighId(4)
         }
     }
 
+    private fun setHighId(highId: Int) {
+        mHighId = highId
+        binding.tvType.text = MapUtil.getTypeName(highId)
+        selectPopupWindow.dismiss()
+    }
+
     private fun publishBlog() {
-        val absent = binding.personEdit.text.toString()
-        val title = binding.titleEdit.text.toString()
-        val content = binding.desEdit.text.toString()
-        val location = binding.locationEdit.text.toString()
-        val mutableList = mutableListOf<String>().apply { add(binding.tagEdit.text.toString()) }
-        val blogBean = BlogBean(absent = absent,title=title,content=content,location=location, lowTags = mutableList.toList())
-        LoginServiceSingle.instance.pubBlog(blogBean){
-            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+        if (TextUtils.isEmpty(binding.titleEdit.text.toString())) {
+            Toast.makeText(this, "请输入标题", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (TextUtils.isEmpty(binding.desEdit.text.toString())) {
+            Toast.makeText(this, "请输入内容", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (TextUtils.isEmpty(binding.tagEdit.text.toString())) {
+            Toast.makeText(this, "请输入tag", Toast.LENGTH_SHORT).show()
+            return
+        }
+        ProgressDialogUtils.showProgressDialog(this, "发布中")
+        mFile?.let { file ->
+            LoginServiceSingle.instance.policy(file) {
+                val absent = binding.personEdit.text.toString()
+                val title = binding.titleEdit.text.toString()
+                val content = binding.desEdit.text.toString()
+                val location = binding.locationEdit.text.toString()
+                val mutableList =
+                    mutableListOf<String>().apply { add(binding.tagEdit.text.toString()) }
+                val imageList = mutableListOf<String>().apply { add(it) }
+                val blogBean = BlogBean(
+                    absent = absent,
+                    title = title,
+                    content = content,
+                    location = location,
+                    lowTags = mutableList.toList(),
+                    imageList = imageList,
+                    highTagId = mHighId
+                )
+                LoginServiceSingle.instance.pubBlog(blogBean) { msg ->
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                    ProgressDialogUtils.hideProgressDialog()
+                }
+            }
+        }
+        if (mFile == null) {
+            val absent = binding.personEdit.text.toString()
+            val title = binding.titleEdit.text.toString()
+            val content = binding.desEdit.text.toString()
+            val location = binding.locationEdit.text.toString()
+            val mutableList = mutableListOf<String>().apply { add(binding.tagEdit.text.toString()) }
+            val blogBean = BlogBean(
+                absent = absent,
+                title = title,
+                content = content,
+                location = location,
+                lowTags = mutableList.toList(),
+                highTagId = mHighId
+            )
+            LoginServiceSingle.instance.pubBlog(blogBean) { msg ->
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                ProgressDialogUtils.hideProgressDialog()
+            }
         }
     }
 
@@ -122,8 +219,6 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         val cropFile = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName)
         return Uri.fromFile(cropFile)
     }
-
-
 
     private fun checkPermission() {
         popupWindow.dismiss()
@@ -163,6 +258,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
         startActivityForResult(intent, REQUEST_CODE_CAMERA)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         logd("onActivityResult->requestCode:$requestCode + resultCode: $resultCode")
@@ -178,6 +274,8 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                         binding.imageAdd.setImageBitmap(bitmap)
                         inputStream?.close()
                         // 在这里你已经有了Bitmap对象，可以进行后续操作
+                        data?.data?.let { getFileByUrl(it) }
+
                     } catch (e: FileNotFoundException) {
                         // 处理文件未找到的情况
                         e.printStackTrace()
@@ -196,10 +294,7 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                         val bitmap = BitmapFactory.decodeStream(inputStream)
                         logd("REQUEST_CODE_CAMERA->bitmap:$bitmap ")
                         binding.imageAdd.setImageBitmap(bitmap)
-                        val file = photoUri.path?.let { File(it) }
-                        logd("REQUEST_CODE_CAMERA->File:$file ")
-                        inputStream?.close()
-                        LoginServiceSingle.instance.policy(file!!)
+                        getFileByUrl(photoUri)
                         // 在这里你已经有了Bitmap对象，可以进行后续操作
                     } catch (e: FileNotFoundException) {
                         // 处理文件未找到的情况
@@ -208,10 +303,27 @@ class AddNoteActivity : BaseViewBindingActivity<ActivityAddnoteBinding>(), View.
                         // 处理输入输出异常
                         e.printStackTrace()
                     }
-                    var bitmap = BitmapFactory.decodeFile(photoUri.toString())
                 }
 
             }
         }
     }
+
+    private fun getFileByUrl(uri: Uri) {
+        val contentResolver: ContentResolver = contentResolver
+        val photoFile = File(
+            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "photo_${System.currentTimeMillis()}.jpg"
+        )
+        // 创建一个文件输出流来写入文件
+        val outputStream = FileOutputStream(photoFile)
+        // 将输入流的内容复制到输出流，即保存到文件中
+        val inputStreamPhoto = contentResolver.openInputStream(uri)
+        inputStreamPhoto?.copyTo(outputStream)
+        // 关闭流
+        inputStreamPhoto?.close()
+        outputStream.close()
+        mFile = photoFile
+    }
+
 }

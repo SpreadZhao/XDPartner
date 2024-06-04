@@ -18,9 +18,10 @@
 
     <ImageView
         android:id="@+id/ivMore"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@drawable/blog_more"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:visibility="gone"
+        android:src="@drawable/baseline_delete_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/ivHeader" />
 
@@ -132,6 +133,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ivImage"
         app:layout_constraintEnd_toStartOf="@+id/ivCommit" />
     <ImageView
+        android:visibility="gone"
         android:id="@+id/ivCommit"
         android:layout_width="18dp"
         android:layout_height="18dp"

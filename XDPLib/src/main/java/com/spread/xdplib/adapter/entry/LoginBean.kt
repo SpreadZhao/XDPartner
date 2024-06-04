@@ -1,3 +1,3 @@
 package com.spread.xdplib.adapter.entry
 
-data class LoginBean(val stuId:String,val password:String,val vcode :String?)
+data class LoginBean(val phone:String,val verCode:String)
